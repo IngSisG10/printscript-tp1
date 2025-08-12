@@ -1,9 +1,10 @@
 package interpreter
 
-import parser.Node
-import token.*
-import token.Function
+import org.example.parser.Node
+import org.example.token.*
+import org.example.token.Function
 import java.util.*
+
 
 class PrintScriptInterpreter : Interpreter {
 

@@ -1,5 +1,6 @@
 package interpreter
 
+import org.example.parser.Node
 import parser.Node
 import java.util.*
 
