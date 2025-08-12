@@ -1,6 +1,6 @@
 package org.example.parser
 
-import token.abs.TokenInterface
+import org.example.token.abs.TokenInterface
 import java.util.*
 
 

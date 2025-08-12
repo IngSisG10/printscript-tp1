@@ -1,8 +1,8 @@
 package org.example.parser
 
-import token.Operation
-import token.ParenthesisToken
-import token.abs.TokenInterface
+import org.example.token.Operation
+import org.example.token.ParenthesisToken
+import org.example.token.abs.TokenInterface
 import java.util.*
 
 class Parser(private val tokens: List<TokenInterface>) {
