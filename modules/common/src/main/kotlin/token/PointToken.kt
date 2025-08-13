@@ -9,5 +9,3 @@ class PointToken(
     override val name: String = "point"
     override val value: String = "."
 }
-
-askmmoasmkoasd
