@@ -1,6 +1,7 @@
-package org.example.token
+package token
 
-import org.example.token.abs.TokenInterface
+import token.abs.TokenInterface
+
 
 // separa lineas
 class EndSentenceToken(

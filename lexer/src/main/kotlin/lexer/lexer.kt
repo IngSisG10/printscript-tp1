@@ -1,8 +1,8 @@
-package org.example.lexer
+package lexer
 
-import org.example.token.*
-import org.example.token.Function
-import org.example.token.abs.TokenInterface
+import token.*
+import token.Function
+import token.abs.TokenInterface
 
 class Lexer(
     private val code: String

@@ -1,6 +1,6 @@
-package org.example.token
+package token
 
-import org.example.token.abs.TokenInterface
+import token.abs.TokenInterface
 
 class ParenthesisToken(
     override val value: List<TokenInterface>,
