@@ -3,7 +3,6 @@ package org.example.lexer
 import org.example.token.*
 import org.example.token.Function
 import org.example.token.abs.TokenInterface
-import token.*
 
 class Lexer(
     private val code: String
