@@ -58,22 +58,22 @@ class Lexer(
                 }
 
                 line.startsWith("String", i) -> {
-                    listOfTokens.add(TypeToken( Type.STRING, row, i))
+                    listOfTokens.add(TypeToken(Type.STRING, row, i))
                     i += 6
                 }
 
                 line.startsWith("Number", i) -> {
-                    listOfTokens.add(TypeToken( Type.NUMBER, row, i))
+                    listOfTokens.add(TypeToken(Type.NUMBER, row, i))
                     i += 6
                 }
 
                 line.startsWith("Boolean", i) -> {
-                    listOfTokens.add(TypeToken( Type.BOOLEAN, row, i))
+                    listOfTokens.add(TypeToken(Type.BOOLEAN, row, i))
                     i += 7
                 }
 
                 line.startsWith("Any", i) -> {
-                    listOfTokens.add(TypeToken( Type.ANY, row, i))
+                    listOfTokens.add(TypeToken(Type.ANY, row, i))
                     i += 3
                 }
 
@@ -198,5 +198,3 @@ class Lexer(
         return null // sin cerrar
     }
 }
-
-uvubhbiubibiuibup
