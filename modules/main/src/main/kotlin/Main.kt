@@ -8,6 +8,4 @@ fun main(args: Array<String>) {
     val parser = Parser(tokens)
     println(tokens)
     parser.parse()
-
-    wihidauhwadwhiuadwhiu
 }
