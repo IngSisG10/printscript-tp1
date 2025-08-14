@@ -2,7 +2,7 @@ name: Build & Test
 
 on:
   pull_request:
-    branches: [ "master" ]   # se ejecuta en PRs hacia main
+    branches: [ "master" ]   # se ejecuta en PRs hacia master
 
 jobs:
   build:
