@@ -1,6 +1,5 @@
 import lexer.Lexer
 import parser.Parser
-import interpreter.Interpreter
 
 fun main(args: Array<String>) {
     val lexer = Lexer("println(\"hello world\")")

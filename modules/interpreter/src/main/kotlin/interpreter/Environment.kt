@@ -1,5 +1,10 @@
 package interpreter
 
+import exception.InterpreterException
+import exception.TypeMismatchException
+import exception.UndefinedVariableException
+import exception.UninitializedVariableException
+
 enum class Type {
     NUMBER, STRING
 }
@@ -24,30 +29,26 @@ class Environment {
 
     fun declareVariable(name: String, type: Type, value: Value? = null) {
         if (variables.containsKey(name)) {
-            throw RuntimeException("Variable '$name' is already declared")
+            throw InterpreterException("Variable '$name' is already declared")
         }
         variables[name] = Variable(type, value)
     }
 
-    fun getVariable(name: String): Variable {
-        return variables[name] ?: throw RuntimeException("Variable '$name' doesn't exist")
-    }
-
     fun setVariable(name: String, value: Value) {
-        val variable = variables[name] ?: throw RuntimeException("Variable '$name' is not declared")
+        val variable = variables[name] ?: throw UndefinedVariableException(name)
 
         when {
             variable.type == Type.NUMBER && value !is NumberValue ->
-                throw RuntimeException("Variable '$name' is an int")
+                throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
             variable.type == Type.STRING && value !is StringValue ->
-                throw RuntimeException("Variable '$name' is a string")
+                throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
         }
 
         variable.value = value
     }
 
     fun getValue(name: String): Value {
-        val variable = getVariable(name)
-        return variable.value ?: throw RuntimeException("Variable '$name' is not declared")
+        val variable = variables[name] ?: throw UndefinedVariableException(name)
+        return variable.value ?: throw UninitializedVariableException(name)
     }
 }
