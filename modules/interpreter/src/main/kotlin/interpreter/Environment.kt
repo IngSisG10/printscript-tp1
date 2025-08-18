@@ -4,10 +4,7 @@ import exception.InterpreterException
 import exception.TypeMismatchException
 import exception.UndefinedVariableException
 import exception.UninitializedVariableException
-
-enum class Type {
-    NUMBER, STRING
-}
+import token.Type
 
 data class Variable(
     val type: Type,
@@ -25,6 +22,7 @@ data class StringValue(val value: String) : Value() {
 }
 
 class Environment {
+    // TODO: immutable map
     private val variables = mutableMapOf<String, Variable>()
 
     fun declareVariable(name: String, type: Type, value: Value? = null) {
