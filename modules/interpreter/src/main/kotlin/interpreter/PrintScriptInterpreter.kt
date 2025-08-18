@@ -9,7 +9,7 @@ class PrintScriptInterpreter : AstVisitor {
     private val output = mutableListOf<String>()
     private var currentValue: Value? = null
 
-    fun interpret(ast: AstNode): List<String> {
+    fun interpret(astList: List<AstInterface>): List<String> {
         output.clear()
         ast.accept(this)
         return output.toList()
