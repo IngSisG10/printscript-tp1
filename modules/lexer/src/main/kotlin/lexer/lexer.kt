@@ -1,5 +1,6 @@
 package lexer
 
+import exception.NoMatchingParenthesisException
 import token.*
 import token.Function
 import token.abs.TokenInterface
@@ -143,6 +144,9 @@ class Lexer(
 
                 c == ')' -> {
                     // Manejo de error: paréntesis mal puesto
+                    throw NoMatchingParenthesisException(
+                        "Unmatched closing parenthesis at row $row, position $i"
+                    )
                     i++
                 }
 
@@ -195,6 +199,8 @@ class Lexer(
                 }
             }
         }
-        return null // sin cerrar
+        throw NoMatchingParenthesisException(
+            "Unmatched closing parenthesis at row $row, position $idx"
+        )
     }
 }
