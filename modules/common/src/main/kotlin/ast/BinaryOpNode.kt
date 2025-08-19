@@ -1,10 +1,11 @@
 package ast
 
 import ast.abs.*
+import token.Operation
 
 class BinaryOpNode(
     override val parent: AstInterface?,
-    val operator: String,
+    val operator: Operation,
     left: AstInterface,
     right: AstInterface
 ) : AstInterface {
