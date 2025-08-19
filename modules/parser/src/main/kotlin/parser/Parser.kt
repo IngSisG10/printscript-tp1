@@ -1,93 +1,71 @@
 package parser
 
 
-import token.Operation
-import token.ParenthesisToken
+import ast.abs.*
+import ast.*
+import exception.UnrecognizedLineException
+import token.*
 import token.abs.TokenInterface
 import java.util.*
 
 class Parser(private val tokens: List<TokenInterface>) {
 
-    private val listOfAST = mutableListOf<Optional<Node>>()
+    private val listOfAST = mutableListOf<AstInterface>()
 
-    public fun parse(): List<Optional<Node>> {
+    public fun parse(): List<AstInterface> {
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens);
         for (line in listOfTokensByLine) {
             listOfAST.add(this.parseLine(line));
 
         }
+        // TODO: add semantic analysis here
         return listOfAST
     }
 
-    private fun parseLine(line: List<TokenInterface>) : Optional<Node> {
-        if (line.size == 1) {
-            if(line[0] is ParenthesisToken) {
-                val parenthesis = line[0] as ParenthesisToken
-                val parenthesisDataNode = this.parseLine(parenthesis.value)
-                val node = Node(parenthesis, parenthesisDataNode, Optional.empty())
-                return Optional.of(node)
-            }
-            else {
-                return Optional.of(Node(line[0], Optional.empty(), Optional.empty()))
-            }
-        }
-        if (line.isEmpty()) {
-            return Optional.empty();
-        }
+    private fun parseLine(line: List<TokenInterface>) : AstInterface {
+        val token = line[0]
+        return when (token) {
 
-        //loop
-        val idx = findHighestPriorityIndex(line)
-        val priorityToken = line[idx]
-        val left = line.subList(0, idx)
-        val right = line.subList(idx + 1, line.size)
+            is VariableDeclaratorToken -> {
+                this.createDeclaratorAstNode(line)
+            }
 
-        if(priorityToken is ParenthesisToken) {
-            println("Parenthesis found")
-            val parenthesisDataNode = this.parseLine(priorityToken.value)
-            val node = Node(priorityToken, parenthesisDataNode, Optional.empty())
-            return Optional.of(node)
-        }
-        else{
-            val node = Node(priorityToken, parseLine(left), parseLine(right))
-            return Optional.of(node)
+            is VariableToken  -> {
+                if (line[1] is OperationToken) {
+                    this.createAsignatorAstNode(line)
+                } else throw UnrecognizedLineException()
+            }
+
+            else -> throw UnrecognizedLineException()
         }
     }
 
-    private fun findHighestPriorityIndex(line: List<TokenInterface>): Int {
-        var bestIndex = 0
-        var bestPrec = Int.MIN_VALUE
-
-        for ((i, tok) in line.withIndex()) {
-            val prec = getTokenPriority(tok)
-            if (prec > bestPrec) {
-                bestPrec = prec
-                bestIndex = i
-            }
-        }
-
-        return bestIndex
+    private fun createAsignatorAstNode(line: List<TokenInterface>): Nothing {
+        TODO("Not yet implemented")
     }
 
-    private fun getTokenPriority(token: TokenInterface): Int {
-        return when (token.name) {
-            "function" -> 3
-            "operation" -> {
-                when (token.value) {
-                    Operation.EQUAL                         -> 6
-                    Operation.SUM, Operation.MINUS          -> 4
-                    Operation.MULTIPLY, Operation.DIVIDE    -> 3
-                    else     -> 0 // operador desconocido, prioridad mínima
-                }
-            }
-            "type_declarator" -> 4
-            "variable_declarator" ->5
-            "point" -> 1
-            "parenthesis" -> -1
-
-            else -> 0 // end_sentence (creo que no va pero bueno), variables, etc. no son operadores
-        }
+    private fun createDeclaratorAstNode(line: List<TokenInterface>): AstInterface {
+        return DeclaratorNode(
+            variableNode = VariableNode(
+                name = (line[1] as VariableDeclaratorToken).name,
+                type = (line[3] as TypeToken).value
+            ),
+            //TODO: parse all possible operations
+            value = VariableNode(name = "todo", type = Type.ANY), //this.parseOperation(line.subList(4, line.size)),
+            parent = null
+        )
     }
+
+    private fun findVariableType(name: String): Type {
+        for (ast in listOfAST) {
+            if (ast is DeclaratorNode && ast.variableNode.name == name) {
+                return ast.variableNode.type
+            }
+        }
+        throw UnrecognizedLineException("Variable '$name' not found")
+    }
+
 
     private fun splitTokensIntoLines(tokens: List<TokenInterface>): List<List<TokenInterface>> {
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
