@@ -1,5 +1,7 @@
 package interpreter
 
+import ast.abs.*
+import ast.*
 import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
@@ -11,7 +13,13 @@ class PrintScriptInterpreter : AstVisitor {
 
     fun interpret(astList: List<AstInterface>): List<String> {
         output.clear()
-        ast.accept(this)
+        for (astNode in astList) {
+            if (astNode is AstInterface) {
+                astNode.accept(this)
+            } else {
+                throw InterpreterException("Invalid AST node type: ${astNode::class.simpleName}")
+            }
+        }
         return output.toList()
     }
 
