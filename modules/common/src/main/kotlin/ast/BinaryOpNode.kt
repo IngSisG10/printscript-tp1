@@ -6,8 +6,8 @@ import token.Operation
 class BinaryOpNode(
     override val parent: AstInterface?,
     val operator: Operation,
-    left: AstInterface,
-    right: AstInterface
+    left: AstInterface?,
+    right: AstInterface?
 ) : AstInterface {
 
     private val _children = arrayListOf<AstInterface>()
