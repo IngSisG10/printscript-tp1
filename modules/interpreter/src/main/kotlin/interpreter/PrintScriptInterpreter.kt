@@ -1,10 +1,12 @@
 package interpreter
 
-import ast.abs.*
 import ast.*
+import ast.abs.AstInterface
+import ast.abs.AstVisitor
 import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
+import token.Operation
 
 class PrintScriptInterpreter : AstVisitor {
     private val environment = Environment()
@@ -14,11 +16,7 @@ class PrintScriptInterpreter : AstVisitor {
     fun interpret(astList: List<AstInterface>): List<String> {
         output.clear()
         for (astNode in astList) {
-            if (astNode is AstInterface) {
-                astNode.accept(this)
-            } else {
-                throw InterpreterException("Invalid AST node type: ${astNode::class.simpleName}")
-            }
+            astNode.accept(this)
         }
         return output.toList()
     }
@@ -31,10 +29,10 @@ class PrintScriptInterpreter : AstVisitor {
         val rightValue = currentValue ?: throw InterpreterException("Right operand did not produce a value")
 
         currentValue = when (node.operator) {
-            "+" -> evaluateAddition(leftValue, rightValue)
-            "-" -> evaluateSubtraction(leftValue, rightValue)
-            "*" -> evaluateMultiplication(leftValue, rightValue)
-            "/" -> evaluateDivision(leftValue, rightValue)
+            Operation.SUM -> evaluateAddition(leftValue, rightValue)
+            Operation.MINUS -> evaluateSubtraction(leftValue, rightValue)
+            Operation.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
+            Operation.DIVIDE -> evaluateDivision(leftValue, rightValue)
             else -> throw InterpreterException("Unknown operator: ${node.operator}")
         }
     }
@@ -47,12 +45,16 @@ class PrintScriptInterpreter : AstVisitor {
         return when {
             left is NumberValue && right is NumberValue ->
                 NumberValue(left.value + right.value)
+
             left is StringValue && right is StringValue ->
                 StringValue(left.value + right.value)
+
             left is StringValue && right is NumberValue ->
                 StringValue(left.value + right.toStringValue())
+
             left is NumberValue && right is StringValue ->
                 StringValue(left.toStringValue() + right.value)
+
             else -> throw TypeMismatchException("Invalid operands for addition")
         }
     }
@@ -80,4 +82,9 @@ class PrintScriptInterpreter : AstVisitor {
         }
         throw TypeMismatchException("Division requires two numbers")
     }
+
+    override fun visitLiteral(node: LiteralNode) {}
+    override fun visitDeclarator(node: DeclaratorNode) {}
+    override fun visitVariable(node: VariableNode) {}
+    override fun visitMonoOp(monoOpNode: MonoOpNode) {}
 }
