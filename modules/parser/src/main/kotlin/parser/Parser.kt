@@ -52,7 +52,7 @@ class Parser(private val tokens: List<TokenInterface>) {
                 type = (line[3] as TypeToken).value
             ),
             //TODO: parse all possible operations
-            value = BinaryOpNode(null, Operation.EQUAL, null, null), //this.parseOperation(line.subList(4, line.size)),
+            value = VariableNode(name = "todo", type = Type.ANY), //this.parseOperation(line.subList(4, line.size)),
             parent = null
         )
     }
