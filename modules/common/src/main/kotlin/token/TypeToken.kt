@@ -1,16 +1,10 @@
 package token
 
+import enums.TypeEnum
 import token.abs.TokenInterface
 
-enum class Type {
-    STRING,
-    BOOLEAN,
-    NUMBER,
-    ANY,
-}
-
 class TypeToken(
-    override val value: Type,
+    override val value: TypeEnum,
     override val row: Int,
     override val position: Int,
 ) : TokenInterface {
