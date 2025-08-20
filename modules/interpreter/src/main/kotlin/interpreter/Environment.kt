@@ -8,16 +8,22 @@ import token.Type
 
 data class Variable(
     val type: Type,
-    var value: Value? = null
+    var value: Value? = null,
 )
 
 sealed class Value {
     abstract fun toStringValue(): String
 }
-data class NumberValue(val value: Double) : Value() {
+
+data class NumberValue(
+    val value: Double,
+) : Value() {
     override fun toStringValue(): String = value.toString()
 }
-data class StringValue(val value: String) : Value() {
+
+data class StringValue(
+    val value: String,
+) : Value() {
     override fun toStringValue(): String = value
 }
 
@@ -25,14 +31,21 @@ class Environment {
     // TODO: immutable map
     private val variables = mutableMapOf<String, Variable>()
 
-    fun declareVariable(name: String, type: Type, value: Value? = null) {
+    fun declareVariable(
+        name: String,
+        type: Type,
+        value: Value? = null,
+    ) {
         if (variables.containsKey(name)) {
             throw InterpreterException("Variable '$name' is already declared")
         }
         variables[name] = Variable(type, value)
     }
 
-    fun setVariable(name: String, value: Value) {
+    fun setVariable(
+        name: String,
+        value: Value,
+    ) {
         val variable = variables[name] ?: throw UndefinedVariableException(name)
 
         when {
