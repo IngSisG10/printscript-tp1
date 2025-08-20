@@ -4,7 +4,11 @@ import ast.DeclaratorNode
 import ast.VariableNode
 import ast.abs.AstInterface
 import exception.UnrecognizedLineException
-import token.*
+import token.OperationToken
+import token.Type
+import token.TypeToken
+import token.VariableDeclaratorToken
+import token.VariableToken
 import token.abs.TokenInterface
 
 class Parser(

@@ -1,6 +1,11 @@
 package ast.abs
 
-import ast.*
+import ast.BinaryOpNode
+import ast.DeclaratorNode
+import ast.IdentifierNode
+import ast.LiteralNode
+import ast.MonoOpNode
+import ast.VariableNode
 
 interface AstVisitor {
     fun visitBinaryOp(node: BinaryOpNode)

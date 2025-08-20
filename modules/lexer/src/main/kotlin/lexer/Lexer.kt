@@ -1,8 +1,21 @@
 package lexer
 
 import exception.NoMatchingParenthesisException
-import token.*
+import token.EndSentenceToken
 import token.Function
+import token.FunctionToken
+import token.NumberLiteralToken
+import token.Operation
+import token.OperationToken
+import token.ParenthesisData
+import token.ParenthesisToken
+import token.PointToken
+import token.StringLiteralToken
+import token.Type
+import token.TypeDeclaratorToken
+import token.TypeToken
+import token.VariableDeclaratorToken
+import token.VariableToken
 import token.abs.TokenInterface
 
 class Lexer(
