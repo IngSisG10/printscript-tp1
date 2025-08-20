@@ -22,4 +22,14 @@ subprojects {
     apply plugin: "org.jlleitschuh.gradle.ktlint"
 }
 
-// ij_kotlin_packages_to_use_import_on_demand
+tasks.register("installGitHooks") {
+    group = "setup"
+    description = "Install git hooks"
+
+    doLast {
+        exec {
+            commandLine("git", "config", "core.hooksPath", ".github/hooks")
+        }
+        println("Hooks configured via core.hooksPath")
+    }
+}
