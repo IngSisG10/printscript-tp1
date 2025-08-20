@@ -57,7 +57,8 @@ class Parser(
                     type = (line[3] as TypeToken).value,
                 ),
             // TODO: parse all possible operations
-            value = VariableNode(name = "todo", type = Type.ANY), // this.parseOperation(line.subList(4, line.size)),
+            // this.parseOperation(line.subList(4, line.size)),
+            value = VariableNode(name = "todo", type = Type.ANY),
             parent = null,
         )
 
