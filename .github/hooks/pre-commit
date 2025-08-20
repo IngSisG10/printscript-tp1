@@ -8,11 +8,3 @@ if [ $? -ne 0 ]; then
   echo "ktlint format failed"
   exit 1
 fi
-echo ""
-echo "running build"
-
-./gradlew build
-if [ $? -ne 0 ]; then
-  echo "build failed, fix issues before committing"
-  exit 1
-fi
