@@ -1,15 +1,15 @@
 package ast
 
-import ast.abs.*
+import ast.abs.AstInterface
+import ast.abs.AstVisitor
 import token.Operation
 
 class BinaryOpNode(
     override val parent: AstInterface?,
     val operator: Operation,
     left: AstInterface,
-    right: AstInterface
+    right: AstInterface,
 ) : AstInterface {
-
     private val _children = arrayListOf<AstInterface>()
     override val children: List<AstInterface> get() = _children
 

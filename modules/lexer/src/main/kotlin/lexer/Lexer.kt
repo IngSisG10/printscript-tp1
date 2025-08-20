@@ -6,9 +6,8 @@ import token.Function
 import token.abs.TokenInterface
 
 class Lexer(
-    private val code: String
+    private val code: String,
 ) {
-
     private val listOfTokens = mutableListOf<TokenInterface>()
 
     private val stringRegex = Regex("\"(.*?)\"") // Finds text inside " "
@@ -33,11 +32,10 @@ class Lexer(
 
             // todo: a futuro -> Map
             when {
-
                 c == '\n' -> {
                     println("row changes")
                     row++
-                    i++  // avanzamos 1
+                    i++ // avanzamos 1
                 }
 
                 c.isWhitespace() -> { // " "
@@ -132,9 +130,9 @@ class Lexer(
                             ParenthesisToken(
                                 value = innerTokens,
                                 row = row,
-                                position = i,          // posición del '('
-                                closePosition = p.endParenthesis // índice del ')' en 'line'
-                            )
+                                position = i, // posición del '('
+                                closePosition = p.endParenthesis, // índice del ')' en 'line'
+                            ),
                         )
 
                         // Saltar a justo después del ')'
@@ -145,7 +143,7 @@ class Lexer(
                 c == ')' -> {
                     // Manejo de error: paréntesis mal puesto
                     throw NoMatchingParenthesisException(
-                        "Unmatched closing parenthesis at row $row, position $i"
+                        "Unmatched closing parenthesis at row $row, position $i",
                     )
                     i++
                 }
@@ -165,21 +163,32 @@ class Lexer(
         }
     }
 
-    private fun consumeStringToken(line: String, row: Int, i: Int): Int? {
+    private fun consumeStringToken(
+        line: String,
+        row: Int,
+        i: Int,
+    ): Int? {
         val match = stringRegex.find(line, i)?.takeIf { it.range.first == i } ?: return null
         val content = match.groupValues[1]
         listOfTokens.add(StringLiteralToken(content, row, i))
         return match.range.last + 1
     }
 
-    private fun consumeNumberToken(line: String, row: Int, i: Int): Int? {
+    private fun consumeNumberToken(
+        line: String,
+        row: Int,
+        i: Int,
+    ): Int? {
         val match = numberRegex.find(line, i)?.takeIf { it.range.first == i } ?: return null
         val content = match.value
         listOfTokens.add(NumberLiteralToken(content.toInt(), row, i))
         return match.range.last + 1
     }
 
-    private fun extractFirstParenthesisWithNesting(s: String, idx: Int): ParenthesisData? {
+    private fun extractFirstParenthesisWithNesting(
+        s: String,
+        idx: Int,
+    ): ParenthesisData? {
         var depth = 0
         var start = -1
         for (i in idx..<s.length) {
@@ -194,13 +203,13 @@ class Lexer(
                 if (depth == 0 && start != -1) {
                     return ParenthesisData(
                         parenthesisData = s.substring(start + 1, i),
-                        endParenthesis = i
+                        endParenthesis = i,
                     )
                 }
             }
         }
         throw NoMatchingParenthesisException(
-            "Unmatched closing parenthesis at row $row, position $idx"
+            "Unmatched closing parenthesis at row $row, position $idx",
         )
     }
 }
