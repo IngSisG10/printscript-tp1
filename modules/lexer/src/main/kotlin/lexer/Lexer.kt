@@ -1,11 +1,13 @@
 package lexer
 
-import lexer.rules.IdentifierRule
-import lexer.rules.KeywordRule
-import lexer.rules.NumberLiteralRule
-import lexer.rules.ParenthesisRule
-import lexer.rules.SingleCharRule
-import lexer.rules.StringLiteralRule
+import exception.UnknownExpressionException
+import lexer.token.rules.IdentifierRule
+import lexer.token.rules.KeywordRule
+import lexer.token.rules.NumberLiteralRule
+import lexer.token.rules.ParenthesisRule
+import lexer.token.rules.SingleCharRule
+import lexer.token.rules.StringLiteralRule
+import syntax.rules.NoMatchingParenthesisRule
 import token.abs.TokenInterface
 
 class Lexer(
@@ -14,7 +16,7 @@ class Lexer(
     private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
 
-    private val rules =
+    private val tokenRules =
         listOf(
             StringLiteralRule(),
             NumberLiteralRule(),
@@ -22,6 +24,11 @@ class Lexer(
             ParenthesisRule(),
             SingleCharRule(),
             IdentifierRule(),
+        )
+
+    private val syntaxRules =
+        listOf(
+            NoMatchingParenthesisRule(),
         )
 
     fun lex(): List<TokenInterface> {
@@ -41,7 +48,7 @@ class Lexer(
                 c.isWhitespace() -> i++
                 else -> {
                     var matched = false
-                    for (rule in rules) {
+                    for (rule in tokenRules) {
                         val res = rule.match(text, i, row)
                         if (res != null) {
                             res.token?.let { tokens.add(it) }
@@ -52,8 +59,15 @@ class Lexer(
                         }
                     }
                     if (!matched) {
-                        // Skip unknown char (could alternatively throw)
-                        i++
+                        for (syntax in syntaxRules) {
+                            val res = syntax.match(text, i, row)
+                            if (res != null) {
+                                throw res
+                            }
+                        }
+                        throw UnknownExpressionException(
+                            "Unknown expression at row $row, column $i: '${text.substring(i)}'",
+                        )
                     }
                 }
             }
