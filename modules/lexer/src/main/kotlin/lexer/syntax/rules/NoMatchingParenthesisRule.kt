@@ -9,10 +9,10 @@ class NoMatchingParenthesisRule : SyntaxRule {
         index: Int,
         row: Int,
     ): Exception? {
-        if (line[index] == '(' || line[index] == ')') {
-            return NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
+        return if (line[index] == '(' || line[index] == ')') {
+            NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
         } else {
-            return null
+            null
         }
     }
 }
