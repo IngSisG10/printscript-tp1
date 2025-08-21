@@ -1,7 +1,7 @@
-package syntax.rules
+package lexer.syntax.rules
 
 import exception.NoMatchingParenthesisException
-import syntax.SyntaxRule
+import lexer.syntax.SyntaxRule
 
 class NoMatchingParenthesisRule : SyntaxRule {
     override fun match(

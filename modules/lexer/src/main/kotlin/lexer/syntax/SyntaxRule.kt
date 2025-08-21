@@ -1,4 +1,4 @@
-package syntax
+package lexer.syntax
 
 interface SyntaxRule {
     fun match(
