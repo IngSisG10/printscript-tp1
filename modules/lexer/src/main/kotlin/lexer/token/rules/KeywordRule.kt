@@ -1,7 +1,8 @@
-package lexer.rules
+package lexer.token.rules
 
 import enums.FunctionEnum
 import enums.TypeEnum
+import lexer.token.TokenRule
 import token.FunctionToken
 import token.TypeToken
 import token.VariableDeclaratorToken

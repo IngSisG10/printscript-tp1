@@ -1,6 +1,7 @@
-package lexer.rules
+package lexer.token.rules
 
 import lexer.Lexer
+import lexer.token.TokenRule
 import token.ParenthesisData
 import token.ParenthesisToken
 import token.abs.TokenInterface

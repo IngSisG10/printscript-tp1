@@ -1,6 +1,7 @@
-package lexer.rules
+package lexer.token.rules
 
 import enums.OperationEnum
+import lexer.token.TokenRule
 import token.EndSentenceToken
 import token.OperationToken
 import token.PointToken

@@ -1,5 +1,6 @@
-package lexer.rules
+package lexer.token.rules
 
+import lexer.token.TokenRule
 import token.NumberLiteralToken
 
 class NumberLiteralRule : TokenRule {

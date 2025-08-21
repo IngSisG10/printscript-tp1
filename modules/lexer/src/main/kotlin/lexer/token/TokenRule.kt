@@ -1,4 +1,4 @@
-package lexer.rules
+package lexer.token
 
 import token.abs.TokenInterface
 
