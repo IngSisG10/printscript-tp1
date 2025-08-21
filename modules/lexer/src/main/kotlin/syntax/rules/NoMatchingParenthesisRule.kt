@@ -1,0 +1,18 @@
+package syntax.rules
+
+import exception.NoMatchingParenthesisException
+import syntax.SyntaxRule
+
+class NoMatchingParenthesisRule : SyntaxRule {
+    override fun match(
+        line: String,
+        index: Int,
+        row: Int,
+    ): Exception? {
+        if (line[index] == '(' || line[index] == ')') {
+            return NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
+        } else {
+            return null
+        }
+    }
+}
