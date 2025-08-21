@@ -1,17 +1,10 @@
 package token
 
+import enums.OperationEnum
 import token.abs.TokenInterface
 
-enum class Operation {
-    SUM,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    EQUAL,
-}
-
 class OperationToken(
-    override val value: Operation,
+    override val value: OperationEnum,
     override val row: Int,
     override val position: Int,
 ) : TokenInterface {

@@ -1,228 +1,76 @@
 package lexer
 
-import exception.NoMatchingParenthesisException
-import token.EndSentenceToken
-import token.Function
-import token.FunctionToken
-import token.NumberLiteralToken
-import token.Operation
-import token.OperationToken
-import token.ParenthesisData
-import token.ParenthesisToken
-import token.PointToken
-import token.StringLiteralToken
-import token.Type
-import token.TypeDeclaratorToken
-import token.TypeToken
-import token.VariableDeclaratorToken
-import token.VariableToken
+import exception.UnknownExpressionException
+import lexer.syntax.rules.NoMatchingParenthesisRule
+import lexer.token.rules.IdentifierRule
+import lexer.token.rules.KeywordRule
+import lexer.token.rules.NumberLiteralRule
+import lexer.token.rules.ParenthesisRule
+import lexer.token.rules.SingleCharRule
+import lexer.token.rules.StringLiteralRule
 import token.abs.TokenInterface
 
 class Lexer(
     private val code: String,
 ) {
-    private val listOfTokens = mutableListOf<TokenInterface>()
-
-    private val stringRegex = Regex("\"(.*?)\"") // Finds text inside " "
-
-    private val numberRegex = Regex("\\d+") // Finds int numbers (only positive)
-
+    private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
 
+    private val tokenRules =
+        listOf(
+            StringLiteralRule(),
+            NumberLiteralRule(),
+            KeywordRule(),
+            ParenthesisRule(),
+            SingleCharRule(),
+            IdentifierRule(),
+        )
+
+    private val syntaxRules =
+        listOf(
+            NoMatchingParenthesisRule(),
+        )
+
     fun lex(): List<TokenInterface> {
-        // val listOfLines: List<String> = this.splitIntoLines(code)
-        tokenizeLine(code)
-        return listOfTokens
+        tokenize(code)
+        return tokens
     }
 
-    // todo: a futuro, quiza debamos implementar el Visitor pattern
-    private fun tokenizeLine(line: String) {
+    private fun tokenize(text: String) {
         var i = 0
-        val length = line.length
-
-        while (i < length) {
-            val c = line[i]
-
-            // todo: a futuro -> Map
+        while (i < text.length) {
+            val c = text[i]
             when {
                 c == '\n' -> {
-                    println("row changes")
                     row++
-                    i++ // avanzamos 1
-                }
-
-                c.isWhitespace() -> { // " "
                     i++
                 }
-
-                this.consumeStringToken(line, row, i)?.also { i = it } != null -> {}
-
-                this.consumeNumberToken(line, row, i)?.also { i = it } != null -> {}
-
-                line.startsWith("println", i) -> {
-                    listOfTokens.add(FunctionToken(Function.PRINTLN, row, i))
-                    i += 7
-                }
-
-                line.startsWith("let", i) -> {
-                    listOfTokens.add(VariableDeclaratorToken(row, i))
-                    i += 3
-                }
-
-                line.startsWith("String", i) -> {
-                    listOfTokens.add(TypeToken(Type.STRING, row, i))
-                    i += 6
-                }
-
-                line.startsWith("Number", i) -> {
-                    listOfTokens.add(TypeToken(Type.NUMBER, row, i))
-                    i += 6
-                }
-
-                line.startsWith("Boolean", i) -> {
-                    listOfTokens.add(TypeToken(Type.BOOLEAN, row, i))
-                    i += 7
-                }
-
-                line.startsWith("Any", i) -> {
-                    listOfTokens.add(TypeToken(Type.ANY, row, i))
-                    i += 3
-                }
-
-                c == '+' -> {
-                    listOfTokens.add(OperationToken(Operation.SUM, row, i))
-                    i++
-                }
-
-                c == '-' -> {
-                    listOfTokens.add(OperationToken(Operation.MINUS, row, i))
-                    i++
-                }
-
-                c == '*' -> {
-                    listOfTokens.add(OperationToken(Operation.MULTIPLY, row, i))
-                    i++
-                }
-
-                c == '/' -> {
-                    listOfTokens.add(OperationToken(Operation.DIVIDE, row, i))
-                    i++
-                }
-
-                c == '=' -> {
-                    listOfTokens.add(OperationToken(Operation.EQUAL, row, i))
-                    i++
-                }
-
-                c == ':' -> {
-                    listOfTokens.add(TypeDeclaratorToken(row, i))
-                    i++
-                }
-
-                c == '.' -> {
-                    listOfTokens.add(PointToken(row, i))
-                    i++
-                }
-
-                c == ';' -> {
-                    listOfTokens.add(EndSentenceToken(row, i))
-                    i++
-                }
-
-                c == '(' -> {
-                    val p = extractFirstParenthesisWithNesting(line, i)
-                    if (p == null) {
-                        // Manejo de error: paréntesis sin cerrar
-                        i++
-                    } else {
-                        // Lexear adentro con un lexer nuevo para evitar estado compartido
-                        val innerTokens = Lexer(p.parenthesisData).lex()
-
-                        // Crear tu token de paréntesis agrupado
-                        listOfTokens.add(
-                            ParenthesisToken(
-                                value = innerTokens,
-                                row = row,
-                                position = i, // posición del '('
-                                closePosition = p.endParenthesis, // índice del ')' en 'line'
-                            ),
-                        )
-
-                        // Saltar a justo después del ')'
-                        i = p.endParenthesis + 1
-                    }
-                }
-
-                c == ')' -> {
-                    // Manejo de error: paréntesis mal puesto
-                    throw NoMatchingParenthesisException(
-                        "Unmatched closing parenthesis at row $row, position $i",
-                    )
-                    i++
-                }
-
+                c.isWhitespace() -> i++
                 else -> {
-                    // Detectar variables (identificadores)
-                    val start = i
-                    while (i < length && line[i].isLetterOrDigit()) {
-                        i++
+                    var matched = false
+                    for (syntax in syntaxRules) {
+                        val res = syntax.match(text, i, row)
+                        if (res != null) {
+                            throw res
+                        }
                     }
-                    val text = line.substring(start, i)
-                    if (text.isNotBlank()) {
-                        listOfTokens.add(VariableToken(text, row, start))
+                    for (rule in tokenRules) {
+                        val res = rule.match(text, i, row)
+                        if (res != null) {
+                            res.token?.let { tokens.add(it) }
+                            i = res.nextIndex
+                            row += res.rowDelta
+                            matched = true
+                            break
+                        }
+                    }
+                    if (!matched) {
+                        throw UnknownExpressionException(
+                            "Unknown expression at row $row, column $i: '${text.substring(i)}'",
+                        )
                     }
                 }
             }
         }
-    }
-
-    private fun consumeStringToken(
-        line: String,
-        row: Int,
-        i: Int,
-    ): Int? {
-        val match = stringRegex.find(line, i)?.takeIf { it.range.first == i } ?: return null
-        val content = match.groupValues[1]
-        listOfTokens.add(StringLiteralToken(content, row, i))
-        return match.range.last + 1
-    }
-
-    private fun consumeNumberToken(
-        line: String,
-        row: Int,
-        i: Int,
-    ): Int? {
-        val match = numberRegex.find(line, i)?.takeIf { it.range.first == i } ?: return null
-        val content = match.value
-        listOfTokens.add(NumberLiteralToken(content.toInt(), row, i))
-        return match.range.last + 1
-    }
-
-    private fun extractFirstParenthesisWithNesting(
-        s: String,
-        idx: Int,
-    ): ParenthesisData? {
-        var depth = 0
-        var start = -1
-        for (i in idx..<s.length) {
-            val ch = s[i]
-            if (ch == '(') {
-                if (depth == 0) start = i
-                depth++
-            } else if (ch == '\n') {
-                row++
-            } else if (ch == ')') {
-                depth--
-                if (depth == 0 && start != -1) {
-                    return ParenthesisData(
-                        parenthesisData = s.substring(start + 1, i),
-                        endParenthesis = i,
-                    )
-                }
-            }
-        }
-        throw NoMatchingParenthesisException(
-            "Unmatched closing parenthesis at row $row, position $idx",
-        )
     }
 }

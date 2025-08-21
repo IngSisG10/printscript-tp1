@@ -3,9 +3,9 @@ package parser
 import ast.DeclaratorNode
 import ast.VariableNode
 import ast.abs.AstInterface
+import enums.TypeEnum
 import exception.UnrecognizedLineException
 import token.OperationToken
-import token.Type
 import token.TypeToken
 import token.VariableDeclaratorToken
 import token.VariableToken
@@ -58,11 +58,11 @@ class Parser(
                 ),
             // TODO: parse all possible operations
             // this.parseOperation(line.subList(4, line.size)),
-            value = VariableNode(name = "todo", type = Type.ANY),
+            value = VariableNode(name = "todo", type = TypeEnum.ANY),
             parent = null,
         )
 
-    private fun findVariableType(name: String): Type {
+    private fun findVariableType(name: String): TypeEnum {
         for (ast in listOfAST) {
             if (ast is DeclaratorNode && ast.variableNode.name == name) {
                 return ast.variableNode.type

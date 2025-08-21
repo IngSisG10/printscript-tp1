@@ -8,10 +8,10 @@ import ast.MonoOpNode
 import ast.VariableNode
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
+import enums.OperationEnum
 import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
-import token.Operation
 
 class PrintScriptInterpreter : AstVisitor {
     private val environment = Environment()
@@ -35,10 +35,10 @@ class PrintScriptInterpreter : AstVisitor {
 
         currentValue =
             when (node.operator) {
-                Operation.SUM -> evaluateAddition(leftValue, rightValue)
-                Operation.MINUS -> evaluateSubtraction(leftValue, rightValue)
-                Operation.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
-                Operation.DIVIDE -> evaluateDivision(leftValue, rightValue)
+                OperationEnum.SUM -> evaluateAddition(leftValue, rightValue)
+                OperationEnum.MINUS -> evaluateSubtraction(leftValue, rightValue)
+                OperationEnum.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
+                OperationEnum.DIVIDE -> evaluateDivision(leftValue, rightValue)
                 else -> throw InterpreterException("Unknown operator: ${node.operator}")
             }
     }

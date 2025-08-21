@@ -2,11 +2,11 @@ package ast
 
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
-import token.Operation
+import enums.OperationEnum
 
 class BinaryOpNode(
     override val parent: AstInterface?,
-    val operator: Operation,
+    val operator: OperationEnum,
     left: AstInterface,
     right: AstInterface,
 ) : AstInterface {
