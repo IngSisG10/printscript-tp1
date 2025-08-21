@@ -1,0 +1,57 @@
+package lexer.rules
+
+import lexer.Lexer
+import token.ParenthesisData
+import token.ParenthesisToken
+import token.abs.TokenInterface
+
+class ParenthesisRule : TokenRule {
+    override fun match(
+        line: String,
+        index: Int,
+        row: Int,
+    ): TokenRule.MatchResult? {
+        if (line[index] != '(') return null
+        val data = extractFirstParenthesisWithNesting(line, index, row) ?: return null
+        val innerTokens: List<TokenInterface> = Lexer(data.parenthesisData).lex()
+        val tok =
+            ParenthesisToken(
+                value = innerTokens,
+                row = row,
+                position = index,
+                closePosition = data.endParenthesis,
+            )
+        return TokenRule.MatchResult(tok, data.endParenthesis + 1, rowDelta = data.rowDelta)
+    }
+
+    private fun extractFirstParenthesisWithNesting(
+        s: String,
+        idx: Int,
+        startRow: Int,
+    ): ParenthesisData? {
+        var depth = 0
+        var start = -1
+        var row = startRow
+        for (i in idx until s.length) {
+            val ch = s[i]
+            when (ch) {
+                '(' -> {
+                    if (depth == 0) start = i
+                    depth++
+                }
+                '\n' -> row++
+                ')' -> {
+                    depth--
+                    if (depth == 0 && start != -1) {
+                        return ParenthesisData(
+                            parenthesisData = s.substring(start + 1, i),
+                            endParenthesis = i,
+                            rowDelta = row - startRow,
+                        )
+                    }
+                }
+            }
+        }
+        return null
+    }
+}

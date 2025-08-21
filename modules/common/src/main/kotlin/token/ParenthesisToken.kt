@@ -14,4 +14,5 @@ class ParenthesisToken(
 data class ParenthesisData(
     val parenthesisData: String,
     val endParenthesis: Int,
+    val rowDelta: Int = 0,
 )
