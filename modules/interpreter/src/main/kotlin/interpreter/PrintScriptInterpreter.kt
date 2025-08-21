@@ -1,13 +1,13 @@
 package interpreter
 
-import ast.abs.AstInterface
-import ast.abs.AstVisitor
 import ast.BinaryOpNode
 import ast.DeclaratorNode
 import ast.IdentifierNode
 import ast.LiteralNode
 import ast.MonoOpNode
 import ast.VariableNode
+import ast.abs.AstInterface
+import ast.abs.AstVisitor
 import enums.OperationEnum
 import exception.DivisionByZeroException
 import exception.InterpreterException
