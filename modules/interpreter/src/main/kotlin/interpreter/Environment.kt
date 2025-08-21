@@ -1,13 +1,13 @@
 package interpreter
 
+import enums.TypeEnum
 import exception.InterpreterException
 import exception.TypeMismatchException
 import exception.UndefinedVariableException
 import exception.UninitializedVariableException
-import token.Type
 
 data class Variable(
-    val type: Type,
+    val type: TypeEnum,
     var value: Value? = null,
 )
 
@@ -33,7 +33,7 @@ class Environment {
 
     fun declareVariable(
         name: String,
-        type: Type,
+        type: TypeEnum,
         value: Value? = null,
     ) {
         if (variables.containsKey(name)) {
@@ -49,9 +49,9 @@ class Environment {
         val variable = variables[name] ?: throw UndefinedVariableException(name)
 
         when {
-            variable.type == Type.NUMBER && value !is NumberValue ->
+            variable.type == TypeEnum.NUMBER && value !is NumberValue ->
                 throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
-            variable.type == Type.STRING && value !is StringValue ->
+            variable.type == TypeEnum.STRING && value !is StringValue ->
                 throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
         }
 
