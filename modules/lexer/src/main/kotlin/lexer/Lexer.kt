@@ -1,13 +1,13 @@
 package lexer
 
 import exception.UnknownExpressionException
+import lexer.syntax.rules.NoMatchingParenthesisRule
 import lexer.token.rules.IdentifierRule
 import lexer.token.rules.KeywordRule
 import lexer.token.rules.NumberLiteralRule
 import lexer.token.rules.ParenthesisRule
 import lexer.token.rules.SingleCharRule
 import lexer.token.rules.StringLiteralRule
-import lexer.syntax.rules.NoMatchingParenthesisRule
 import token.abs.TokenInterface
 
 class Lexer(
