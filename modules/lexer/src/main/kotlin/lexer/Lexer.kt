@@ -48,6 +48,12 @@ class Lexer(
                 c.isWhitespace() -> i++
                 else -> {
                     var matched = false
+                    for (syntax in syntaxRules) {
+                        val res = syntax.match(text, i, row)
+                        if (res != null) {
+                            throw res
+                        }
+                    }
                     for (rule in tokenRules) {
                         val res = rule.match(text, i, row)
                         if (res != null) {
@@ -59,12 +65,6 @@ class Lexer(
                         }
                     }
                     if (!matched) {
-                        for (syntax in syntaxRules) {
-                            val res = syntax.match(text, i, row)
-                            if (res != null) {
-                                throw res
-                            }
-                        }
                         throw UnknownExpressionException(
                             "Unknown expression at row $row, column $i: '${text.substring(i)}'",
                         )
