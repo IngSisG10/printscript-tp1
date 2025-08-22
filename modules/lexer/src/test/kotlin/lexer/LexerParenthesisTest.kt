@@ -7,7 +7,6 @@ import token.ParenthesisToken
 import token.VariableToken
 
 class LexerParenthesisTest {
-
     @Test
     fun unmatchedOpeningParenthesisThrows() {
         assertThrows(NoMatchingParenthesisException::class.java) {
@@ -27,7 +26,7 @@ class LexerParenthesisTest {
         val tokens = Lexer("(something)").lex()
         assert(tokens.isNotEmpty()) { "Expected tokens to be generated for matched parentheses" }
         assert(tokens.any { it is ParenthesisToken }) { "Expected Parenthesis Token" }
-        assert( (tokens[0] as ParenthesisToken).value.any { it is VariableToken } ) { "Expected Variable Token Inside Parenthesis Token" }
+        assert((tokens[0] as ParenthesisToken).value.any { it is VariableToken }) { "Expected Variable Token Inside Parenthesis Token" }
     }
 
     @Test
@@ -46,5 +45,4 @@ class LexerParenthesisTest {
             assert(innerParenthesis.value.any { it is VariableToken }) { "Expected Variable Token Inside Inner Parenthesis Token" }
         }
     }
-
 }
