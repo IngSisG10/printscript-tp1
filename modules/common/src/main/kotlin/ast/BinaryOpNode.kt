@@ -6,7 +6,7 @@ import token.Operation
 class BinaryOpNode(
     override val parent: AstInterface?,
     val operator: Operation,
-    left: AstInterface,
+    left: AstInterface, // todo: a Interface intermedia (composite pattern)
     right: AstInterface
 ) : AstInterface {
 
