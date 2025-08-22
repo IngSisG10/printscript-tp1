@@ -6,7 +6,12 @@ import ast.*
 import exception.UnrecognizedLineException
 import token.*
 import token.abs.TokenInterface
+import java.beans.Expression
 import java.util.*
+
+// Construccion de nodos
+// Analisis Sintactico
+// Analisis Semantico
 
 class Parser(private val tokens: List<TokenInterface>) {
 
@@ -15,25 +20,31 @@ class Parser(private val tokens: List<TokenInterface>) {
     public fun parse(): List<AstInterface> {
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens);
+
+        // Syntactic Analysis
         for (line in listOfTokensByLine) {
             listOfAST.add(this.parseLine(line));
 
         }
+
+        // Semantic Analysis
+
         // TODO: add semantic analysis here
         return listOfAST
     }
 
+    // Syntactic Analysis
     private fun parseLine(line: List<TokenInterface>) : AstInterface {
-        val token = line[0]
+        val token = line[0] // let or a -> VariableDeclaratorToken or VariableToken
         return when (token) {
 
             is VariableDeclaratorToken -> {
                 this.createDeclaratorAstNode(line)
             }
 
-            is VariableToken  -> {
-                if (line[1] is OperationToken) {
-                    this.createAsignatorAstNode(line)
+            is VariableToken  -> { // a = 5
+                if (line[1] is OperationToken) { // =
+                    this.createAssignmentAstNode(line)
                 } else throw UnrecognizedLineException()
             }
 
@@ -41,19 +52,22 @@ class Parser(private val tokens: List<TokenInterface>) {
         }
     }
 
-    private fun createAsignatorAstNode(line: List<TokenInterface>): Nothing {
-        TODO("Not yet implemented")
+    private fun createAssignmentAstNode(tokenList: List<TokenInterface>): AstInterface {
+        return AssignmentNode(
+            operator = Operation.EQUAL,
+            left = IdentifierNode(tokenList[0].name),
+            right = parseExpression(tokenList), // BinaryOpNode, LiteralNode, etc
+        )
     }
 
-    private fun createDeclaratorAstNode(line: List<TokenInterface>): AstInterface {
+    private fun createDeclaratorAstNode(tokenList: List<TokenInterface>): AstInterface {
         return DeclaratorNode(
             variableNode = VariableNode(
-                name = (line[1] as VariableDeclaratorToken).name,
-                type = (line[3] as TypeToken).value
+                name = tokenList[1].value.toString(), // a
+                type = (tokenList[3] as TypeToken).value // Number
             ),
             //TODO: parse all possible operations
-            value = VariableNode(name = "todo", type = Type.ANY), //this.parseOperation(line.subList(4, line.size)),
-            parent = null
+            value = VariableNode(name = "todo", type = Type.ANY), //this.parseOperation(line.subList(4, line.size)), // VariableNode
         )
     }
 

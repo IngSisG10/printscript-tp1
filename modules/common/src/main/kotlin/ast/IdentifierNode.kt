@@ -3,11 +3,8 @@ package ast
 import ast.abs.*
 
 data class IdentifierNode(
-    val name: String,
-    override val parent: AstInterface? = null
+    val name: String
 ) : AstInterface {
-    override val children: List<AstInterface> = emptyList()
-
     override fun accept(visitor: AstVisitor) {
         visitor.visitIdentifier(this)
     }
