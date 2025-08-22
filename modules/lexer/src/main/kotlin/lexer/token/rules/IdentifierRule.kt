@@ -4,9 +4,8 @@ import lexer.syntax.SyntaxRule
 import lexer.token.TokenRule
 import token.VariableToken
 
-
 class IdentifierRule(
-    private val rules : List<SyntaxRule> = emptyList()
+    private val rules: List<SyntaxRule> = emptyList(),
 ) : TokenRule {
     override fun match(
         line: String,
