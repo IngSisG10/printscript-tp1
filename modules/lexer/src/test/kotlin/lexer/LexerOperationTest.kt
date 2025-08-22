@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import token.OperationToken
 
 class LexerOperationTest {
-
     private fun lexOp(op: String): OperationToken {
         val tokens = Lexer(" $op ").lex()
         assertEquals(1, tokens.size, "Expected 1 token for '$op'")
