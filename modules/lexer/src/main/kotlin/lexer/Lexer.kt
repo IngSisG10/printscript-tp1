@@ -1,7 +1,9 @@
 package lexer
 
 import exception.UnknownExpressionException
+import lexer.syntax.SyntaxRule
 import lexer.syntax.rules.NoMatchingParenthesisRule
+import lexer.token.TokenRule
 import lexer.token.rules.IdentifierRule
 import lexer.token.rules.KeywordRule
 import lexer.token.rules.NumberLiteralRule
@@ -12,11 +14,7 @@ import token.abs.TokenInterface
 
 class Lexer(
     private val code: String,
-) {
-    private val tokens = mutableListOf<TokenInterface>()
-    private var row = 0
-
-    private val tokenRules =
+    private val tokenRules: List<TokenRule> =
         listOf(
             StringLiteralRule(),
             NumberLiteralRule(),
@@ -24,12 +22,14 @@ class Lexer(
             ParenthesisRule(),
             SingleCharRule(),
             IdentifierRule(),
-        )
-
-    private val syntaxRules =
+        ),
+    private val syntaxRules: List<SyntaxRule> =
         listOf(
             NoMatchingParenthesisRule(),
-        )
+        ),
+) {
+    private val tokens = mutableListOf<TokenInterface>()
+    private var row = 0
 
     fun lex(): List<TokenInterface> {
         tokenize(code)
