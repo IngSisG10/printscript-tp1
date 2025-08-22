@@ -13,9 +13,9 @@ class Parser(private val tokens: List<TokenInterface>) {
 
     public fun parse(): List<AstInterface> {
         // separate between ";"
-        val listOfTokensByLine = splitTokensIntoLines(this.tokens);
+        val listOfTokensByLine = splitTokensIntoLines(this.tokens)
         for (line in listOfTokensByLine) {
-            listOfAST.add(this.parseLine(line));
+            listOfAST.add(this.parseLine(line))
 
         }
         // TODO: add semantic analysis here
