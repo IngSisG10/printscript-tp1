@@ -11,7 +11,7 @@ class NoMatchingQuotationMarksRule : SyntaxRule {
     ): Exception? {
         val singleQuotes = line.count { it == '\'' }
         val doubleQuotes = line.count { it == '\"' }
-        if (singleQuotes % 2 != 0 && doubleQuotes % 2 != 0) {
+        if (singleQuotes % 2 != 0 || doubleQuotes % 2 != 0) {
             return NoMatchingQuotationMarksException("No matching quotation marks found at row $row, index $index")
         }
         return null
