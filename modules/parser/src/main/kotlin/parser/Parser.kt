@@ -6,7 +6,6 @@ import ast.*
 import exception.UnrecognizedLineException
 import token.*
 import token.abs.TokenInterface
-import java.util.*
 
 class Parser(private val tokens: List<TokenInterface>) {
 
@@ -23,38 +22,85 @@ class Parser(private val tokens: List<TokenInterface>) {
         return listOfAST
     }
 
-    private fun parseLine(line: List<TokenInterface>) : AstInterface {
+    private fun parseLine(line: List<TokenInterface>): AstInterface {
         val token = line[0]
         return when (token) {
 
-            is VariableDeclaratorToken -> {
+            is VariableDeclaratorToken -> { // line[0] == "let"
                 this.createDeclaratorAstNode(line)
             }
 
-            is VariableToken  -> {
-                if (line[1] is OperationToken) {
-                    this.createAsignatorAstNode(line)
-                } else throw UnrecognizedLineException()
+            is VariableToken -> {
+//                if (line[1] is OperationToken) { // line[0] == "variable and line[1] == "=" or other operation.
+                    this.createAssignationAstNode(line)
+//                } else throw UnrecognizedLineException()
             }
 
             else -> throw UnrecognizedLineException()
         }
     }
 
-    private fun createAsignatorAstNode(line: List<TokenInterface>): Nothing {
-        TODO("Not yet implemented")
+    private fun createAssignationAstNode(line: List<TokenInterface>): AstInterface {
+
+        validateAssignationStructure(line)
+
+        val variableName = (line[0] as VariableToken).value
+        val variableType = findVariableType(variableName)
+
+        return VariableNode(
+            name = variableName,
+            type = variableType,
+            parent = null // parent is null for now
+        )
     }
 
     private fun createDeclaratorAstNode(line: List<TokenInterface>): AstInterface {
+
+        validateDeclarationStructure(line)
+
+        val variableName = (line[1] as VariableDeclaratorToken).value
+        val variableType = (line[3] as TypeToken).value
+        val valueTokensList = line.subList(5, line.size)
+
+
         return DeclaratorNode(
             variableNode = VariableNode(
-                name = (line[1] as VariableDeclaratorToken).name,
-                type = (line[3] as TypeToken).value
+                name = variableName, // todo modificar y comprobar.
+                type = variableType
             ),
             //TODO: parse all possible operations
-            value = VariableNode(name = "todo", type = Type.ANY), //this.parseOperation(line.subList(4, line.size)),
+            value = parseExpression(valueTokensList), //this.parseOperation(line.subList(4, line.size)),
+            // valen: no me cierra, tengo que revisar por el momento.
             parent = null
         )
+    }
+
+    private fun validateAssignationStructure(line: List<TokenInterface>){
+
+        if(line.size < 3){
+            throw UnrecognizedLineException("Invalid assignment structure")
+        }
+        if(line[1] !is OperationToken && (line[1] as OperationToken).value != Operation.EQUAL){
+            throw UnrecognizedLineException("Expected assignment operator, got: ${line[1].name}")
+        }
+    }
+
+
+    private fun validateDeclarationStructure(line: List<TokenInterface>){
+
+        if (line.size < 6 ){
+            throw UnrecognizedLineException("Invalid declaration structure")
+        }
+
+        if(line[1] !is VariableToken){
+            throw UnrecognizedLineException("Expected variable name, got: ${line[1].name}")
+        } else if (line[2] !is TypeDeclaratorToken){
+            throw UnrecognizedLineException("Expected type declarator, got: ${line[2].name}")
+        } else if (line[3] !is TypeToken){
+            throw UnrecognizedLineException("Expected type, got: ${line[3].name}")
+        } else if (line[4] !is OperationToken || (line[4] as OperationToken).value != Operation.EQUAL){
+            throw UnrecognizedLineException("Expected assignment operator '=', got: ${line[4].name}")
+        }
     }
 
     private fun findVariableType(name: String): Type {
@@ -65,7 +111,6 @@ class Parser(private val tokens: List<TokenInterface>) {
         }
         throw UnrecognizedLineException("Variable '$name' not found")
     }
-
 
     private fun splitTokensIntoLines(tokens: List<TokenInterface>): List<List<TokenInterface>> {
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
@@ -84,5 +129,104 @@ class Parser(private val tokens: List<TokenInterface>) {
             listOfTokensByLine.add(currentList)
         }
         return listOfTokensByLine
+    }
+
+    private fun parseExpression(line: List<TokenInterface>): AstInterface { // Bien inicializado? Tiene que devolver algo ?
+        if (line.isEmpty()) {
+            throw UnrecognizedLineException("Empty expression")
+        }
+        validateExpression(line)
+        return parseAddition(line) // TODO: implement other operations
+    }
+
+    private fun validateExpression(line: List<TokenInterface>) {
+        if (line.isEmpty()) {
+            throw UnrecognizedLineException("Empty expression")
+        }
+
+        if (line[0] is OperationToken){ // Verificar. //Que el primer token no sea una operacion.
+            throw UnrecognizedLineException("Expression cannot start with an operation: ${line[0].name}")
+        }
+
+        if (tokens.last() is OperationToken){ // Que el ultimo token no sea una operacion.
+            throw UnrecognizedLineException("Expression cannot end with an operation: ${tokens.last().name}")
+        }
+
+        for( i in line.size downTo 1) { // reviso que no haya dos operaciones seguidas.
+            val token = line[i]
+            if (token is OperationToken && line[i-1] is OperationToken){
+                throw UnrecognizedLineException("Two consecutive operations found: ${line[i-1].name} and ${line[i].name}")
+            }
+        }
+
+        for( token in tokens){ // No puedo tener un igual en una expresion.
+            if (token is OperationToken && token.value == Operation.EQUAL){
+                throw UnrecognizedLineException("Expression cannot contain an equal operation: ${token.name}")
+            }
+        }
+    }
+
+
+
+
+    private fun parseAddition(line: List<TokenInterface>): AstInterface {
+        for (i in line.size - 1 downTo 0) {
+            val token = line[i]
+            if (token is OperationToken && (token.value == Operation.SUM || token.value == Operation.MINUS)){
+                val left = parseAddition(line.subList(0, i))
+                val right = parseMultiplication(line.subList(i + 1, line.size))
+                return BinaryOpNode(
+                    parent = null, // parent is null for now
+                    operator = token.value as Operation,
+                    left = left,
+                    right = right
+                )
+            }
+        }
+
+        return parseMultiplication(line) // If no addition or subtraction found, parse multiplication
+    }
+
+    private fun parseMultiplication(line: List<TokenInterface>): AstInterface {
+        if (line.isEmpty()) { throw UnrecognizedLineException("Empty multiplication expression") }
+
+        for (i in line.size - 1 downTo 0){
+            val token = line[i]
+            if ( token is OperationToken && (token.value == Operation.MULTIPLY || token.value == Operation.DIVIDE)){
+                val left = parseMultiplication(line.subList(0,i))
+                val right = parsePrimary(line.subList(i+1, line.size))
+                return BinaryOpNode(
+                    parent = null, // parent is null for now
+                    operator = token.value as Operation,
+                    left = left,
+                    right = right
+                )
+            }
+        }
+        return parsePrimary(line)
+    }
+
+    private fun parsePrimary(line: List<TokenInterface>): AstInterface {
+        if (line.isEmpty()) { throw UnrecognizedLineException("Empty primary expression") }
+        val token = line[0]
+        if (token is VariableToken){
+            return VariableNode(
+                name = token.value,
+                type = findVariableType(token.value), // Assuming the variable type is known
+                parent = null // parent is null for now
+            )
+        } else if (token is NumberLiteralToken) {
+            return LiteralNode(
+                value = token.value,
+                type = Type.NUMBER, // Assuming the type is number for literals
+                parent = null // parent is null for now
+            )
+        } else if (token is StringLiteralToken) {
+            return LiteralNode(
+                value = token.value,
+                type = findVariableType(token.value),)
+        } else {
+            throw UnrecognizedLineException("Unrecognized primary expression: ${token.name}")
+        }
     }
 }
