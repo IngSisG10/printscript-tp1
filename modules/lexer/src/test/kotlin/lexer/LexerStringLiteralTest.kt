@@ -10,7 +10,7 @@ class LexerStringLiteralTest {
     fun testStringLiteral() {
         val tokens = Lexer("\"hello world\"").lex()
         assert(tokens.isNotEmpty()) { "Expected tokens to be generated for string literal" }
-        assert(tokens.any { it is StringLiteralToken }) { "Expected String Literal Token"}
+        assert(tokens.any { it is StringLiteralToken }) { "Expected String Literal Token" }
     }
 
     @Test
