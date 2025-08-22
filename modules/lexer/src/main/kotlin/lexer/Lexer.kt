@@ -14,17 +14,19 @@ import token.abs.TokenInterface
 
 class Lexer(
     private val code: String,
-    private val tokenRules: List<TokenRule> = listOf(
-        StringLiteralRule(),
-        NumberLiteralRule(),
-        KeywordRule(),
-        ParenthesisRule(),
-        SingleCharRule(),
-        IdentifierRule(),
-    ),
-    private val syntaxRules: List<SyntaxRule> = listOf(
-        NoMatchingParenthesisRule(),
-    )
+    private val tokenRules: List<TokenRule> =
+        listOf(
+            StringLiteralRule(),
+            NumberLiteralRule(),
+            KeywordRule(),
+            ParenthesisRule(),
+            SingleCharRule(),
+            IdentifierRule(),
+        ),
+    private val syntaxRules: List<SyntaxRule> =
+        listOf(
+            NoMatchingParenthesisRule(),
+        ),
 ) {
     private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
