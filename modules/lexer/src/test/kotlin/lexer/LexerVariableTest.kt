@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class LexerVariableTest {
-    val camelCaseRules =
+    private val camelCaseRules =
         listOf(
             StringLiteralRule(),
             NumberLiteralRule(),
@@ -25,7 +25,7 @@ class LexerVariableTest {
             ),
         )
 
-    val snakeCaseRules =
+    private val snakeCaseRules =
         listOf(
             StringLiteralRule(),
             NumberLiteralRule(),
@@ -37,7 +37,7 @@ class LexerVariableTest {
             ),
         )
 
-    val pascalCaseRules =
+    private val pascalCaseRules =
         listOf(
             StringLiteralRule(),
             NumberLiteralRule(),
