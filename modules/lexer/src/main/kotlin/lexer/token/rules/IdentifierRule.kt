@@ -1,19 +1,18 @@
 package lexer.token.rules
 
-import lexer.syntax.rules.CamelCaseRule
+import lexer.syntax.SyntaxRule
 import lexer.token.TokenRule
 import token.VariableToken
 
-class IdentifierRule : TokenRule {
+
+class IdentifierRule(
+    private val rules : List<SyntaxRule> = emptyList()
+) : TokenRule {
     override fun match(
         line: String,
         index: Int,
         row: Int,
     ): TokenRule.MatchResult? {
-        val rules =
-            listOf(
-                CamelCaseRule(),
-            )
         if (index < 0 || index >= line.length) return null
 
         val ch = line[index]
