@@ -9,22 +9,18 @@ import token.Type
 // BinaryOpNode
 class NotMatchingOperation : SemanticRule {
 
-    override fun analyze(node: AstInterface): List<SemanticError> {
-        if (node !is BinaryOpNode) return emptyList()
+    override fun analyze(node: AstInterface): SemanticError? {
+        if (node !is BinaryOpNode) return null
 
-        val errors = mutableListOf<SemanticError>()
-
-        val leftType = TypeAnalysis.getExpressionType(node.left)
-        val rightType = TypeAnalysis.getExpressionType(node.right)
+        val leftType = TypeAnalysis.getExpressionType(node.left) // Number
+        val rightType = TypeAnalysis.getExpressionType(node.right) // String
 
         // todo: Type.Any == Type.Any
 
         if (leftType != rightType) {
-            errors.add(
-                SemanticError("Arithmetic operation requires NUMBER types, got $leftType ${node.operator} $rightType")
-            )
+            return SemanticError("Arithmetic operation requires NUMBER types, got $leftType ${node.operator} $rightType")
         }
 
-        return errors
+        return null
     }
 }

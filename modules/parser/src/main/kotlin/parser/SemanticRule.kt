@@ -4,5 +4,5 @@ import ast.abs.AstInterface
 
 interface SemanticRule {
     // fun canApply(node: AstInterface)
-    fun analyze(node: AstInterface): List<SemanticError>
+    fun analyze(node: AstInterface): SemanticError?
 }
