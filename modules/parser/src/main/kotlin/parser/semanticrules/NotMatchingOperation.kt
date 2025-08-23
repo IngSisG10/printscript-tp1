@@ -4,11 +4,9 @@ import ast.BinaryOpNode
 import ast.abs.AstInterface
 import parser.SemanticError
 import parser.SemanticRule
-import token.Type
 
 // BinaryOpNode
 class NotMatchingOperation : SemanticRule {
-
     override fun analyze(node: AstInterface): SemanticError? {
         if (node !is BinaryOpNode) return null
 

@@ -19,7 +19,9 @@ interface AstVisitor {
     fun visitVariable(node: VariableNode)
 
     fun visitMonoOp(monoOpNode: MonoOpNode)
+
     fun visitFunction(node: FunctionNode)
+
     fun visitAssignment(node: AssignmentNode)
 
     // Optional generic fallback

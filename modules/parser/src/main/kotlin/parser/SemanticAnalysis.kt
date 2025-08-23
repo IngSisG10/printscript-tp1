@@ -1,9 +1,16 @@
 package parser
 
-import ast.*
+import ast.AssignmentNode
+import ast.BinaryOpNode
+import ast.DeclaratorNode
+import ast.FunctionNode
+import ast.IdentifierNode
+import ast.LiteralNode
+import ast.MonoOpNode
+import ast.VariableNode
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
-import token.Type
+import enums.TypeEnum
 
 // todo: encaralo como una set de Rules!
 // interface SemanticRule
@@ -15,10 +22,9 @@ import token.Type
 
 //
 class SemanticAnalysis : AstVisitor {
-
     private val errors = mutableListOf<SemanticError>()
 
-    fun analyze(ast: List<AstInterface>): List<SemanticError>{
+    fun analyze(ast: List<AstInterface>): List<SemanticError> {
         errors.clear()
         accept(ast)
         return errors.toList()
@@ -26,14 +32,13 @@ class SemanticAnalysis : AstVisitor {
 
     private fun accept(ast: List<AstInterface>) {
         for (node in ast) {
-            node.accept(this);
+            node.accept(this)
         }
     }
 
     override fun visitLiteral(node: LiteralNode) {
         // Literals always are valid
     }
-
 
     // todo: Strategy para cada tipo de error posible
 
@@ -55,20 +60,21 @@ class SemanticAnalysis : AstVisitor {
     }
 
     override fun visitBinaryOp(node: BinaryOpNode) {
-        node.left.accept(this);
-        node.right.accept(this);
+        node.left.accept(this)
+        node.right.accept(this)
 
         val leftType = getExpressionType(node.left)
         val rightType = getExpressionType(node.right)
 
         // todo: Cases (string + string | number + number)
-        if (leftType != rightType){
-            errors.add(SemanticError(
-                "Arithmetic operation requires NUMBER types, got $leftType ${node.operator} $rightType"
-            ))
+        if (leftType != rightType) {
+            errors.add(
+                SemanticError(
+                    "Arithmetic operation requires NUMBER types, got $leftType ${node.operator} $rightType",
+                ),
+            )
         }
     }
-
 
     override fun visitFunction(node: FunctionNode) {
         TODO("Not yet implemented")
@@ -86,7 +92,7 @@ class SemanticAnalysis : AstVisitor {
         TODO("Not yet implemented")
     }
 
-    private fun getExpressionType(expression: AstInterface): Type {
+    private fun getExpressionType(expression: AstInterface): TypeEnum {
         TODO()
     }
 

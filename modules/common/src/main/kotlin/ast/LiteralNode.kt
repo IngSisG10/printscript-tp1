@@ -4,7 +4,7 @@ import ast.abs.AstInterface
 import ast.abs.AstVisitor
 import enums.TypeEnum
 
-class LiteralNode  (
+class LiteralNode(
     val value: Any?,
     val type: TypeEnum,
 ) : AstInterface {

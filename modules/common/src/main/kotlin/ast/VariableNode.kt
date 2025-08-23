@@ -5,9 +5,11 @@ import ast.abs.AstVisitor
 import enums.TypeEnum
 
 class VariableNode(
-    val name: String, // a
-    val type: TypeEnum = TypeEnum.ANY // Number
-): AstInterface {
+    // a
+    val name: String,
+    // Number
+    val type: TypeEnum = TypeEnum.ANY,
+) : AstInterface {
     override fun accept(visitor: AstVisitor) {
         visitor.visitVariable(this)
     }
