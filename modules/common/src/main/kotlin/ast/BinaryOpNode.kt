@@ -1,10 +1,11 @@
 package ast
 
-import ast.abs.*
-import token.Operation
+import ast.abs.AstInterface
+import ast.abs.AstVisitor
+import enums.OperationEnum
 
 class BinaryOpNode(
-    val operator: Operation,
+    val operator: OperationEnum,
     val left: AstInterface, // todo: a Interface intermedia (composite pattern)
     val right: AstInterface
 ) : AstInterface {

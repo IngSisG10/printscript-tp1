@@ -1,0 +1,10 @@
+#!/bin/sh
+echo "Executing pre-commit hook..."
+
+echo "running ktlintFormat"
+
+./gradlew ktlintFormat
+if [ $? -ne 0 ]; then
+  echo "ktlint format failed"
+  exit 1
+fi

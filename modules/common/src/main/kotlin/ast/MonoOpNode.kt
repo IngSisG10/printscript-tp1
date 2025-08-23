@@ -10,6 +10,4 @@ class MonoOpNode(
     override fun accept(visitor: AstVisitor) {
         visitor.visitMonoOp(this)
     }
-
-
 }

@@ -1,6 +1,7 @@
 package ast
 
-import ast.abs.*
+import ast.abs.AstInterface
+import ast.abs.AstVisitor
 
 data class IdentifierNode(
     val name: String
