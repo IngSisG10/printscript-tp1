@@ -1,7 +1,9 @@
 package ast.abs
 
+import ast.AssignmentNode
 import ast.BinaryOpNode
 import ast.DeclaratorNode
+import ast.FunctionNode
 import ast.IdentifierNode
 import ast.LiteralNode
 import ast.MonoOpNode
