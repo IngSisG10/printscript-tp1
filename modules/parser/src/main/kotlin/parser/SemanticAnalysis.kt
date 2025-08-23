@@ -5,7 +5,16 @@ import ast.abs.AstInterface
 import ast.abs.AstVisitor
 import token.Type
 
-class SemanticAnalysis : AstVisitor{
+// todo: encaralo como una set de Rules!
+// interface SemanticRule
+// todo: plantea para cada caso, este analisis de Type, para cada node
+// y analiza, si particularmente la operation que queres realizar, tiene sentido
+
+// interface SemanticRule
+// NotMatchingOperation -> String + Number
+
+//
+class SemanticAnalysis : AstVisitor {
 
     private val errors = mutableListOf<SemanticError>()
 

@@ -16,7 +16,6 @@ import java.util.*
 class Parser(private val tokens: List<TokenInterface>) {
 
     private val listOfAST = mutableListOf<AstInterface>()
-    private val semanticAnalyzer = SemanticAnalysis()
 
     fun parse(): List<AstInterface> {
         // separate between ";"
@@ -27,8 +26,11 @@ class Parser(private val tokens: List<TokenInterface>) {
             listOfAST.add(this.parseLine(line))
         }
 
+        // todo: ver como llamar aca al analisis semantico
         // Semantic Analysis
-        semanticAnalyzer.analyze(listOfAST)
+        for (node in listOfAST){
+            // todo; tener en cuenta la SemanticRules!
+        }
 
         return listOfAST
     }
@@ -53,6 +55,8 @@ class Parser(private val tokens: List<TokenInterface>) {
     }
 
     // Armado de nodos
+    // a = 5 + 5
+    // AssignmentNode(a, BinaryOpNode(BinaryOpNode(....)))
     private fun createAssignmentAstNode(tokenList: List<TokenInterface>): AstInterface {
         return AssignmentNode(
             operator = Operation.EQUAL,
