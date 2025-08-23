@@ -2,10 +2,10 @@ package ast
 
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
-import token.Operation
+import enums.OperationEnum
 
 class AssignmentNode(
-    val operator: Operation, // '='
+    val operator: OperationEnum, // '='
     val left: IdentifierNode, // a
     val right: AstInterface, // BinaryOpNode, LiteralNode, etc.
 ) : AstInterface {

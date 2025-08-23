@@ -4,49 +4,49 @@ import ast.AssignmentNode
 import ast.BinaryOpNode
 import ast.LiteralNode
 import ast.abs.AstInterface
-import token.Operation
-import token.Type
+import enums.OperationEnum
+import enums.TypeEnum
 
 object TypeAnalysis {
-    fun getExpressionType(node: AstInterface): Type =
+    fun getExpressionType(node: AstInterface): TypeEnum =
         when (node) {
             is LiteralNode -> getLiteralType(node)
             is BinaryOpNode -> getBinaryOpType(node)
             is AssignmentNode -> getAssignmentType(node)
-            else -> Type.ANY
+            else -> TypeEnum.ANY
         }
 
-    private fun getLiteralType(node: LiteralNode): Type =
+    private fun getLiteralType(node: LiteralNode): TypeEnum =
         when (node.type) {
-            Type.STRING -> Type.STRING
-            Type.NUMBER -> Type.NUMBER
-            else -> Type.ANY
+            TypeEnum.STRING -> TypeEnum.STRING
+            TypeEnum.NUMBER -> TypeEnum.NUMBER
+            else -> TypeEnum.ANY
         }
 
-    private fun getBinaryOpType(node: BinaryOpNode): Type {
+    private fun getBinaryOpType(node: BinaryOpNode): TypeEnum {
         val leftType = getExpressionType(node.left)
         val rightType = getExpressionType(node.right)
 
         return when (node.operator) {
-            Operation.SUM -> {
+            OperationEnum.SUM -> {
                 when {
-                    leftType == Type.NUMBER && rightType == Type.NUMBER -> Type.NUMBER
-                    leftType == Type.STRING && rightType == Type.STRING -> Type.STRING
-                    else -> Type.ANY // O podrías lanzar error aquí
+                    leftType == TypeEnum.NUMBER && rightType == TypeEnum.NUMBER -> TypeEnum.NUMBER
+                    leftType == TypeEnum.STRING && rightType == TypeEnum.STRING -> TypeEnum.STRING
+                    else -> TypeEnum.ANY // O podrías lanzar error aquí
                 }
             }
 
-            Operation.MINUS, Operation.MULTIPLY, Operation.DIVIDE -> {
-                if (leftType == Type.NUMBER && rightType == Type.NUMBER) {
-                    Type.NUMBER
+            OperationEnum.MINUS, OperationEnum.MULTIPLY, OperationEnum.DIVIDE -> {
+                if (leftType == TypeEnum.NUMBER && rightType == TypeEnum.NUMBER) {
+                    TypeEnum.NUMBER
                 } else {
-                    Type.ANY // O error para operaciones aritméticas inválidas
+                    TypeEnum.ANY // O error para operaciones aritméticas inválidas
                 }
             }
 
-            else -> Type.ANY
+            else -> TypeEnum.ANY
         }
     }
 
-    private fun getAssignmentType(node: AssignmentNode): Type = getExpressionType(node.right)
+    private fun getAssignmentType(node: AssignmentNode): TypeEnum = getExpressionType(node.right)
 }
