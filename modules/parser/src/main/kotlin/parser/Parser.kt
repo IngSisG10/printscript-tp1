@@ -62,8 +62,8 @@ class Parser(private val tokens: List<TokenInterface>) {
 
         return AssignmentNode(
             operator = Operation.EQUAL,
-            left = IdentifierNode(tokenList[0].name),
-            right = parseExpression(tokenList), // BinaryOpNode, LiteralNode, etc
+            left = IdentifierNode(line[0].name),
+            right = parseExpression(line), // BinaryOpNode, LiteralNode, etc
         )
     }
 
@@ -86,7 +86,6 @@ class Parser(private val tokens: List<TokenInterface>) {
             //TODO: parse all possible operations
             value = parseExpression(valueTokensList), //this.parseOperation(line.subList(4, line.size)),
             // valen: no me cierra, tengo que revisar por el momento.
-            parent = null
         )
     }
 
@@ -191,7 +190,6 @@ class Parser(private val tokens: List<TokenInterface>) {
                 val left = parseAddition(line.subList(0, i))
                 val right = parseMultiplication(line.subList(i + 1, line.size))
                 return BinaryOpNode(
-                    parent = null, // parent is null for now
                     operator = token.value as Operation,
                     left = left,
                     right = right
@@ -211,7 +209,6 @@ class Parser(private val tokens: List<TokenInterface>) {
                 val left = parseMultiplication(line.subList(0,i))
                 val right = parsePrimary(line.subList(i+1, line.size))
                 return BinaryOpNode(
-                    parent = null, // parent is null for now
                     operator = token.value as Operation,
                     left = left,
                     right = right
@@ -228,13 +225,11 @@ class Parser(private val tokens: List<TokenInterface>) {
             return VariableNode(
                 name = token.value,
                 type = findVariableType(token.value), // Assuming the variable type is known
-                parent = null // parent is null for now
             )
         } else if (token is NumberLiteralToken) {
             return LiteralNode(
                 value = token.value,
                 type = Type.NUMBER, // Assuming the type is number for literals
-                parent = null // parent is null for now
             )
         } else if (token is StringLiteralToken) {
             return LiteralNode(
