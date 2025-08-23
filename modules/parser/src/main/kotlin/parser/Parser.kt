@@ -3,6 +3,8 @@ package parser
 
 import ast.abs.*
 import ast.*
+import enums.OperationEnum
+import enums.TypeEnum
 import exception.UnrecognizedLineException
 import token.*
 import token.abs.TokenInterface
@@ -61,7 +63,7 @@ class Parser(private val tokens: List<TokenInterface>) {
         val variableType = findVariableType(variableName)
 
         return AssignmentNode(
-            operator = Operation.EQUAL,
+            operator = OperationEnum.EQUAL,
             left = IdentifierNode(line[0].name),
             right = parseExpression(line), // BinaryOpNode, LiteralNode, etc
         )
@@ -94,7 +96,7 @@ class Parser(private val tokens: List<TokenInterface>) {
         if(line.size < 3){
             throw UnrecognizedLineException("Invalid assignment structure")
         }
-        if(line[1] !is OperationToken && (line[1] as OperationToken).value != Operation.EQUAL){
+        if(line[1] !is OperationToken && (line[1] as OperationToken).value != OperationEnum.EQUAL){
             throw UnrecognizedLineException("Expected assignment operator, got: ${line[1].name}")
         }
     }
@@ -112,12 +114,12 @@ class Parser(private val tokens: List<TokenInterface>) {
             throw UnrecognizedLineException("Expected type declarator, got: ${line[2].name}")
         } else if (line[3] !is TypeToken){
             throw UnrecognizedLineException("Expected type, got: ${line[3].name}")
-        } else if (line[4] !is OperationToken || (line[4] as OperationToken).value != Operation.EQUAL){
+        } else if (line[4] !is OperationToken || (line[4] as OperationToken).value != OperationEnum.EQUAL){
             throw UnrecognizedLineException("Expected assignment operator '=', got: ${line[4].name}")
         }
     }
 
-    private fun findVariableType(name: String): Type {
+    private fun findVariableType(name: String): TypeEnum {
         for (ast in listOfAST) {
             if (ast is DeclaratorNode && ast.variableNode.name == name) {
                 return ast.variableNode.type
@@ -174,7 +176,7 @@ class Parser(private val tokens: List<TokenInterface>) {
         }
 
         for( token in tokens){ // No puedo tener un igual en una expresion.
-            if (token is OperationToken && token.value == Operation.EQUAL){
+            if (token is OperationToken && token.value == OperationEnum.EQUAL){
                 throw UnrecognizedLineException("Expression cannot contain an equal operation: ${token.name}")
             }
         }
@@ -186,11 +188,11 @@ class Parser(private val tokens: List<TokenInterface>) {
     private fun parseAddition(line: List<TokenInterface>): AstInterface {
         for (i in line.size - 1 downTo 0) {
             val token = line[i]
-            if (token is OperationToken && (token.value == Operation.SUM || token.value == Operation.MINUS)){
+            if (token is OperationToken && (token.value == OperationEnum.SUM || token.value == OperationEnum.MINUS)){
                 val left = parseAddition(line.subList(0, i))
                 val right = parseMultiplication(line.subList(i + 1, line.size))
                 return BinaryOpNode(
-                    operator = token.value as Operation,
+                    operator = token.value as OperationEnum,
                     left = left,
                     right = right
                 )
@@ -205,11 +207,11 @@ class Parser(private val tokens: List<TokenInterface>) {
 
         for (i in line.size - 1 downTo 0){
             val token = line[i]
-            if ( token is OperationToken && (token.value == Operation.MULTIPLY || token.value == Operation.DIVIDE)){
+            if ( token is OperationToken && (token.value == OperationEnum.MULTIPLY || token.value == OperationEnum.DIVIDE)){
                 val left = parseMultiplication(line.subList(0,i))
                 val right = parsePrimary(line.subList(i+1, line.size))
                 return BinaryOpNode(
-                    operator = token.value as Operation,
+                    operator = token.value as OperationEnum,
                     left = left,
                     right = right
                 )
@@ -229,7 +231,7 @@ class Parser(private val tokens: List<TokenInterface>) {
         } else if (token is NumberLiteralToken) {
             return LiteralNode(
                 value = token.value,
-                type = Type.NUMBER, // Assuming the type is number for literals
+                type = TypeEnum.NUMBER, // Assuming the type is number for literals
             )
         } else if (token is StringLiteralToken) {
             return LiteralNode(
