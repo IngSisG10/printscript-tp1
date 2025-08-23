@@ -6,5 +6,5 @@ fun main(args: Array<String>) {
     val tokens = lexer.lex()
     val parser = Parser(tokens)
     println(tokens)
-    parser.parse()
+    // parser.parse()
 }

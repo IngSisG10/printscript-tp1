@@ -1,40 +1,44 @@
 package parser
 
-
-import ast.abs.*
-import ast.*
+import ast.DeclaratorNode
+import ast.VariableNode
+import ast.abs.AstInterface
+import enums.TypeEnum
 import exception.UnrecognizedLineException
-import token.*
+import token.OperationToken
+import token.TypeToken
+import token.VariableDeclaratorToken
+import token.VariableToken
 import token.abs.TokenInterface
-import java.util.*
 
-class Parser(private val tokens: List<TokenInterface>) {
-
+class Parser(
+    private val tokens: List<TokenInterface>,
+) {
     private val listOfAST = mutableListOf<AstInterface>()
 
     public fun parse(): List<AstInterface> {
         // separate between ";"
-        val listOfTokensByLine = splitTokensIntoLines(this.tokens);
+        val listOfTokensByLine = splitTokensIntoLines(this.tokens)
         for (line in listOfTokensByLine) {
-            listOfAST.add(this.parseLine(line));
-
+            listOfAST.add(this.parseLine(line))
         }
         // TODO: add semantic analysis here
         return listOfAST
     }
 
-    private fun parseLine(line: List<TokenInterface>) : AstInterface {
+    private fun parseLine(line: List<TokenInterface>): AstInterface {
         val token = line[0]
         return when (token) {
-
             is VariableDeclaratorToken -> {
                 this.createDeclaratorAstNode(line)
             }
 
-            is VariableToken  -> {
+            is VariableToken -> {
                 if (line[1] is OperationToken) {
                     this.createAsignatorAstNode(line)
-                } else throw UnrecognizedLineException()
+                } else {
+                    throw UnrecognizedLineException()
+                }
             }
 
             else -> throw UnrecognizedLineException()
@@ -45,19 +49,20 @@ class Parser(private val tokens: List<TokenInterface>) {
         TODO("Not yet implemented")
     }
 
-    private fun createDeclaratorAstNode(line: List<TokenInterface>): AstInterface {
-        return DeclaratorNode(
-            variableNode = VariableNode(
-                name = (line[1] as VariableDeclaratorToken).name,
-                type = (line[3] as TypeToken).value
-            ),
-            //TODO: parse all possible operations
-            value = VariableNode(name = "todo", type = Type.ANY), //this.parseOperation(line.subList(4, line.size)),
-            parent = null
+    private fun createDeclaratorAstNode(line: List<TokenInterface>): AstInterface =
+        DeclaratorNode(
+            variableNode =
+                VariableNode(
+                    name = (line[1] as VariableDeclaratorToken).name,
+                    type = (line[3] as TypeToken).value,
+                ),
+            // TODO: parse all possible operations
+            // this.parseOperation(line.subList(4, line.size)),
+            value = VariableNode(name = "todo", type = TypeEnum.ANY),
+            parent = null,
         )
-    }
 
-    private fun findVariableType(name: String): Type {
+    private fun findVariableType(name: String): TypeEnum {
         for (ast in listOfAST) {
             if (ast is DeclaratorNode && ast.variableNode.name == name) {
                 return ast.variableNode.type
@@ -65,7 +70,6 @@ class Parser(private val tokens: List<TokenInterface>) {
         }
         throw UnrecognizedLineException("Variable '$name' not found")
     }
-
 
     private fun splitTokensIntoLines(tokens: List<TokenInterface>): List<List<TokenInterface>> {
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()

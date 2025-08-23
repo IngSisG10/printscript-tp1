@@ -2,14 +2,15 @@ package ast
 
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
-import token.Type
+import enums.TypeEnum
 
-class LiteralNode  (
+class LiteralNode(
     override val parent: AstInterface? = null,
     val value: Any?,
-    val type: Type,
+    val type: TypeEnum,
 ) : AstInterface {
     override val children = emptyList<AstInterface>()
+
     override fun accept(visitor: AstVisitor) {
         visitor.visitLiteral(this)
     }

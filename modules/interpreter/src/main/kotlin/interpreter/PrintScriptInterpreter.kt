@@ -1,12 +1,17 @@
 package interpreter
 
-import ast.*
+import ast.BinaryOpNode
+import ast.DeclaratorNode
+import ast.IdentifierNode
+import ast.LiteralNode
+import ast.MonoOpNode
+import ast.VariableNode
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
+import enums.OperationEnum
 import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
-import token.Operation
 
 class PrintScriptInterpreter : AstVisitor {
     private val environment = Environment()
@@ -28,21 +33,25 @@ class PrintScriptInterpreter : AstVisitor {
         node.right.accept(this)
         val rightValue = currentValue ?: throw InterpreterException("Right operand did not produce a value")
 
-        currentValue = when (node.operator) {
-            Operation.SUM -> evaluateAddition(leftValue, rightValue)
-            Operation.MINUS -> evaluateSubtraction(leftValue, rightValue)
-            Operation.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
-            Operation.DIVIDE -> evaluateDivision(leftValue, rightValue)
-            else -> throw InterpreterException("Unknown operator: ${node.operator}")
-        }
+        currentValue =
+            when (node.operator) {
+                OperationEnum.SUM -> evaluateAddition(leftValue, rightValue)
+                OperationEnum.MINUS -> evaluateSubtraction(leftValue, rightValue)
+                OperationEnum.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
+                OperationEnum.DIVIDE -> evaluateDivision(leftValue, rightValue)
+                else -> throw InterpreterException("Unknown operator: ${node.operator}")
+            }
     }
 
     override fun visitIdentifier(node: IdentifierNode) {
         currentValue = environment.getValue(node.name)
     }
 
-    private fun evaluateAddition(left: Value, right: Value): Value {
-        return when {
+    private fun evaluateAddition(
+        left: Value,
+        right: Value,
+    ): Value =
+        when {
             left is NumberValue && right is NumberValue ->
                 NumberValue(left.value + right.value)
 
@@ -57,23 +66,31 @@ class PrintScriptInterpreter : AstVisitor {
 
             else -> throw TypeMismatchException("Invalid operands for addition")
         }
-    }
 
-    private fun evaluateSubtraction(left: Value, right: Value): Value {
+    private fun evaluateSubtraction(
+        left: Value,
+        right: Value,
+    ): Value {
         if (left is NumberValue && right is NumberValue) {
             return NumberValue(left.value - right.value)
         }
         throw TypeMismatchException("Subtraction requires two numbers")
     }
 
-    private fun evaluateMultiplication(left: Value, right: Value): Value {
+    private fun evaluateMultiplication(
+        left: Value,
+        right: Value,
+    ): Value {
         if (left is NumberValue && right is NumberValue) {
             return NumberValue(left.value * right.value)
         }
         throw TypeMismatchException("Multiplication requires two numbers")
     }
 
-    private fun evaluateDivision(left: Value, right: Value): Value {
+    private fun evaluateDivision(
+        left: Value,
+        right: Value,
+    ): Value {
         if (left is NumberValue && right is NumberValue) {
             if (right.value == 0.0) {
                 throw DivisionByZeroException()
@@ -84,7 +101,10 @@ class PrintScriptInterpreter : AstVisitor {
     }
 
     override fun visitLiteral(node: LiteralNode) {}
+
     override fun visitDeclarator(node: DeclaratorNode) {}
+
     override fun visitVariable(node: VariableNode) {}
+
     override fun visitMonoOp(monoOpNode: MonoOpNode) {}
 }

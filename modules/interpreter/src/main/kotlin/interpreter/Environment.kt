@@ -1,23 +1,29 @@
 package interpreter
 
+import enums.TypeEnum
 import exception.InterpreterException
 import exception.TypeMismatchException
 import exception.UndefinedVariableException
 import exception.UninitializedVariableException
-import token.Type
 
 data class Variable(
-    val type: Type,
-    var value: Value? = null
+    val type: TypeEnum,
+    var value: Value? = null,
 )
 
 sealed class Value {
     abstract fun toStringValue(): String
 }
-data class NumberValue(val value: Double) : Value() {
+
+data class NumberValue(
+    val value: Double,
+) : Value() {
     override fun toStringValue(): String = value.toString()
 }
-data class StringValue(val value: String) : Value() {
+
+data class StringValue(
+    val value: String,
+) : Value() {
     override fun toStringValue(): String = value
 }
 
@@ -25,20 +31,27 @@ class Environment {
     // TODO: immutable map
     private val variables = mutableMapOf<String, Variable>()
 
-    fun declareVariable(name: String, type: Type, value: Value? = null) {
+    fun declareVariable(
+        name: String,
+        type: TypeEnum,
+        value: Value? = null,
+    ) {
         if (variables.containsKey(name)) {
             throw InterpreterException("Variable '$name' is already declared")
         }
         variables[name] = Variable(type, value)
     }
 
-    fun setVariable(name: String, value: Value) {
+    fun setVariable(
+        name: String,
+        value: Value,
+    ) {
         val variable = variables[name] ?: throw UndefinedVariableException(name)
 
         when {
-            variable.type == Type.NUMBER && value !is NumberValue ->
+            variable.type == TypeEnum.NUMBER && value !is NumberValue ->
                 throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
-            variable.type == Type.STRING && value !is StringValue ->
+            variable.type == TypeEnum.STRING && value !is StringValue ->
                 throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
         }
 
