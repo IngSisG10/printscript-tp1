@@ -10,6 +10,7 @@ import ast.abs.AstInterface
 import enums.OperationEnum
 import enums.TypeEnum
 import exception.UnrecognizedLineException
+import parser.semanticrules.NotMatchingOperation
 import token.FunctionToken
 import token.NumberLiteralToken
 import token.OperationToken
@@ -26,6 +27,10 @@ import token.abs.TokenInterface
 
 class Parser(
     private val tokens: List<TokenInterface>,
+    private val semanticRules: List<SemanticRule> =
+        listOf(
+            NotMatchingOperation(),
+        ),
 ) {
     private val listOfAST = mutableListOf<AstInterface>()
 
@@ -36,16 +41,16 @@ class Parser(
         println("List of Tokens $listOfTokensByLine")
 
         // Syntactic Analysis
-
         for (line in listOfTokensByLine) {
             println("Line: $line")
             listOfAST.add(this.parseLine(line))
         }
 
-        // todo: ver como llamar aca al analisis semantico
-        // Semantic Analysis
+        // Semantic Analysis - fixme
         for (node in listOfAST) {
-            // todo; tener en cuenta la SemanticRules!
+            for (rule in semanticRules) {
+                rule.analyze(node)
+            }
         }
 
         return listOfAST
@@ -53,7 +58,6 @@ class Parser(
 
     private fun parseLine(line: List<TokenInterface>): AstInterface {
         val token = line[0]
-        println("Token: $token")
 
         // todo: FunctionToken -> e.g = println("Hello World")
         return when (token) {
@@ -164,7 +168,7 @@ class Parser(
         return listOfTokensByLine
     }
 
-    private fun parseExpression(line: List<TokenInterface>): AstInterface { // Bien inicializado? Tiene que devolver algo ?
+    private fun parseExpression(line: List<TokenInterface>): AstInterface {
         if (line.isEmpty()) {
             throw UnrecognizedLineException("Empty expression")
         }

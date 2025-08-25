@@ -13,8 +13,6 @@ class NotMatchingOperation : SemanticRule {
         val leftType = TypeAnalysis.getExpressionType(node.left) // Number
         val rightType = TypeAnalysis.getExpressionType(node.right) // String
 
-        // todo: Type.Any == Type.Any
-
         if (leftType != rightType) {
             return SemanticError("Arithmetic operation requires NUMBER types, got $leftType ${node.operator} $rightType")
         }
