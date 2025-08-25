@@ -10,6 +10,7 @@ import ast.abs.AstInterface
 import enums.OperationEnum
 import enums.TypeEnum
 import exception.UnrecognizedLineException
+import token.FunctionToken
 import token.NumberLiteralToken
 import token.OperationToken
 import token.StringLiteralToken
@@ -32,8 +33,12 @@ class Parser(
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens)
 
+        println("List of Tokens $listOfTokensByLine")
+
         // Syntactic Analysis
+
         for (line in listOfTokensByLine) {
+            println("Line: $line")
             listOfAST.add(this.parseLine(line))
         }
 
@@ -48,6 +53,9 @@ class Parser(
 
     private fun parseLine(line: List<TokenInterface>): AstInterface {
         val token = line[0]
+        println("Token: $token")
+
+        // todo: FunctionToken -> e.g = println("Hello World")
         return when (token) {
             is VariableDeclaratorToken -> { // line[0] == "let"
                 this.createDeclaratorAstNode(line)
@@ -59,8 +67,16 @@ class Parser(
 //                } else throw UnrecognizedLineException()
             }
 
+            is FunctionToken -> {
+                this.createFunctionAstNode(line)
+            }
+
             else -> throw UnrecognizedLineException()
         }
+    }
+
+    private fun createFunctionAstNode(line: List<TokenInterface>): AstInterface {
+        TODO()
     }
 
     private fun createAssignationAstNode(line: List<TokenInterface>): AstInterface {
@@ -79,16 +95,14 @@ class Parser(
     private fun createDeclaratorAstNode(line: List<TokenInterface>): AstInterface {
         validateDeclarationStructure(line)
 
-//        name = tokenList[1].value.toString(), // a
-//        type = (tokenList[3] as TypeToken).value // Number
-        val variableName = (line[1] as VariableDeclaratorToken).value // fixme: No es un VariableDeclaratorToken
-        val variableType = (line[3] as TypeToken).value
+        val variableName = line[1].value.toString() // a
+        val variableType = (line[3] as TypeToken).value // Number
         val valueTokensList = line.subList(5, line.size)
 
         return DeclaratorNode(
             variableNode =
                 VariableNode(
-                    name = variableName, // todo modificar y comprobar.
+                    name = variableName,
                     type = variableType,
                 ),
             // TODO: parse all possible operations
@@ -158,6 +172,7 @@ class Parser(
         return parseAddition(line) // TODO: implement other operations
     }
 
+    // fixme
     private fun validateExpression(line: List<TokenInterface>) {
         if (line.isEmpty()) {
             throw UnrecognizedLineException("Empty expression")
@@ -167,18 +182,21 @@ class Parser(
             throw UnrecognizedLineException("Expression cannot start with an operation: ${line[0].name}")
         }
 
-        if (tokens.last() is OperationToken) { // Que el ultimo token no sea una operacion.
-            throw UnrecognizedLineException("Expression cannot end with an operation: ${tokens.last().name}")
+        // tokens.last()
+        if (line.last() is OperationToken) { // Que el ultimo token no sea una operacion.
+            throw UnrecognizedLineException("Expression cannot end with an operation: ${line.last().name}")
         }
 
-        for (i in line.size downTo 1) { // reviso que no haya dos operaciones seguidas.
+        for (i in 1 until line.size) { // reviso que no haya dos operaciones seguidas.
             val token = line[i]
             if (token is OperationToken && line[i - 1] is OperationToken) {
                 throw UnrecognizedLineException("Two consecutive operations found: ${line[i - 1].name} and ${line[i].name}")
             }
         }
 
-        for (token in tokens) { // No puedo tener un igual en una expresion.
+        // line -> because work with a sublist [let, a, :, Number, = , 5, + , 5, * , 5]
+
+        for (token in line) { // No puedo tener un igual en una expresion.
             if (token is OperationToken && token.value == OperationEnum.EQUAL) {
                 throw UnrecognizedLineException("Expression cannot contain an equal operation: ${token.name}")
             }
@@ -240,7 +258,7 @@ class Parser(
         } else if (token is StringLiteralToken) {
             return LiteralNode(
                 value = token.value,
-                type = findVariableType(token.value),
+                type = TypeEnum.STRING, // (maybe other option) -> findVariableType(token.value)
             )
         } else {
             throw UnrecognizedLineException("Unrecognized primary expression: ${token.name}")
