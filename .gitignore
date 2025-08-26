@@ -40,3 +40,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Carlitos ###
+.idea/material_theme_project_new.xml
