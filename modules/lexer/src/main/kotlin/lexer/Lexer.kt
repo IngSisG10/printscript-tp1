@@ -3,6 +3,7 @@ package lexer
 import exception.UnknownExpressionException
 import lexer.syntax.SyntaxRule
 import lexer.syntax.rules.NoMatchingParenthesisRule
+import lexer.syntax.rules.NoMatchingQuotationMarksRule
 import lexer.token.TokenRule
 import lexer.token.rules.IdentifierRule
 import lexer.token.rules.KeywordRule
@@ -26,6 +27,7 @@ class Lexer(
     private val syntaxRules: List<SyntaxRule> =
         listOf(
             NoMatchingParenthesisRule(),
+            NoMatchingQuotationMarksRule(),
         ),
 ) {
     private val tokens = mutableListOf<TokenInterface>()
