@@ -9,7 +9,6 @@ import token.VariableDeclaratorToken
 import token.VariableToken
 
 class LexerKeywordsTest {
-
     @Test
     fun testKeywordsInOneLine() {
         val tokens = Lexer("println let String Boolean Number Any").lex()
@@ -25,14 +24,15 @@ class LexerKeywordsTest {
 
     @Test
     fun testEachKeywordIndividually() {
-        val cases = listOf(
-            "println" to FunctionToken::class.java,
-            "let" to VariableDeclaratorToken::class.java,
-            "String" to TypeToken::class.java,
-            "Boolean" to TypeToken::class.java,
-            "Number" to TypeToken::class.java,
-            "Any" to TypeToken::class.java,
-        )
+        val cases =
+            listOf(
+                "println" to FunctionToken::class.java,
+                "let" to VariableDeclaratorToken::class.java,
+                "String" to TypeToken::class.java,
+                "Boolean" to TypeToken::class.java,
+                "Number" to TypeToken::class.java,
+                "Any" to TypeToken::class.java,
+            )
 
         for ((code, expectedType) in cases) {
             val tokens = Lexer(code).lex()
