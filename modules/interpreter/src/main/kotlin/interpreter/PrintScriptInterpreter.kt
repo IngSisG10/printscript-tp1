@@ -103,62 +103,67 @@ class PrintScriptInterpreter : AstVisitor {
 
     override fun visitLiteral(node: LiteralNode) {
         val literalValue = node.value
-        currentValue = when (node.type) {
-            TypeEnum.NUMBER -> {
-                val value = when (literalValue) {
-                    is Number -> literalValue.toDouble()
-                    is String -> literalValue.toDoubleOrNull()
-                        ?: throw InterpreterException("Invalid number literal: ${literalValue}")
-                    else -> throw InterpreterException("Invalid number literal: ${literalValue}")
+        currentValue =
+            when (node.type) {
+                TypeEnum.NUMBER -> {
+                    val value =
+                        when (literalValue) {
+                            is Number -> literalValue.toDouble()
+                            is String ->
+                                literalValue.toDoubleOrNull()
+                                    ?: throw InterpreterException("Invalid number literal: $literalValue")
+                            else -> throw InterpreterException("Invalid number literal: $literalValue")
+                        }
+                    NumberValue(value)
                 }
-                NumberValue(value)
-            }
-            TypeEnum.STRING -> {
-                StringValue(literalValue?.toString() ?: "")
-            }
-            TypeEnum.BOOLEAN -> {
-                throw InterpreterException("Boolean type not supported in PrintScript 1.0")
-            }
-            TypeEnum.ANY -> {
-                when (literalValue) {
-                    is Number -> NumberValue(literalValue.toDouble())
-                    is String -> StringValue(literalValue)
-                    else -> throw InterpreterException("Unsupported literal type: ${literalValue}")
+                TypeEnum.STRING -> {
+                    StringValue(literalValue?.toString() ?: "")
+                }
+                TypeEnum.BOOLEAN -> {
+                    throw InterpreterException("Boolean type not supported in PrintScript 1.0")
+                }
+                TypeEnum.ANY -> {
+                    when (literalValue) {
+                        is Number -> NumberValue(literalValue.toDouble())
+                        is String -> StringValue(literalValue)
+                        else -> throw InterpreterException("Unsupported literal type: $literalValue")
+                    }
                 }
             }
-        }
     }
 
     override fun visitDeclarator(node: DeclaratorNode) {
         val variable = node.variableNode
-        val initialValue = if (node.value != null) {
-            node.value.accept(this)
-            currentValue
-        } else {
-            null
-        }
+        val initialValue =
+            if (node.value != null) {
+                node.value.accept(this)
+                currentValue
+            } else {
+                null
+            }
 
         // Convert TypeEnum to Value type if initialized
-        val typedValue = if (initialValue != null) {
-            when (variable.type) {
-                TypeEnum.NUMBER -> {
-                    if (initialValue !is NumberValue) {
-                        throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to number variable")
+        val typedValue =
+            if (initialValue != null) {
+                when (variable.type) {
+                    TypeEnum.NUMBER -> {
+                        if (initialValue !is NumberValue) {
+                            throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to number variable")
+                        }
+                        initialValue
                     }
-                    initialValue
-                }
-                TypeEnum.STRING -> {
-                    if (initialValue !is StringValue) {
-                        throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to string variable")
+                    TypeEnum.STRING -> {
+                        if (initialValue !is StringValue) {
+                            throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to string variable")
+                        }
+                        initialValue
                     }
-                    initialValue
+                    TypeEnum.ANY -> initialValue
+                    else -> throw InterpreterException("Unsupported type: ${variable.type}")
                 }
-                TypeEnum.ANY -> initialValue
-                else -> throw InterpreterException("Unsupported type: ${variable.type}")
+            } else {
+                null
             }
-        } else {
-            null
-        }
 
         environment.declareVariable(variable.name, variable.type, typedValue)
     }
