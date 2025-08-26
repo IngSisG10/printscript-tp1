@@ -7,7 +7,6 @@ import token.NumberLiteralToken
 import token.OperationToken
 
 class LexerNumberTest {
-
     @Test
     fun testSingleNumber() {
         val tokens = Lexer("123").lex()
