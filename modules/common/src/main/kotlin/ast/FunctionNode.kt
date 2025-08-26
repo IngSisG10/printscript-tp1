@@ -8,7 +8,7 @@ import enums.FunctionEnum
 // todo: definirlo mejor
 class FunctionNode(
     val functionName: FunctionEnum, // println, sum, etc.
-    right: AstInterface,
+    val right: AstInterface,
 ) : AstInterface {
     override fun accept(visitor: AstVisitor) {
         visitor.visitFunction(this)

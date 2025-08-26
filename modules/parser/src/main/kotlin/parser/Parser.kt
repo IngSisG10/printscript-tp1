@@ -40,9 +40,8 @@ class Parser(
 
         println("List of Tokens $listOfTokensByLine")
 
-        // Syntactic Analysis
+        // Semantic Analysis
         for (line in listOfTokensByLine) {
-            println("Line: $line")
             listOfAST.add(this.parseLine(line))
         }
 
@@ -55,6 +54,13 @@ class Parser(
 
         return listOfAST
     }
+
+    // todo: a futuro -> Strategy
+    // interface ParseRule
+    // createAstNode(line: List<TokenInterface>)
+
+    // DeclaratorNodeRule
+    // createAstNode(line)
 
     private fun parseLine(line: List<TokenInterface>): AstInterface {
         val token = line[0]
@@ -176,7 +182,6 @@ class Parser(
         return parseAddition(line) // TODO: implement other operations
     }
 
-    // fixme
     private fun validateExpression(line: List<TokenInterface>) {
         if (line.isEmpty()) {
             throw UnrecognizedLineException("Empty expression")

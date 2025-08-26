@@ -7,13 +7,14 @@ import ast.abs.AstInterface
 import enums.OperationEnum
 import enums.TypeEnum
 
+// todo: DeclaratorNode -> getDeclaratorType(node)
 object TypeAnalysis {
     fun getExpressionType(node: AstInterface): TypeEnum =
         when (node) {
             is LiteralNode -> getLiteralType(node)
-            is BinaryOpNode -> getBinaryOpType(node)
+            is BinaryOpNode -> getBinaryOpType(node) // a = "5" + 5
             is AssignmentNode -> getAssignmentType(node)
-            else -> TypeEnum.ANY
+            else -> TypeEnum.ANY // Exception -> UnrecognizedNodeError("Unknown node")
         }
 
     private fun getLiteralType(node: LiteralNode): TypeEnum =
