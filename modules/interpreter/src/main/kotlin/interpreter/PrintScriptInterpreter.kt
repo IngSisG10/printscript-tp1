@@ -9,6 +9,7 @@ import ast.VariableNode
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
 import enums.OperationEnum
+import enums.TypeEnum
 import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
@@ -100,11 +101,73 @@ class PrintScriptInterpreter : AstVisitor {
         throw TypeMismatchException("Division requires two numbers")
     }
 
-    override fun visitLiteral(node: LiteralNode) {}
+    override fun visitLiteral(node: LiteralNode) {
+        val literalValue = node.value
+        currentValue = when (node.type) {
+            TypeEnum.NUMBER -> {
+                val value = when (literalValue) {
+                    is Number -> literalValue.toDouble()
+                    is String -> literalValue.toDoubleOrNull()
+                        ?: throw InterpreterException("Invalid number literal: ${literalValue}")
+                    else -> throw InterpreterException("Invalid number literal: ${literalValue}")
+                }
+                NumberValue(value)
+            }
+            TypeEnum.STRING -> {
+                StringValue(literalValue?.toString() ?: "")
+            }
+            TypeEnum.BOOLEAN -> {
+                throw InterpreterException("Boolean type not supported in PrintScript 1.0")
+            }
+            TypeEnum.ANY -> {
+                when (literalValue) {
+                    is Number -> NumberValue(literalValue.toDouble())
+                    is String -> StringValue(literalValue)
+                    else -> throw InterpreterException("Unsupported literal type: ${literalValue}")
+                }
+            }
+        }
+    }
 
-    override fun visitDeclarator(node: DeclaratorNode) {}
+    override fun visitDeclarator(node: DeclaratorNode) {
+        val variable = node.variableNode
+        val initialValue = if (node.value != null) {
+            node.value.accept(this)
+            currentValue
+        } else {
+            null
+        }
 
-    override fun visitVariable(node: VariableNode) {}
+        // Convert TypeEnum to Value type if initialized
+        val typedValue = if (initialValue != null) {
+            when (variable.type) {
+                TypeEnum.NUMBER -> {
+                    if (initialValue !is NumberValue) {
+                        throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to number variable")
+                    }
+                    initialValue
+                }
+                TypeEnum.STRING -> {
+                    if (initialValue !is StringValue) {
+                        throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to string variable")
+                    }
+                    initialValue
+                }
+                TypeEnum.ANY -> initialValue
+                else -> throw InterpreterException("Unsupported type: ${variable.type}")
+            }
+        } else {
+            null
+        }
 
-    override fun visitMonoOp(monoOpNode: MonoOpNode) {}
+        environment.declareVariable(variable.name, variable.type, typedValue)
+    }
+
+    override fun visitVariable(node: VariableNode) {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitMonoOp(node: MonoOpNode) {
+        node.inner.accept(this)
+    }
 }
