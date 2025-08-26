@@ -1,10 +1,11 @@
 #!/bin/sh
 echo "Executing pre-commit hook..."
 
-echo "running ktlintFormat"
+echo "running ktlintCheck"
 
-./gradlew ktlintFormat
+./gradlew ktlintCheck
 if [ $? -ne 0 ]; then
-  echo "ktlint format failed"
+  echo "ktlint check failed, running ktlintFormat"
+  ./gradlew ktlintFormat
   exit 1
 fi
