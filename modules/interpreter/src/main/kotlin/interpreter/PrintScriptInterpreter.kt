@@ -1,7 +1,9 @@
 package interpreter
 
+import ast.AssignmentNode
 import ast.BinaryOpNode
 import ast.DeclaratorNode
+import ast.FunctionNode
 import ast.IdentifierNode
 import ast.LiteralNode
 import ast.MonoOpNode
@@ -174,5 +176,13 @@ class PrintScriptInterpreter : AstVisitor {
 
     override fun visitMonoOp(node: MonoOpNode) {
         node.inner.accept(this)
+    }
+
+    override fun visitFunction(node: FunctionNode) {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitAssignment(node: AssignmentNode) {
+        TODO("Not yet implemented")
     }
 }
