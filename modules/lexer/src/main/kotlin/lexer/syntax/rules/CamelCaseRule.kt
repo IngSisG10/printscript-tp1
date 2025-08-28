@@ -9,7 +9,7 @@ class CamelCaseRule : SyntaxRule {
         index: Int,
         row: Int,
     ): Exception? {
-        if (line.matches(Regex("\\b[a-z]+(?:[A-Z][a-z0-9]*)+\\b"))) {
+        if (line.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
             return null
         }
         return InvalidCamelCaseException("Invalid camelCase identifier at row $row, index $index: $line")
