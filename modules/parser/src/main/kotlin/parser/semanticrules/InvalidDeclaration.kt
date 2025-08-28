@@ -15,7 +15,7 @@ class InvalidDeclaration : SemanticRule {
             val actualType = TypeAnalysis.getExpressionType(node.value)
             if (expectedType != TypeEnum.ANY && expectedType != actualType) {
                 return SemanticError(
-                    "Type mismatch: expected $expectedType, but got $actualType"
+                    "Type mismatch: expected $expectedType, but got $actualType",
                 )
             }
         }

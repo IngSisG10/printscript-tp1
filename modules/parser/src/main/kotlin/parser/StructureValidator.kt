@@ -1,4 +1,3 @@
 package parser
 
-interface StructureValidator {
-}
+interface StructureValidator

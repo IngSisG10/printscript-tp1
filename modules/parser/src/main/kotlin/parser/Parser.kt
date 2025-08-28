@@ -95,7 +95,6 @@ class Parser(
         }
     }
 
-
     private fun createFunctionAstNode(line: List<TokenInterface>): AstInterface {
         validateFunctionStructure(line)
         val variableName = (line[0] as FunctionToken).value
@@ -103,7 +102,7 @@ class Parser(
 
         return FunctionNode(
             functionName = variableName,
-            arguments = parseExpression(parenthesisToken.value) // Arguments parsing - ParenthesisToken.value
+            arguments = parseExpression(parenthesisToken.value), // Arguments parsing - ParenthesisToken.value
         )
     }
 
@@ -137,7 +136,6 @@ class Parser(
         )
     }
 
-
     // todo: a futuro, mejorar bien este tipo de validaciones con algun pattern
     // todo: Strategy Pattern
 
@@ -148,7 +146,7 @@ class Parser(
         if (line.size > 2) {
             throw UnrecognizedLineException("Invalid function structure")
         }
-        if (line[1] !is ParenthesisToken){
+        if (line[1] !is ParenthesisToken) {
             throw UnrecognizedLineException("Expected '(', got: ${line[1].name}")
         }
     }

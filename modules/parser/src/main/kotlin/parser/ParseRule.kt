@@ -1,4 +1,3 @@
 package parser
 
-interface ParseRule {
-}
+interface ParseRule
