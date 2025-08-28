@@ -6,6 +6,10 @@ import parser.SemanticError
 import parser.SemanticRule
 
 // BinaryOpNode
+// todo: sacar esta logica de aca y ver bien que tipo de analisis semantico
+// podemos tener en cuenta.
+// Podes sumar un string + number
+// Lo que hace es pasar el number a string y concatenar
 class NotMatchingOperation : SemanticRule {
     override fun analyze(node: AstInterface): SemanticError? {
         if (node !is BinaryOpNode) return null

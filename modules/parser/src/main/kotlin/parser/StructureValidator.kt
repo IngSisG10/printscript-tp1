@@ -1,0 +1,4 @@
+package parser
+
+interface StructureValidator {
+}

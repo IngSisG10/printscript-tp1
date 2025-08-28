@@ -3,6 +3,7 @@ package parser
 import ast.AssignmentNode
 import ast.BinaryOpNode
 import ast.DeclaratorNode
+import ast.FunctionNode
 import ast.IdentifierNode
 import ast.LiteralNode
 import ast.VariableNode
@@ -10,10 +11,11 @@ import ast.abs.AstInterface
 import enums.OperationEnum
 import enums.TypeEnum
 import exception.UnrecognizedLineException
-import parser.semanticrules.NotMatchingOperation
+import parser.semanticrules.InvalidDeclaration
 import token.FunctionToken
 import token.NumberLiteralToken
 import token.OperationToken
+import token.ParenthesisToken
 import token.StringLiteralToken
 import token.TypeDeclaratorToken
 import token.TypeToken
@@ -29,10 +31,12 @@ class Parser(
     private val tokens: List<TokenInterface>,
     private val semanticRules: List<SemanticRule> =
         listOf(
-            NotMatchingOperation(),
+            InvalidDeclaration(),
         ),
 ) {
     private val listOfAST = mutableListOf<AstInterface>()
+
+    private val semanticErrors = mutableListOf<SemanticError>()
 
     fun parse(): List<AstInterface> {
         // separate between ";"
@@ -45,13 +49,22 @@ class Parser(
             listOfAST.add(this.parseLine(line))
         }
 
-        // Semantic Analysis - fixme
+        // Semantic Analysis
         for (node in listOfAST) {
+            println("Node: $node")
             for (rule in semanticRules) {
-                rule.analyze(node)
+                val error = rule.analyze(node)
+                if (error != null) {
+                    semanticErrors.add(error)
+                }
             }
         }
 
+        if (semanticErrors.isNotEmpty()) {
+            println("Semantic errors:")
+            semanticErrors.forEach { println("  - ${it.message}") }
+            throw RuntimeException("Semantic analysis failed")
+        }
         return listOfAST
     }
 
@@ -65,16 +78,13 @@ class Parser(
     private fun parseLine(line: List<TokenInterface>): AstInterface {
         val token = line[0]
 
-        // todo: FunctionToken -> e.g = println("Hello World")
         return when (token) {
             is VariableDeclaratorToken -> { // line[0] == "let"
                 this.createDeclaratorAstNode(line)
             }
 
             is VariableToken -> {
-//                if (line[1] is OperationToken) { // line[0] == "variable and line[1] == "=" or other operation.
                 this.createAssignationAstNode(line)
-//                } else throw UnrecognizedLineException()
             }
 
             is FunctionToken -> {
@@ -85,8 +95,16 @@ class Parser(
         }
     }
 
+
     private fun createFunctionAstNode(line: List<TokenInterface>): AstInterface {
-        TODO()
+        validateFunctionStructure(line)
+        val variableName = (line[0] as FunctionToken).value
+        val parenthesisToken = line[1] as ParenthesisToken
+
+        return FunctionNode(
+            functionName = variableName,
+            arguments = parseExpression(parenthesisToken.value) // Arguments parsing - ParenthesisToken.value
+        )
     }
 
     private fun createAssignationAstNode(line: List<TokenInterface>): AstInterface {
@@ -115,10 +133,24 @@ class Parser(
                     name = variableName,
                     type = variableType,
                 ),
-            // TODO: parse all possible operations
-            value = parseExpression(valueTokensList), // this.parseOperation(line.subList(4, line.size)),
-            // valen: no me cierra, tengo que revisar por el momento.
+            value = parseExpression(valueTokensList),
         )
+    }
+
+
+    // todo: a futuro, mejorar bien este tipo de validaciones con algun pattern
+    // todo: Strategy Pattern
+
+    // println("hello world")
+    // line -> [FunctionToken, ParenthesisToken]
+    //              0                 1
+    private fun validateFunctionStructure(line: List<TokenInterface>) {
+        if (line.size > 2) {
+            throw UnrecognizedLineException("Invalid function structure")
+        }
+        if (line[1] !is ParenthesisToken){
+            throw UnrecognizedLineException("Expected '(', got: ${line[1].name}")
+        }
     }
 
     private fun validateAssignationStructure(line: List<TokenInterface>) {

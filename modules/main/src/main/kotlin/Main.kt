@@ -5,10 +5,13 @@ fun main(args: Array<String>) {
     // val lexer = Lexer("println(\"hello world\")")
     // val lexer = Lexer("let a: Number = 5;")
     // val lexer = Lexer("let a: Number = 5 + 5")
-    val lexer = Lexer("let a : Number = \"5\" + 5;")
+    val lexer = Lexer("let a : Number = \"string\";")
     val tokens = lexer.lex()
     val parser = Parser(tokens)
     println(tokens)
+//    for (token in tokens){
+//        println("Token: ${token.name}, Value: ${token.value}, Row: ${token.row}, Position: ${token.position}")
+//    }
     val ast = parser.parse() // todo: deberia tirar SemanticError, pero no lo hace.
     println("\nAST Nodes:")
     ast.forEachIndexed { index, node ->
