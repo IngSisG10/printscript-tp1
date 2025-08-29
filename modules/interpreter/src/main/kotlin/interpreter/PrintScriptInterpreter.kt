@@ -10,6 +10,7 @@ import ast.MonoOpNode
 import ast.VariableNode
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
+import enums.FunctionEnum
 import enums.OperationEnum
 import enums.TypeEnum
 import exception.DivisionByZeroException
@@ -191,9 +192,25 @@ class PrintScriptInterpreter : AstVisitor {
     }
 
     override fun visitFunction(node: FunctionNode) {
+        when (node.functionName) {
+            FunctionEnum.PRINTLN -> {
+                node.arguments.accept(this)
+                val value = currentValue ?: throw InterpreterException("println argument did not produce a value")
+                output.add(value.toStringValue())
+                currentValue = null
+            }
+        }
     }
 
     override fun visitAssignment(node: AssignmentNode) {
-        node.left.accept(this)
+        if (node.operator != OperationEnum.EQUAL) {
+            throw InterpreterException("Unsupported assignment operator: ${node.operator}")
+        }
+
+        node.right.accept(this)
+        val value = currentValue ?: throw InterpreterException("Right operand did not produce a value")
+
+        environment.setVariable(node.left.name, value)
+        currentValue = null
     }
 }
