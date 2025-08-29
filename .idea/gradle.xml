@@ -10,10 +10,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/modules/cli" />
             <option value="$PROJECT_DIR$/modules/common" />
             <option value="$PROJECT_DIR$/modules/interpreter" />
             <option value="$PROJECT_DIR$/modules/lexer" />
-            <option value="$PROJECT_DIR$/modules/main" />
             <option value="$PROJECT_DIR$/modules/parser" />
           </set>
         </option>
