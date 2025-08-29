@@ -10,11 +10,14 @@ import ast.MonoOpNode
 import ast.VariableNode
 import ast.abs.AstInterface
 import ast.abs.AstVisitor
+import enums.FunctionEnum
 import enums.OperationEnum
+import enums.TypeEnum
 import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
 
+// hacer un dispatcher para las funciones
 class PrintScriptInterpreter : AstVisitor {
     private val environment = Environment()
     private val output = mutableListOf<String>()
@@ -102,19 +105,112 @@ class PrintScriptInterpreter : AstVisitor {
         throw TypeMismatchException("Division requires two numbers")
     }
 
-    override fun visitLiteral(node: LiteralNode) {}
+    override fun visitLiteral(node: LiteralNode) {
+        val literalValue = node.value
+        currentValue =
+            when (node.type) {
+                TypeEnum.NUMBER -> {
+                    val value =
+                        when (literalValue) {
+                            is Number -> literalValue.toDouble()
+                            is String ->
+                                literalValue.toDoubleOrNull()
+                                    ?: throw InterpreterException("Invalid number literal: $literalValue")
 
-    override fun visitDeclarator(node: DeclaratorNode) {}
+                            else -> throw InterpreterException("Invalid number literal: $literalValue")
+                        }
+                    NumberValue(value)
+                }
 
-    override fun visitVariable(node: VariableNode) {}
+                TypeEnum.STRING -> {
+                    StringValue(literalValue?.toString() ?: "")
+                }
 
-    override fun visitMonoOp(monoOpNode: MonoOpNode) {}
+                TypeEnum.BOOLEAN -> {
+                    throw InterpreterException("Boolean type not supported in PrintScript 1.0")
+                }
+
+                TypeEnum.ANY -> {
+                    when (literalValue) {
+                        is Number -> NumberValue(literalValue.toDouble())
+                        is String -> StringValue(literalValue)
+                        else -> throw InterpreterException("Unsupported literal type: $literalValue")
+                    }
+                }
+            }
+    }
+
+    override fun visitDeclarator(node: DeclaratorNode) {
+        val variable = node.variableNode
+        val initialValue =
+            if (node.value != null) {
+                node.value.accept(this)
+                currentValue
+            } else {
+                null
+            }
+
+        val typedValue =
+            if (initialValue != null) {
+                validateValueForType(initialValue, variable.type)
+                initialValue
+            } else {
+                null
+            }
+
+        environment.declareVariable(variable.name, variable.type, typedValue)
+    }
+
+    private fun validateValueForType(
+        value: Value,
+        type: TypeEnum,
+    ) {
+        when (type) {
+            TypeEnum.NUMBER -> {
+                if (value !is NumberValue) {
+                    throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
+                }
+            }
+
+            TypeEnum.STRING -> {
+                if (value !is StringValue) {
+                    throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
+                }
+            }
+
+            TypeEnum.ANY -> {}
+            else -> throw InterpreterException("Unsupported type: $type")
+        }
+    }
+
+    override fun visitVariable(node: VariableNode) {
+        return
+    }
+
+    override fun visitMonoOp(node: MonoOpNode) {
+        node.inner.accept(this)
+    }
 
     override fun visitFunction(node: FunctionNode) {
-        TODO("Not yet implemented")
+        when (node.functionName) {
+            FunctionEnum.PRINTLN -> {
+                node.arguments.accept(this)
+                val value = currentValue ?: throw InterpreterException("println argument did not produce a value")
+                output.add(value.toStringValue())
+                currentValue = null
+            }
+        }
     }
 
     override fun visitAssignment(node: AssignmentNode) {
-        TODO("Not yet implemented")
+        if (node.operator != OperationEnum.EQUAL) {
+            throw InterpreterException("Unsupported assignment operator: ${node.operator}")
+        }
+
+        node.right.accept(this)
+        val value = currentValue ?: throw InterpreterException("Right operand did not produce a value")
+
+        environment.setVariable(node.left.name, value)
+        currentValue = null
     }
 }

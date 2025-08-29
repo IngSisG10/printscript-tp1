@@ -1,10 +1,11 @@
+import interpreter.PrintScriptInterpreter
 import lexer.Lexer
 import parser.Parser
 
 fun main(args: Array<String>) {
     // val lexer = Lexer("println(\"hello world\")")
     // val lexer = Lexer("let a: Number = 5;")
-    val lexer = Lexer("let a: Number = 5 + 5;")
+    val lexer = Lexer("let a: Number = 5 + 5; println(a); a = 10; println(a);")
     // val lexer = Lexer("let a : Number = \"string\";") // Error semantico
     val tokens = lexer.lex()
     val parser = Parser(tokens)
@@ -18,6 +19,12 @@ fun main(args: Array<String>) {
         println("  [$index] ${node.javaClass.simpleName}")
         printASTTree(node, "    ")
     }
+
+    val interpreter = PrintScriptInterpreter()
+    val outputs = interpreter.interpret(ast)
+
+    println("\nProgram Output:")
+    outputs.forEach { println(it) }
 }
 
 fun printASTTree(
@@ -135,6 +142,23 @@ fun printASTTree(
                 println("$indent└─ IdentifierNode: $name")
             } catch (e: Exception) {
                 println("$indent└─ IdentifierNode (error: ${e.message})")
+            }
+        }
+        "FunctionNode" -> {
+            try {
+                val functionNameField = node.javaClass.getDeclaredField("functionName")
+                functionNameField.isAccessible = true
+                val functionName = functionNameField.get(node)
+
+                val argumentsField = node.javaClass.getDeclaredField("arguments")
+                argumentsField.isAccessible = true
+                val arguments = argumentsField.get(node)
+
+                println("$indent├─ FunctionNode (function: $functionName)")
+                println("$indent│  └─ Arguments:")
+                printASTTree(arguments, "$indent   ")
+            } catch (e: Exception) {
+                println("$indent├─ FunctionNode (error: ${e.message})")
             }
         }
         else -> {
