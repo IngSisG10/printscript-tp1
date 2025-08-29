@@ -12,6 +12,7 @@ allprojects {
 
 subprojects {
     apply plugin: "org.jlleitschuh.gradle.ktlint"
+    apply plugin: 'org.jetbrains.kotlin.jvm'
 
     plugins.withId("maven-publish") {
         publishing {
@@ -40,7 +41,6 @@ subprojects {
 def publishTargets = [project(':common'), project(':lexer'), project(':parser'), project(':interpreter')]
 
 configure(publishTargets) {
-    apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jlleitschuh.gradle.ktlint'
     apply plugin: 'maven-publish'
 
