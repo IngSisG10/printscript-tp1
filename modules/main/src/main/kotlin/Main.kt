@@ -3,8 +3,8 @@ import parser.Parser
 
 fun main(args: Array<String>) {
     // val lexer = Lexer("println(\"hello world\")")
-    val lexer = Lexer("let a: Number = 5;")
-    // val lexer = Lexer("let a: Number = 5 + 5")
+    // val lexer = Lexer("let a: Number = 5;")
+    val lexer = Lexer("let a: Number = 5 + 5;")
     // val lexer = Lexer("let a : Number = \"string\";") // Error semantico
     val tokens = lexer.lex()
     val parser = Parser(tokens)
