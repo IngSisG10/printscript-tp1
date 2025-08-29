@@ -1,25 +1,57 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
-    id "org.jlleitschuh.gradle.ktlint" version "13.0.0"
+    id 'org.jetbrains.kotlin.jvm' version '2.0.0' apply false
+    id 'org.jlleitschuh.gradle.ktlint' version '13.0.0' apply false
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+allprojects {
+    repositories { mavenCentral() }
+    group = "com.ingsis.grupo10"
+    version = "1.0.0"
 }
 
-dependencies {
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-}
-
-test {
-    useJUnitPlatform()
-}
 
 subprojects {
     apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+    plugins.withId("maven-publish") {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    from components.java
+                    groupId = project.group
+                    artifactId = "printscript-${project.name}"
+                    version = project.version
+                }
+            }
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/IngSisG10/printscript-tp1")
+                    credentials {
+                        username = System.getenv("GITHUB_ACTOR")
+                        password = System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
+        }
+    }
+}
+
+def publishTargets = [project(':common'), project(':lexer'), project(':parser'), project(':interpreter')]
+
+configure(publishTargets) {
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.jlleitschuh.gradle.ktlint'
+    apply plugin: 'maven-publish'
+
+    dependencies {
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
 }
 
 tasks.register("installGitHooks") {
