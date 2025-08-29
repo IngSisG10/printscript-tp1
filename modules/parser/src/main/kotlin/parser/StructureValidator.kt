@@ -1,3 +1,7 @@
 package parser
 
-interface StructureValidator
+import token.abs.TokenInterface
+
+interface StructureValidator {
+    fun validate(line: List<TokenInterface>)
+}
