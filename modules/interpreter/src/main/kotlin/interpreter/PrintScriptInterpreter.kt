@@ -16,6 +16,7 @@ import exception.DivisionByZeroException
 import exception.InterpreterException
 import exception.TypeMismatchException
 
+// hacer un dispatcher para las funciones
 class PrintScriptInterpreter : AstVisitor {
     private val environment = Environment()
     private val output = mutableListOf<String>()
@@ -114,16 +115,20 @@ class PrintScriptInterpreter : AstVisitor {
                             is String ->
                                 literalValue.toDoubleOrNull()
                                     ?: throw InterpreterException("Invalid number literal: $literalValue")
+
                             else -> throw InterpreterException("Invalid number literal: $literalValue")
                         }
                     NumberValue(value)
                 }
+
                 TypeEnum.STRING -> {
                     StringValue(literalValue?.toString() ?: "")
                 }
+
                 TypeEnum.BOOLEAN -> {
                     throw InterpreterException("Boolean type not supported in PrintScript 1.0")
                 }
+
                 TypeEnum.ANY -> {
                     when (literalValue) {
                         is Number -> NumberValue(literalValue.toDouble())
@@ -144,25 +149,10 @@ class PrintScriptInterpreter : AstVisitor {
                 null
             }
 
-        // Convert TypeEnum to Value type if initialized
         val typedValue =
             if (initialValue != null) {
-                when (variable.type) {
-                    TypeEnum.NUMBER -> {
-                        if (initialValue !is NumberValue) {
-                            throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to number variable")
-                        }
-                        initialValue
-                    }
-                    TypeEnum.STRING -> {
-                        if (initialValue !is StringValue) {
-                            throw TypeMismatchException("Cannot assign ${initialValue::class.simpleName} to string variable")
-                        }
-                        initialValue
-                    }
-                    TypeEnum.ANY -> initialValue
-                    else -> throw InterpreterException("Unsupported type: ${variable.type}")
-                }
+                validateValueForType(initialValue, variable.type)
+                initialValue
             } else {
                 null
             }
@@ -170,8 +160,30 @@ class PrintScriptInterpreter : AstVisitor {
         environment.declareVariable(variable.name, variable.type, typedValue)
     }
 
+    private fun validateValueForType(
+        value: Value,
+        type: TypeEnum,
+    ) {
+        when (type) {
+            TypeEnum.NUMBER -> {
+                if (value !is NumberValue) {
+                    throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
+                }
+            }
+
+            TypeEnum.STRING -> {
+                if (value !is StringValue) {
+                    throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
+                }
+            }
+
+            TypeEnum.ANY -> {}
+            else -> throw InterpreterException("Unsupported type: $type")
+        }
+    }
+
     override fun visitVariable(node: VariableNode) {
-        TODO("Not yet implemented")
+        return
     }
 
     override fun visitMonoOp(node: MonoOpNode) {
@@ -179,10 +191,9 @@ class PrintScriptInterpreter : AstVisitor {
     }
 
     override fun visitFunction(node: FunctionNode) {
-        TODO("Not yet implemented")
     }
 
     override fun visitAssignment(node: AssignmentNode) {
-        TODO("Not yet implemented")
+        node.left.accept(this)
     }
 }
