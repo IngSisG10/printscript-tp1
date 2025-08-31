@@ -1,4 +1,5 @@
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    implementation project (":lexer")
     implementation project (":common")
 }
