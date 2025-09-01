@@ -48,11 +48,12 @@ object ExpressionParser {
 
         // line -> because work with a sublist [let, a, :, Number, = , 5, + , 5, * , 5]
 
-        for (token in line) { // No puedo tener un igual en una expresion.
-            if (token is OperationToken && token.value == OperationEnum.EQUAL) {
-                throw UnrecognizedLineException("Expression cannot contain an equal operation: ${token.name}")
-            }
-        }
+        // fixme -> esta logica que onda?
+//        for (token in line) { // No puedo tener un igual en una expresion.
+//            if (token is OperationToken && token.value == OperationEnum.EQUAL) {
+//                throw UnrecognizedLineException("Expression cannot contain an equal operation: ${token.name}")
+//            }
+//        }
     }
 
     private fun parseAddition(

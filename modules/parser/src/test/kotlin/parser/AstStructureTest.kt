@@ -1,11 +1,16 @@
 package parser
 
+import ast.BinaryOpNode
+import ast.DeclaratorNode
+import ast.LiteralNode
+import ast.VariableNode
+import ast.abs.AstInterface
+import enums.FunctionEnum
 import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
-// fixme
 class AstStructureTest {
     @Test
     fun `test declarator node structure`() {
@@ -25,6 +30,15 @@ class AstStructureTest {
         assertTrue(fields.contains("value"))
     }
 
+    private fun containsBinaryOpNode(node: AstInterface): Boolean =
+        when (node) {
+            is BinaryOpNode -> true
+            is DeclaratorNode -> containsBinaryOpNode(node.value)
+            is VariableNode -> false
+            is LiteralNode -> false
+            else -> false
+        }
+
     @Test
     fun `test binary operation node structure`() {
         val code = "let result: Number = 2 + 3;"
@@ -33,11 +47,9 @@ class AstStructureTest {
         val parser = Parser(tokens)
         val ast = parser.parse()
 
-        // Debería encontrar un BinaryOpNode en el AST
-        val containsBinaryOp =
-            ast.any { node ->
-                node.javaClass.simpleName == "BinaryOpNode"
-            }
+        println(ast)
+
+        val containsBinaryOp = ast.any { containsBinaryOpNode(it) }
         assertTrue(containsBinaryOp)
     }
 
@@ -55,7 +67,7 @@ class AstStructureTest {
 
         val functionNameField = node.javaClass.getDeclaredField("functionName")
         functionNameField.isAccessible = true
-        val functionName = functionNameField.get(node)
-        assertEquals("println", functionName)
+        val functionName = functionNameField.get(node) as FunctionEnum
+        assertEquals(FunctionEnum.PRINTLN, functionName)
     }
 }
