@@ -2,15 +2,16 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 rootProject.name = 'printscript'
-include 'main'
+include 'cli'
 include 'lexer'
 include 'parser'
 include 'interpreter'
 include 'common'
+include 'linter'
 
-project(":main").projectDir = file("modules/main")
+project(":cli").projectDir = file("modules/cli")
 project(":lexer").projectDir = file("modules/lexer")
 project(":parser").projectDir = file("modules/parser")
 project(":interpreter").projectDir = file("modules/interpreter")
 project(":common").projectDir = file("modules/common")
-
+project(":linter").projectDir = file("modules/linter")
