@@ -1,3 +1,4 @@
+import data.LinterData
 import token.abs.TokenInterface
 
 interface FormatterFix {
