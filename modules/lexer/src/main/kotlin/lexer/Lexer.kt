@@ -1,9 +1,7 @@
 package lexer
 
+import Linter
 import exception.UnknownExpressionException
-import lexer.syntax.SyntaxRule
-import lexer.syntax.rules.NoMatchingParenthesisRule
-import lexer.syntax.rules.NoMatchingQuotationMarksRule
 import lexer.token.TokenRule
 import lexer.token.rules.IdentifierRule
 import lexer.token.rules.KeywordRule
@@ -15,6 +13,7 @@ import token.abs.TokenInterface
 
 class Lexer(
     private val code: String,
+    private val linter: Linter = Linter(),
     private val tokenRules: List<TokenRule> =
         listOf(
             StringLiteralRule(),
@@ -23,11 +22,6 @@ class Lexer(
             ParenthesisRule(),
             SingleCharRule(),
             IdentifierRule(),
-        ),
-    private val syntaxRules: List<SyntaxRule> =
-        listOf(
-            NoMatchingParenthesisRule(),
-            NoMatchingQuotationMarksRule(),
         ),
 ) {
     private val tokens = mutableListOf<TokenInterface>()
@@ -50,12 +44,7 @@ class Lexer(
                 c.isWhitespace() -> i++
                 else -> {
                     var matched = false
-                    for (syntax in syntaxRules) {
-                        val res = syntax.match(text, i, row)
-                        if (res != null) {
-                            throw res
-                        }
-                    }
+                    linter.lint(text, i, row)
                     for (rule in tokenRules) {
                         val res = rule.match(text, i, row)
                         if (res != null) {

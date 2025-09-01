@@ -1,3 +1,4 @@
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    implementation(project(":common"))
 }

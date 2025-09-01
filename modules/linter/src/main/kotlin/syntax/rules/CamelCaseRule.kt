@@ -1,9 +1,9 @@
-package lexer.syntax.rules
+package syntax.rules
 
 import exception.InvalidCamelCaseException
-import lexer.syntax.SyntaxRule
+import syntax.LinterRule
 
-class CamelCaseRule : SyntaxRule {
+class CamelCaseRule : LinterRule {
     override fun match(
         line: String,
         index: Int,

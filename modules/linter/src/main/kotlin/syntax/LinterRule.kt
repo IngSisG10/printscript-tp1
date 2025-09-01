@@ -1,6 +1,6 @@
-package lexer.syntax
+package syntax
 
-interface SyntaxRule {
+interface LinterRule {
     fun match(
         line: String,
         index: Int,

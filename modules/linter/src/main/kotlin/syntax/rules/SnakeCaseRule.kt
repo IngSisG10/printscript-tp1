@@ -1,9 +1,9 @@
-package lexer.syntax.rules
+package syntax.rules
 
 import exception.InvalidSnakeCaseException
-import lexer.syntax.SyntaxRule
+import syntax.LinterRule
 
-class SnakeCaseRule : SyntaxRule {
+class SnakeCaseRule : LinterRule {
     override fun match(
         line: String,
         index: Int,

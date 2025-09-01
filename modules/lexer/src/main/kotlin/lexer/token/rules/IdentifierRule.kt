@@ -1,12 +1,9 @@
 package lexer.token.rules
 
-import lexer.syntax.SyntaxRule
 import lexer.token.TokenRule
 import token.VariableToken
 
-class IdentifierRule(
-    private val rules: List<SyntaxRule> = emptyList(),
-) : TokenRule {
+class IdentifierRule : TokenRule {
     override fun match(
         line: String,
         index: Int,
@@ -25,13 +22,6 @@ class IdentifierRule(
         }
 
         val text = line.substring(index, i)
-
-        for (rule in rules) {
-            val exception = rule.match(text, index, row)
-            if (exception != null) {
-                throw exception
-            }
-        }
 
         return TokenRule.MatchResult(VariableToken(text, row, index), i)
     }

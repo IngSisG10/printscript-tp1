@@ -1,10 +1,10 @@
 // Kotlin
-package lexer.syntax.rules
+package syntax.rules
 
 import exception.NoMatchingParenthesisException
-import lexer.syntax.SyntaxRule
+import syntax.LinterRule
 
-class NoMatchingParenthesisRule : SyntaxRule {
+class NoMatchingParenthesisRule : LinterRule {
     override fun match(
         line: String,
         index: Int,

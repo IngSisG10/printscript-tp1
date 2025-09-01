@@ -8,6 +8,7 @@ import java.io.File
 
 class BuildFile : ClientRule {
     override fun tryRun(args: Array<String>) {
+        if (args.isEmpty()) return
         if (args[0] != "Execution") return
         val fileText = tryFindFile(args[1]) ?: throw InvalidFileException("No file was found")
         val lexer = Lexer(fileText)

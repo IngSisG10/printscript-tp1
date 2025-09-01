@@ -1,9 +1,9 @@
-package lexer.syntax.rules
+package syntax.rules
 
 import exception.InvalidPascalCaseException
-import lexer.syntax.SyntaxRule
+import syntax.LinterRule
 
-class PascalCaseRule : SyntaxRule {
+class PascalCaseRule : LinterRule {
     override fun match(
         line: String,
         index: Int,

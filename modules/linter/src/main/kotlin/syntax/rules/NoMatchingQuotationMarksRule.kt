@@ -1,9 +1,9 @@
-package lexer.syntax.rules
+package syntax.rules
 
 import exception.NoMatchingQuotationMarksException
-import lexer.syntax.SyntaxRule
+import syntax.LinterRule
 
-class NoMatchingQuotationMarksRule : SyntaxRule {
+class NoMatchingQuotationMarksRule : LinterRule {
     override fun match(
         line: String,
         index: Int,
