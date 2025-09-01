@@ -1,7 +1,7 @@
 import syntax.LinterRule
 
 class Linter(
-    val linterRules: List<LinterRule> = emptyList(),
+    private val linterRules: List<LinterRule> = emptyList(),
 ) {
     fun lint(
         text: String,

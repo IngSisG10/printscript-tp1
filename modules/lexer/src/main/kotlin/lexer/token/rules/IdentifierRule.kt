@@ -1,9 +1,12 @@
 package lexer.token.rules
 
+import Linter
 import lexer.token.TokenRule
 import token.VariableToken
 
-class IdentifierRule : TokenRule {
+class IdentifierRule(
+    private val linter: Linter,
+) : TokenRule {
     override fun match(
         line: String,
         index: Int,
@@ -20,6 +23,8 @@ class IdentifierRule : TokenRule {
         while (i < line.length && (line[i].isLetterOrDigit() || line[i] == '_')) {
             i++
         }
+
+        linter.lint(line, index, row)
 
         val text = line.substring(index, i)
 

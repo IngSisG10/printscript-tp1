@@ -14,6 +14,7 @@ import token.abs.TokenInterface
 class Lexer(
     private val code: String,
     private val linter: Linter = Linter(),
+) {
     private val tokenRules: List<TokenRule> =
         listOf(
             StringLiteralRule(),
@@ -21,9 +22,9 @@ class Lexer(
             KeywordRule(),
             ParenthesisRule(),
             SingleCharRule(),
-            IdentifierRule(),
-        ),
-) {
+            IdentifierRule(linter),
+        )
+
     private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
 
