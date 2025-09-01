@@ -30,7 +30,7 @@ class Formatter(
         }
 
         // return the original code if no fix is applied
-        return convert(tokens)
+        return convert(newTokenList)
     }
 
     private fun convert(tokens: List<TokenInterface>): String {
