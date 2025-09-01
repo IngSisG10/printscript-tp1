@@ -1,11 +1,13 @@
 package fixes
 
 import FormatterFix
+import data.LinterData
+import exception.NoSpaceBeforeColonException
 import token.TypeDeclaratorToken
 import token.abs.TokenInterface
 
 class SpaceBeforeColon : FormatterFix {
-    override fun canFix(issue: LinterInfo): Boolean = issue.exception is NoSpaceBeforeColonException
+    override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceBeforeColonException
 
     // string -> FormattedCode (lista de tokens formateada)
     override fun fix(
@@ -28,8 +30,9 @@ class SpaceBeforeColon : FormatterFix {
                 val prev = mutableTokens[i - 1]
 
                 // Si el token anterior NO es un Whitespace, insertamos uno
-                if (prev !is WhitespaceToken) {
-                    mutableTokens.add(i, WhitespaceToken(" "))
+                if (prev !is token.WhiteSpaceToken) {
+                    // fixme: los valores de row y position son arbitrarios
+                    mutableTokens.add(i, token.WhiteSpaceToken(1, 2))
                     return mutableTokens
                 }
             }

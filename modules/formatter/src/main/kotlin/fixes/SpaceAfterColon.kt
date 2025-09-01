@@ -1,6 +1,8 @@
 package fixes
 
 import FormatterFix
+import data.LinterData
+import exception.NoSpaceAfterColonException
 import token.abs.TokenInterface
 
 class SpaceAfterColon : FormatterFix {
@@ -20,8 +22,9 @@ class SpaceAfterColon : FormatterFix {
                 val next = mutableTokens[i + 1]
 
                 // Si el token siguiente NO es un Whitespace, insertamos uno
-                if (next !is token.WhitespaceToken) {
-                    mutableTokens.add(i + 1, token.WhitespaceToken(" "))
+                if (next !is token.WhiteSpaceToken) {
+                    // fixme: los valores de row y position son arbitrarios
+                    mutableTokens.add(i + 1, token.WhiteSpaceToken(1, 2))
                     return mutableTokens
                 }
             }

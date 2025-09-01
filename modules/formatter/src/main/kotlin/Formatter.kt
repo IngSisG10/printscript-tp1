@@ -1,3 +1,4 @@
+import data.LinterData
 import token.abs.TokenInterface
 
 class Formatter(
@@ -11,17 +12,29 @@ class Formatter(
 
     private val linter = Linter()
 
-    fun format(code: String): String {
+    fun format(): String {
         val issues: List<LinterData> = linter.formatterLint(tokens)
 
+        // todo: optimizar para que podamos seguir aplicando reglas hasta que no haya más issues
         for (issue in issues) {
             for (rule in formatterRules) {
                 if (rule.canFix(issue.exception)) {
-                    return rule.fix(issue.exception, tokens)
+                    val newTokens = rule.fix(issue.exception, tokens)
+                    return convert(newTokens)
                 }
             }
         }
 
-        return code // return the original code if no fix is applied
+        // return the original code if no fix is applied
+        return convert(tokens)
+    }
+
+    // todo: convertir a String
+    private fun convert(tokens: List<TokenInterface>): String {
+        val builder = StringBuilder()
+        for (token in tokens) {
+            builder.append(token.value)
+        }
+        return builder.toString()
     }
 }
