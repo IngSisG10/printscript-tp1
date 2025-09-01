@@ -18,8 +18,8 @@ class Formatter(
         // todo: optimizar para que podamos seguir aplicando reglas hasta que no haya más issues
         for (issue in issues) {
             for (rule in formatterRules) {
-                if (rule.canFix(issue.exception)) {
-                    val newTokens = rule.fix(issue.exception, tokens)
+                if (rule.canFix(issue)) {
+                    val newTokens = rule.fix(issue, tokens)
                     return convert(newTokens)
                 }
             }
