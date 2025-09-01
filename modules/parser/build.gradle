@@ -2,4 +2,5 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     implementation project (":common")
     testImplementation(project(":lexer"))
+    testImplementation(project(":linter"))
 }

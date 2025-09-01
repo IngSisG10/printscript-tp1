@@ -1,8 +1,10 @@
 package lexer
 
+import Linter
 import exception.NoMatchingQuotationMarksException
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import syntax.rules.NoMatchingQuotationMarksRule
 import token.StringLiteralToken
 
 class LexerStringLiteralTest {
@@ -16,7 +18,17 @@ class LexerStringLiteralTest {
     @Test
     fun testOpenStringLiteral() {
         assertThrows(NoMatchingQuotationMarksException::class.java) {
-            (Lexer("\"hello world").lex())
+            (
+                Lexer(
+                    "\"hello world",
+                    linter =
+                        Linter(
+                            listOf(
+                                NoMatchingQuotationMarksRule(),
+                            ),
+                        ),
+                ).lex()
+            )
         }
     }
 }

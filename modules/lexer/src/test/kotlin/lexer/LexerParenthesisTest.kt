@@ -1,8 +1,10 @@
 package lexer
 
+import Linter
 import exception.NoMatchingParenthesisException
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import syntax.rules.NoMatchingParenthesisRule
 import token.ParenthesisToken
 import token.VariableToken
 
@@ -10,14 +12,30 @@ class LexerParenthesisTest {
     @Test
     fun unmatchedOpeningParenthesisThrows() {
         assertThrows(NoMatchingParenthesisException::class.java) {
-            Lexer("(()").lex()
+            Lexer(
+                "(()",
+                linter =
+                    Linter(
+                        listOf(
+                            NoMatchingParenthesisRule(),
+                        ),
+                    ),
+            ).lex()
         }
     }
 
     @Test
     fun unmatchedClosingParenthesisThrows() {
         assertThrows(NoMatchingParenthesisException::class.java) {
-            Lexer("())").lex()
+            Lexer(
+                "())",
+                linter =
+                    Linter(
+                        listOf(
+                            NoMatchingParenthesisRule(),
+                        ),
+                    ),
+            ).lex()
         }
     }
 

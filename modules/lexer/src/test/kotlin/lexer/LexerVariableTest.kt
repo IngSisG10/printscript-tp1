@@ -1,54 +1,13 @@
 package lexer
 
-import lexer.syntax.rules.CamelCaseRule
-import lexer.syntax.rules.PascalCaseRule
-import lexer.syntax.rules.SnakeCaseRule
-import lexer.token.rules.IdentifierRule
-import lexer.token.rules.KeywordRule
-import lexer.token.rules.NumberLiteralRule
-import lexer.token.rules.ParenthesisRule
-import lexer.token.rules.SingleCharRule
-import lexer.token.rules.StringLiteralRule
+import Linter
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import syntax.rules.CamelCaseRule
+import syntax.rules.PascalCaseRule
+import syntax.rules.SnakeCaseRule
 
 class LexerVariableTest {
-    private val camelCaseRules =
-        listOf(
-            StringLiteralRule(),
-            NumberLiteralRule(),
-            KeywordRule(),
-            ParenthesisRule(),
-            SingleCharRule(),
-            IdentifierRule(
-                rules = listOf(CamelCaseRule()),
-            ),
-        )
-
-    private val snakeCaseRules =
-        listOf(
-            StringLiteralRule(),
-            NumberLiteralRule(),
-            KeywordRule(),
-            ParenthesisRule(),
-            SingleCharRule(),
-            IdentifierRule(
-                rules = listOf(SnakeCaseRule()),
-            ),
-        )
-
-    private val pascalCaseRules =
-        listOf(
-            StringLiteralRule(),
-            NumberLiteralRule(),
-            KeywordRule(),
-            ParenthesisRule(),
-            SingleCharRule(),
-            IdentifierRule(
-                rules = listOf(PascalCaseRule()),
-            ),
-        )
-
     @Test
     fun generateVariableToken() {
         val lexer = Lexer("myVariable another_var OtherVariable var123")
@@ -59,9 +18,9 @@ class LexerVariableTest {
 
     @Test
     fun rulesCaseVariableToken() {
-        val camelLexer = Lexer("camelCase", tokenRules = camelCaseRules)
-        val pascalLexer = Lexer("PascalCase", tokenRules = pascalCaseRules)
-        val snakeLexer = Lexer("snake_case", tokenRules = snakeCaseRules)
+        val camelLexer = Lexer("camelCase", linter = Linter(listOf(CamelCaseRule())))
+        val pascalLexer = Lexer("PascalCase", linter = Linter(listOf(PascalCaseRule())))
+        val snakeLexer = Lexer("snake_case", linter = Linter(listOf(SnakeCaseRule())))
         val camelTokens = camelLexer.lex()
         val pascalTokens = pascalLexer.lex()
         val snakeTokens = snakeLexer.lex()
@@ -72,9 +31,9 @@ class LexerVariableTest {
 
     @Test
     fun invalidVariableToken() {
-        val invalidCamelLexer = Lexer("snake_case PascalCase", tokenRules = camelCaseRules)
-        val invalidPascalLexer = Lexer("camelCase snake_case", tokenRules = pascalCaseRules)
-        val invalidSnakeLexer = Lexer("PascalCase camelCase", tokenRules = snakeCaseRules)
+        val invalidCamelLexer = Lexer("snake_case PascalCase", Linter(listOf(CamelCaseRule())))
+        val invalidPascalLexer = Lexer("camelCase snake_case", Linter(listOf(PascalCaseRule())))
+        val invalidSnakeLexer = Lexer("PascalCase camelCase", Linter(listOf(SnakeCaseRule())))
         assertThrows<exception.InvalidCamelCaseException> {
             invalidCamelLexer.lex()
         }
