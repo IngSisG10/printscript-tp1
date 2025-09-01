@@ -2,18 +2,19 @@ package parser.semanticrules
 
 import ast.AssignmentNode
 import ast.BinaryOpNode
+import ast.DeclaratorNode
 import ast.LiteralNode
 import ast.abs.AstInterface
 import enums.OperationEnum
 import enums.TypeEnum
 
-// todo: DeclaratorNode -> getDeclaratorType(node)
 object TypeAnalysis {
     fun getExpressionType(node: AstInterface): TypeEnum =
         when (node) {
             is LiteralNode -> getLiteralType(node)
             is BinaryOpNode -> getBinaryOpType(node) // a = "5" + 5
             is AssignmentNode -> getAssignmentType(node)
+            is DeclaratorNode -> getDeclaratorType(node)
             else -> TypeEnum.ANY // Exception -> UnrecognizedNodeError("Unknown node")
         }
 
@@ -23,6 +24,8 @@ object TypeAnalysis {
             TypeEnum.NUMBER -> TypeEnum.NUMBER
             else -> TypeEnum.ANY
         }
+
+    private fun getDeclaratorType(node: DeclaratorNode): TypeEnum = getExpressionType(node.value)
 
     private fun getBinaryOpType(node: BinaryOpNode): TypeEnum {
         val leftType = getExpressionType(node.left)

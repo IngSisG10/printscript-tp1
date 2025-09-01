@@ -38,7 +38,7 @@ subprojects {
     }
 }
 
-def publishTargets = [project(':common'), project(':lexer'), project(':parser'), project(':interpreter')]
+def publishTargets = [project(':common'), project(':lexer'), project(':parser'), project(':interpreter'), project(":linter")]
 
 configure(publishTargets) {
     apply plugin: 'org.jlleitschuh.gradle.ktlint'

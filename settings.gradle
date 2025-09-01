@@ -7,10 +7,11 @@ include 'lexer'
 include 'parser'
 include 'interpreter'
 include 'common'
+include 'linter'
 
 project(":cli").projectDir = file("modules/cli")
 project(":lexer").projectDir = file("modules/lexer")
 project(":parser").projectDir = file("modules/parser")
 project(":interpreter").projectDir = file("modules/interpreter")
 project(":common").projectDir = file("modules/common")
-
+project(":linter").projectDir = file("modules/linter")

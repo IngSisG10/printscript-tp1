@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/modules/common" />
             <option value="$PROJECT_DIR$/modules/interpreter" />
             <option value="$PROJECT_DIR$/modules/lexer" />
+            <option value="$PROJECT_DIR$/modules/linter" />
             <option value="$PROJECT_DIR$/modules/parser" />
           </set>
         </option>
