@@ -8,6 +8,7 @@ import lexer.token.rules.NumberLiteralRule
 import lexer.token.rules.ParenthesisRule
 import lexer.token.rules.SingleCharRule
 import lexer.token.rules.StringLiteralRule
+import token.WhiteSpaceToken
 import token.abs.TokenInterface
 
 class Lexer(
@@ -40,7 +41,10 @@ class Lexer(
                     row++
                     i++
                 }
-                c.isWhitespace() -> i++
+                c.isWhitespace() -> {
+                    tokens.add(WhiteSpaceToken(row, i))
+                    i++
+                }
                 else -> {
                     var matched = false
                     for (rule in tokenRules) {
