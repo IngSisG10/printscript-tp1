@@ -2,5 +2,4 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation( 'org.junit.jupiter:junit-jupiter:5.10.0' )
     implementation project(":common")
-    implementation(project(":linter"))
 }
