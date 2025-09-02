@@ -206,7 +206,7 @@ class PrintScriptInterpreter : AstVisitor {
         if (node.operator != OperationEnum.EQUAL) {
             throw InterpreterException("Unsupported assignment operator: ${node.operator}")
         }
-
+        // TODO: review value = current value
         node.right.accept(this)
         val value = currentValue ?: throw InterpreterException("Right operand did not produce a value")
 
