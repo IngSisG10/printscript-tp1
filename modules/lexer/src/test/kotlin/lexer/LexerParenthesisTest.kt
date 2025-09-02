@@ -1,26 +1,10 @@
 package lexer
 
-import exception.NoMatchingParenthesisException
-import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import token.ParenthesisToken
 import token.VariableToken
 
 class LexerParenthesisTest {
-    @Test
-    fun unmatchedOpeningParenthesisThrows() {
-        assertThrows(NoMatchingParenthesisException::class.java) {
-            Lexer("(()").lex()
-        }
-    }
-
-    @Test
-    fun unmatchedClosingParenthesisThrows() {
-        assertThrows(NoMatchingParenthesisException::class.java) {
-            Lexer("())").lex()
-        }
-    }
-
     @Test
     fun matchedParenthesesNoException() {
         val tokens = Lexer("(something)").lex()

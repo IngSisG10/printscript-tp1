@@ -8,6 +8,7 @@ dependencies {
     implementation project (":parser")
     implementation project (":interpreter")
     implementation project (":common")
+    implementation project (":linter")
 }
 
 application {
