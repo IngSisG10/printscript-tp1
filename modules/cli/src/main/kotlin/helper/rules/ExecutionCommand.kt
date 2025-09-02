@@ -6,7 +6,7 @@ import lexer.Lexer
 import parser.Parser
 import java.io.File
 
-class BuildFile : ClientRule {
+class ExecutionCommand : CliCommand {
     override fun tryRun(args: Array<String>) {
         if (args.isEmpty()) return
         if (args[0] != "Execution") return

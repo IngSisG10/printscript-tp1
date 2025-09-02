@@ -1,5 +1,5 @@
 package helper.rules
 
-interface ClientRule {
+interface CliCommand {
     fun tryRun(args: Array<String>)
 }

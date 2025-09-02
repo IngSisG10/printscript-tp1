@@ -1,11 +1,11 @@
 package helper
 
-import helper.rules.BuildFile
+import helper.rules.ExecutionCommand
 
 class Cli {
     val rules =
         listOf(
-            BuildFile(),
+            ExecutionCommand(),
         )
 
     fun execute(args: Array<String>) {
