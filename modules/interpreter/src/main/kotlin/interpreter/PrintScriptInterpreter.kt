@@ -184,7 +184,7 @@ class PrintScriptInterpreter : AstVisitor {
     }
 
     override fun visitVariable(node: VariableNode) {
-        return
+        currentValue = environment.getValue(node.name)
     }
 
     override fun visitMonoOp(node: MonoOpNode) {
