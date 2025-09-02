@@ -8,6 +8,11 @@ class Formatter(
         listOf(
             fixes.SpaceBeforeColon(),
             fixes.SpaceAfterColon(),
+            fixes.OneSpaceAfterTokenMax(),
+            fixes.SpaceBeforeAndAfterEqual(),
+            fixes.SpaceBeforeAndAfterOperator(),
+            fixes.LineJumpAfterSemiColon(),
+            fixes.LineJumpSpaceBeforePrintln(),
         )
 
     private val linter = Linter()
