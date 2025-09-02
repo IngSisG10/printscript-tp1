@@ -2,12 +2,11 @@ package fixes
 
 import FormatterFix
 import data.LinterData
+import exception.MoreThanOneSpaceAfterTokenException
 import token.abs.TokenInterface
 
-// Debe haber un solo espacio, como máximo, entre los distintos “tokens”. No se
-// configura.
 class OneSpaceAfterTokenMax : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is SpaceAfterColon
+    override fun canFix(issue: LinterData): Boolean = issue.exception is MoreThanOneSpaceAfterTokenException
 
     override fun fix(
         issue: LinterData,
@@ -16,8 +15,7 @@ class OneSpaceAfterTokenMax : FormatterFix {
         val mutableTokens = tokens.toMutableList()
         var index = 0
 
-        while (index < mutableTokens.size) { // Recorremos los tokens
-
+        while (index < mutableTokens.size) {
             val current = mutableTokens[index]
 
             if (current is token.WhiteSpaceToken) {

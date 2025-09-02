@@ -2,13 +2,15 @@ package fixes
 
 import FormatterFix
 import enums.OperationEnum
+import exception.NoSpaceAfterAssignationException
+import exception.NoSpaceBeforeAssignationException
 import token.OperationToken
 import token.abs.TokenInterface
 
 class SpaceBeforeAndAfterEqual : FormatterFix {
     override fun canFix(issue: data.LinterData): Boolean =
-        issue.exception is SpaceBeforeAndAfterEqual // Por el momento voy a crear uno, en caso
-    // de que haya un problema lo separo en antes y despues.
+        issue.exception is NoSpaceBeforeAssignationException ||
+            issue.exception is NoSpaceAfterAssignationException
 
     override fun fix(
         issue: data.LinterData,

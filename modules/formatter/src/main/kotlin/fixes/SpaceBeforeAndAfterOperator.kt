@@ -2,10 +2,14 @@ package fixes
 
 import FormatterFix
 import data.LinterData
+import exception.NoSpaceAfterOperatorException
+import exception.NoSpaceBeforeOperatorException
 import token.abs.TokenInterface
 
 class SpaceBeforeAndAfterOperator : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is SpaceAfterColon
+    override fun canFix(issue: LinterData): Boolean =
+        issue.exception is NoSpaceBeforeOperatorException ||
+            issue.exception is NoSpaceAfterOperatorException
 
     override fun fix(
         issue: LinterData,

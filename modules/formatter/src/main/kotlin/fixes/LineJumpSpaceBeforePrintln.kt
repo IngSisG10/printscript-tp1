@@ -3,9 +3,10 @@ package fixes
 import FormatterFix
 import data.LinterData
 import enums.FunctionEnum
+import exception.InvalidNewLineBeforePrintlnException
 
-class LineJumpSpace : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is SpaceAfterColon
+class LineJumpSpaceBeforePrintln : FormatterFix {
+    override fun canFix(issue: LinterData): Boolean = issue.exception is InvalidNewLineBeforePrintlnException
 
     // todo: modificarlo para que un futuro pueda especificar cuántos espacios quiere.
 
@@ -24,6 +25,7 @@ class LineJumpSpace : FormatterFix {
                 var j = i - 1
 
                 while (j >= 0 && tokens[j] is token.WhiteSpaceToken) { // Contamos los saltos de línea antes del "println", hay que crear un
+
                     // token NewLineToken (?)
                     newLineCount++
                     j--
