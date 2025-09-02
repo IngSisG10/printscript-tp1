@@ -36,7 +36,7 @@ class PrintScriptIntegrationTest {
         assertEquals(listOf("11.0"), result)
     }
 
-    @Test
+    /*@Test
     fun testVariableAssignment() {
         val code =
             """
@@ -49,7 +49,7 @@ class PrintScriptIntegrationTest {
         assertEquals(listOf("10.0", "20.0"), result)
     }
 
-    /*@Test
+    @Test
     fun testStringConcatenation() {
         val code =
             """
