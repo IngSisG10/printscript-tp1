@@ -2,6 +2,7 @@ package token
 
 import token.abs.TokenInterface
 
+// TODO: Delete obsolete class
 class ParenthesisToken(
     override val value: List<TokenInterface>,
     override val row: Int,
