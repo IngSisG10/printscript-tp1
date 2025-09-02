@@ -6,6 +6,8 @@ import parser.nodecreator.AssignationNodeCreator
 import parser.nodecreator.DeclaratorNodeCreator
 import parser.nodecreator.FunctionNodeCreator
 import parser.semanticrules.InvalidDeclaration
+import token.NewLineToken
+import token.WhiteSpaceToken
 import token.abs.TokenInterface
 
 // Construccion de nodos
@@ -72,10 +74,14 @@ class Parser(
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
         var currentList = mutableListOf<TokenInterface>()
 
-        for (token in tokens) {
+        val filteredTokens = tokens.filterNot { it is WhiteSpaceToken || it is NewLineToken }
+
+        for (token in filteredTokens) {
             if (token.name == "end_sentence") {
-                listOfTokensByLine.add(currentList)
-                currentList = mutableListOf()
+                if (currentList.isNotEmpty()) {
+                    listOfTokensByLine.add(currentList)
+                    currentList = mutableListOf()
+                }
             } else {
                 currentList.add(token)
             }
