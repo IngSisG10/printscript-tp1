@@ -1,4 +1,4 @@
-package helper.rules
+package helper.commands
 
 import exception.InvalidFileException
 import interpreter.PrintScriptInterpreter

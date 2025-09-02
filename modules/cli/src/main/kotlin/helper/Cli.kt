@@ -1,6 +1,6 @@
 package helper
 
-import helper.rules.ExecutionCommand
+import helper.commands.ExecutionCommand
 
 class Cli {
     val rules =
