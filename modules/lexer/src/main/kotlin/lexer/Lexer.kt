@@ -8,6 +8,7 @@ import lexer.token.rules.NumberLiteralRule
 import lexer.token.rules.ParenthesisRule
 import lexer.token.rules.SingleCharRule
 import lexer.token.rules.StringLiteralRule
+import token.NewLineToken
 import token.WhiteSpaceToken
 import token.abs.TokenInterface
 
@@ -38,6 +39,7 @@ class Lexer(
             val c = text[i]
             when {
                 c == '\n' -> {
+                    tokens.add(NewLineToken(row, i))
                     row++
                     i++
                 }
