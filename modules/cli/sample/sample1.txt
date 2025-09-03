@@ -1,6 +1,2 @@
 let a : Number = 5 + 5;
 println(a);
-a = 6 - 1;
-
-let name : String = "jorge";
-println("mi nombre es " + name);

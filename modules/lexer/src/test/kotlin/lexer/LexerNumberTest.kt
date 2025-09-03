@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 import token.NumberLiteralToken
 import token.OperationToken
+import token.WhiteSpaceToken
 
 class LexerNumberTest {
     @Test
@@ -17,8 +18,12 @@ class LexerNumberTest {
     @Test
     fun testMultipleNumbersSeparatedBySpaces() {
         val tokens = Lexer("0 1 2345").lex()
-        assertEquals(3, tokens.size)
-        tokens.forEach { assertInstanceOf(NumberLiteralToken::class.java, it) }
+        assertEquals(5, tokens.size)
+        assertInstanceOf(NumberLiteralToken::class.java, tokens[0])
+        assertInstanceOf(WhiteSpaceToken::class.java, tokens[1])
+        assertInstanceOf(NumberLiteralToken::class.java, tokens[2])
+        assertInstanceOf(WhiteSpaceToken::class.java, tokens[3])
+        assertInstanceOf(NumberLiteralToken::class.java, tokens[4])
     }
 
     @Test
@@ -39,10 +44,11 @@ class LexerNumberTest {
     fun testNegativeNumbersAreMinusThenNumber() {
         val tokens = Lexer("-1 -2").lex()
         // Expect: Op, N, Op, N
-        assertEquals(4, tokens.size)
+        assertEquals(5, tokens.size)
         assertInstanceOf(OperationToken::class.java, tokens[0])
         assertInstanceOf(NumberLiteralToken::class.java, tokens[1])
-        assertInstanceOf(OperationToken::class.java, tokens[2])
-        assertInstanceOf(NumberLiteralToken::class.java, tokens[3])
+        assertInstanceOf(WhiteSpaceToken::class.java, tokens[2])
+        assertInstanceOf(OperationToken::class.java, tokens[3])
+        assertInstanceOf(NumberLiteralToken::class.java, tokens[4])
     }
 }

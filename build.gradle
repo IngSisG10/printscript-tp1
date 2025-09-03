@@ -6,7 +6,7 @@ plugins {
 allprojects {
     repositories { mavenCentral() }
     group = "com.ingsis.grupo10"
-    version = "1.0.0"
+    version = "1.0.0-SNAPSHOT"
 }
 
 
@@ -38,7 +38,14 @@ subprojects {
     }
 }
 
-def publishTargets = [project(':common'), project(':lexer'), project(':parser'), project(':interpreter'), project(":linter")]
+def publishTargets = [
+        project(':common'),
+        project(':lexer'),
+        project(':parser'),
+        project(':interpreter'),
+        project(":linter"),
+        project(":formatter")
+]
 
 configure(publishTargets) {
     apply plugin: 'org.jlleitschuh.gradle.ktlint'
