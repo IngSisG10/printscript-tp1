@@ -1,8 +1,9 @@
-package lexer
+package lexer.one.zero
 
 import common.token.FunctionToken
 import common.token.TypeToken
 import common.token.VariableDeclaratorToken
+import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test

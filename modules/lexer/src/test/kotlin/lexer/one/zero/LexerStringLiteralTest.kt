@@ -1,6 +1,7 @@
-package lexer
+package lexer.one.zero
 
 import common.token.StringLiteralToken
+import lexer.Lexer
 import org.junit.jupiter.api.Test
 
 class LexerStringLiteralTest {

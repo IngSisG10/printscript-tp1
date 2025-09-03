@@ -1,7 +1,8 @@
-package lexer
+package lexer.one.zero
 
 import common.token.NewLineToken
 import common.token.WhiteSpaceToken
+import lexer.Lexer
 import org.junit.jupiter.api.Test
 
 class LexerVariableTest {

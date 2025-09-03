@@ -1,8 +1,9 @@
-package lexer
+package lexer.one.zero
 
 import common.token.NumberLiteralToken
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
+import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test

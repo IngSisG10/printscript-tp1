@@ -1,7 +1,8 @@
-package lexer
+package lexer.one.zero
 
 import common.enums.OperationEnum
 import common.token.OperationToken
+import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

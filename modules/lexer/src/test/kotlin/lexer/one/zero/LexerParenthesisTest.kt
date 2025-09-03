@@ -1,10 +1,11 @@
-package lexer
+package lexer.one.zero
 
 import common.token.CloseParenthesisToken
 import common.token.NewLineToken
 import common.token.OpenParenthesisToken
 import common.token.VariableToken
 import common.token.WhiteSpaceToken
+import lexer.Lexer
 import org.junit.jupiter.api.Test
 
 class LexerParenthesisTest {
