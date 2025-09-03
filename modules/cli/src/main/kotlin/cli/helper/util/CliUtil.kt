@@ -2,15 +2,7 @@ package cli.helper.util
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import lexer.Lexer
-import lexer.token.TokenRule
-import lexer.token.rules.IdentifierRule
-import lexer.token.rules.KeywordOnePointOneRule
-import lexer.token.rules.KeywordRule
-import lexer.token.rules.NumberLiteralRule
-import lexer.token.rules.ParenthesisRule
-import lexer.token.rules.SingleCharRule
-import lexer.token.rules.StringLiteralRule
+import lexer.util.LexerUtil
 import linter.Linter
 import linter.syntax.LinterRule
 import linter.syntax.rules.CamelCaseRule
@@ -25,7 +17,7 @@ data class Config(
     val rules: List<String>,
 )
 
-interface CliUtil {
+interface CliUtil : LexerUtil {
     fun findFile(filename: String): String? {
         val file = File(filename)
 
@@ -35,26 +27,6 @@ interface CliUtil {
         }
 
         return file.readText()
-    }
-
-    fun createLexer(version: String): Lexer {
-        val versionOnePointOne =
-            listOf<TokenRule>(
-                StringLiteralRule(),
-                NumberLiteralRule(),
-                KeywordRule(),
-                KeywordOnePointOneRule(),
-                ParenthesisRule(),
-                SingleCharRule(),
-                IdentifierRule(),
-                // TODO: add new features here
-            )
-
-        return when (version) {
-            "1.1" -> Lexer(versionOnePointOne)
-            "1.0" -> Lexer() // 1.0 is default
-            else -> throw Exception("Unsupported version")
-        }
     }
 
     fun createLinter(str: String): Linter {
