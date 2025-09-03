@@ -1,10 +1,9 @@
 package interpreter
 
-import enums.TypeEnum
-import exception.InterpreterException
-import exception.TypeMismatchException
-import exception.UndefinedVariableException
-import exception.UninitializedVariableException
+import common.exception.InterpreterException
+import common.exception.TypeMismatchException
+import common.exception.UndefinedVariableException
+import common.exception.UninitializedVariableException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -21,7 +20,7 @@ class EnvironmentTest {
     @Test
     fun testDeclareAndGetNumberVariable() {
         val value = NumberValue(42.0)
-        environment.declareVariable("x", TypeEnum.NUMBER, value)
+        environment.declareVariable("x", common.enums.TypeEnum.NUMBER, value)
 
         val retrievedValue = environment.getValue("x")
         assertEquals(value, retrievedValue)
@@ -30,7 +29,7 @@ class EnvironmentTest {
     @Test
     fun testDeclareAndGetStringVariable() {
         val value = StringValue("Hello, World!")
-        environment.declareVariable("message", TypeEnum.STRING, value)
+        environment.declareVariable("message", common.enums.TypeEnum.STRING, value)
 
         val retrievedValue = environment.getValue("message")
         assertEquals(value, retrievedValue)
@@ -38,7 +37,7 @@ class EnvironmentTest {
 
     @Test
     fun testDeclareVariableWithoutInitialValue() {
-        environment.declareVariable("x", TypeEnum.NUMBER)
+        environment.declareVariable("x", common.enums.TypeEnum.NUMBER)
 
         assertThrows(UninitializedVariableException::class.java) {
             environment.getValue("x")
@@ -47,7 +46,7 @@ class EnvironmentTest {
 
     @Test
     fun testSetVariableAfterDeclaration() {
-        environment.declareVariable("x", TypeEnum.NUMBER)
+        environment.declareVariable("x", common.enums.TypeEnum.NUMBER)
         val value = NumberValue(10.0)
         environment.setVariable("x", value)
 
@@ -57,10 +56,10 @@ class EnvironmentTest {
 
     @Test
     fun testVariableRedeclarationThrowsException() {
-        environment.declareVariable("x", TypeEnum.NUMBER, NumberValue(5.0))
+        environment.declareVariable("x", common.enums.TypeEnum.NUMBER, NumberValue(5.0))
 
         assertThrows(InterpreterException::class.java) {
-            environment.declareVariable("x", TypeEnum.STRING, StringValue("hello"))
+            environment.declareVariable("x", common.enums.TypeEnum.STRING, StringValue("hello"))
         }
     }
 
@@ -80,7 +79,7 @@ class EnvironmentTest {
 
     @Test
     fun testSetVariableWithWrongTypeThrowsException() {
-        environment.declareVariable("x", TypeEnum.NUMBER, NumberValue(10.0))
+        environment.declareVariable("x", common.enums.TypeEnum.NUMBER, NumberValue(10.0))
 
         assertThrows(TypeMismatchException::class.java) {
             environment.setVariable("x", StringValue("not a number"))
@@ -89,7 +88,7 @@ class EnvironmentTest {
 
     @Test
     fun testSetStringVariableWithNumberThrowsException() {
-        environment.declareVariable("message", TypeEnum.STRING, StringValue("hello"))
+        environment.declareVariable("message", common.enums.TypeEnum.STRING, StringValue("hello"))
 
         assertThrows(TypeMismatchException::class.java) {
             environment.setVariable("message", NumberValue(42.0))
@@ -98,7 +97,7 @@ class EnvironmentTest {
 
     @Test
     fun testAnyTypeAcceptsAnyValue() {
-        environment.declareVariable("x", TypeEnum.ANY)
+        environment.declareVariable("x", common.enums.TypeEnum.ANY)
 
         environment.setVariable("x", NumberValue(42.0))
         assertEquals(NumberValue(42.0), environment.getValue("x"))
@@ -109,9 +108,9 @@ class EnvironmentTest {
 
     @Test
     fun testMultipleVariables() {
-        environment.declareVariable("x", TypeEnum.NUMBER, NumberValue(10.0))
-        environment.declareVariable("y", TypeEnum.STRING, StringValue("hello"))
-        environment.declareVariable("z", TypeEnum.ANY, NumberValue(20.0))
+        environment.declareVariable("x", common.enums.TypeEnum.NUMBER, NumberValue(10.0))
+        environment.declareVariable("y", common.enums.TypeEnum.STRING, StringValue("hello"))
+        environment.declareVariable("z", common.enums.TypeEnum.ANY, NumberValue(20.0))
 
         assertEquals(NumberValue(10.0), environment.getValue("x"))
         assertEquals(StringValue("hello"), environment.getValue("y"))
@@ -120,7 +119,7 @@ class EnvironmentTest {
 
     @Test
     fun testVariableUpdate() {
-        environment.declareVariable("counter", TypeEnum.NUMBER, NumberValue(0.0))
+        environment.declareVariable("counter", common.enums.TypeEnum.NUMBER, NumberValue(0.0))
         assertEquals(NumberValue(0.0), environment.getValue("counter"))
 
         environment.setVariable("counter", NumberValue(1.0))

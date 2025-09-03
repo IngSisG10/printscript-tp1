@@ -1,17 +1,17 @@
 package parser.validators
 
-import exception.UnrecognizedLineException
+import common.exception.UnrecognizedLineException
+import common.token.ParenthesisToken
+import common.token.abs.TokenInterface
 import parser.StructureValidator
-import token.ParenthesisToken
-import token.abs.TokenInterface
 
 class FunctionValidator : StructureValidator {
-    override fun validate(line: List<TokenInterface>) {
+    override fun validate(line: List<common.token.abs.TokenInterface>) {
         if (line.size > 2) {
-            throw UnrecognizedLineException("Invalid function structure")
+            throw common.exception.UnrecognizedLineException("Invalid function structure")
         }
-        if (line[1] !is ParenthesisToken) {
-            throw UnrecognizedLineException("Expected '(', got: ${line[1].name}")
+        if (line[1] !is common.token.ParenthesisToken) {
+            throw common.exception.UnrecognizedLineException("Expected '(', got: ${line[1].name}")
         }
     }
 }

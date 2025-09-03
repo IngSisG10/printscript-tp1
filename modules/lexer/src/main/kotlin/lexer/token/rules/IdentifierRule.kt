@@ -1,7 +1,7 @@
 package lexer.token.rules
 
+import common.token.VariableToken
 import lexer.token.TokenRule
-import token.VariableToken
 
 class IdentifierRule : TokenRule {
     override fun match(
@@ -23,6 +23,6 @@ class IdentifierRule : TokenRule {
 
         val text = line.substring(index, i)
 
-        return TokenRule.MatchResult(VariableToken(text, row, index), i)
+        return TokenRule.MatchResult(common.token.VariableToken(text, row, index), i)
     }
 }

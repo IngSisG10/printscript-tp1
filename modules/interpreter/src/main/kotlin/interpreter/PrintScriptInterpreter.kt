@@ -1,21 +1,18 @@
 package interpreter
 
-import ast.AssignmentNode
-import ast.BinaryOpNode
-import ast.DeclaratorNode
-import ast.FunctionNode
-import ast.IdentifierNode
-import ast.LiteralNode
-import ast.MonoOpNode
-import ast.VariableNode
-import ast.abs.AstInterface
-import ast.abs.AstVisitor
-import enums.FunctionEnum
-import enums.OperationEnum
-import enums.TypeEnum
-import exception.DivisionByZeroException
-import exception.InterpreterException
-import exception.TypeMismatchException
+import common.ast.AssignmentNode
+import common.ast.BinaryOpNode
+import common.ast.DeclaratorNode
+import common.ast.FunctionNode
+import common.ast.IdentifierNode
+import common.ast.LiteralNode
+import common.ast.MonoOpNode
+import common.ast.VariableNode
+import common.ast.abs.AstInterface
+import common.ast.abs.AstVisitor
+import common.exception.DivisionByZeroException
+import common.exception.InterpreterException
+import common.exception.TypeMismatchException
 
 // hacer un dispatcher para las funciones
 class PrintScriptInterpreter : AstVisitor {
@@ -40,10 +37,10 @@ class PrintScriptInterpreter : AstVisitor {
 
         currentValue =
             when (node.operator) {
-                OperationEnum.SUM -> evaluateAddition(leftValue, rightValue)
-                OperationEnum.MINUS -> evaluateSubtraction(leftValue, rightValue)
-                OperationEnum.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
-                OperationEnum.DIVIDE -> evaluateDivision(leftValue, rightValue)
+                common.enums.OperationEnum.SUM -> evaluateAddition(leftValue, rightValue)
+                common.enums.OperationEnum.MINUS -> evaluateSubtraction(leftValue, rightValue)
+                common.enums.OperationEnum.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
+                common.enums.OperationEnum.DIVIDE -> evaluateDivision(leftValue, rightValue)
                 else -> throw InterpreterException("Unknown operator: ${node.operator}")
             }
     }
@@ -109,7 +106,7 @@ class PrintScriptInterpreter : AstVisitor {
         val literalValue = node.value
         currentValue =
             when (node.type) {
-                TypeEnum.NUMBER -> {
+                common.enums.TypeEnum.NUMBER -> {
                     val value =
                         when (literalValue) {
                             is Number -> literalValue.toDouble()
@@ -122,15 +119,15 @@ class PrintScriptInterpreter : AstVisitor {
                     NumberValue(value)
                 }
 
-                TypeEnum.STRING -> {
+                common.enums.TypeEnum.STRING -> {
                     StringValue(literalValue?.toString() ?: "")
                 }
 
-                TypeEnum.BOOLEAN -> {
+                common.enums.TypeEnum.BOOLEAN -> {
                     throw InterpreterException("Boolean type not supported in PrintScript 1.0")
                 }
 
-                TypeEnum.ANY -> {
+                common.enums.TypeEnum.ANY -> {
                     when (literalValue) {
                         is Number -> NumberValue(literalValue.toDouble())
                         is String -> StringValue(literalValue)
@@ -163,22 +160,22 @@ class PrintScriptInterpreter : AstVisitor {
 
     private fun validateValueForType(
         value: Value,
-        type: TypeEnum,
+        type: common.enums.TypeEnum,
     ) {
         when (type) {
-            TypeEnum.NUMBER -> {
+            common.enums.TypeEnum.NUMBER -> {
                 if (value !is NumberValue) {
                     throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
                 }
             }
 
-            TypeEnum.STRING -> {
+            common.enums.TypeEnum.STRING -> {
                 if (value !is StringValue) {
                     throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
                 }
             }
 
-            TypeEnum.ANY -> {}
+            common.enums.TypeEnum.ANY -> {}
             else -> throw InterpreterException("Unsupported type: $type")
         }
     }
@@ -193,7 +190,7 @@ class PrintScriptInterpreter : AstVisitor {
 
     override fun visitFunction(node: FunctionNode) {
         when (node.functionName) {
-            FunctionEnum.PRINTLN -> {
+            common.enums.FunctionEnum.PRINTLN -> {
                 node.arguments.accept(this)
                 val value = currentValue ?: throw InterpreterException("println argument did not produce a value")
                 output.add(value.toStringValue())
@@ -203,7 +200,7 @@ class PrintScriptInterpreter : AstVisitor {
     }
 
     override fun visitAssignment(node: AssignmentNode) {
-        if (node.operator != OperationEnum.EQUAL) {
+        if (node.operator != common.enums.OperationEnum.EQUAL) {
             throw InterpreterException("Unsupported assignment operator: ${node.operator}")
         }
         // TODO: review value = current value
