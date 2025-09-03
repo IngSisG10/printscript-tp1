@@ -39,4 +39,6 @@ class CamelCaseRule : LinterRule {
         }
         return list
     }
+
+    override fun getName(): String = "camel_case_rule"
 }

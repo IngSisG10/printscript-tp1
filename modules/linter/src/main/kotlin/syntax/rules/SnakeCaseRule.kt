@@ -39,4 +39,6 @@ class SnakeCaseRule : LinterRule {
         }
         return list
     }
+
+    override fun getName(): String = "snake_case_rule"
 }

@@ -39,4 +39,6 @@ class PascalCaseRule : LinterRule {
         }
         return list
     }
+
+    override fun getName(): String = "pascal_case_rule"
 }

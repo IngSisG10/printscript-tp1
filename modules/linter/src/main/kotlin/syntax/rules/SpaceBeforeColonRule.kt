@@ -35,4 +35,6 @@ class SpaceBeforeColonRule : LinterRule {
         }
         return list
     }
+
+    override fun getName(): String = "space_before_colon_rule"
 }

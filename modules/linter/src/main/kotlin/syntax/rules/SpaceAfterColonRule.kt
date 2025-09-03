@@ -35,4 +35,6 @@ class SpaceAfterColonRule : LinterRule {
         }
         return list
     }
+
+    override fun getName(): String = "space_after_colon_rule"
 }
