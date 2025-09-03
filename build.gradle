@@ -44,7 +44,8 @@ def publishTargets = [
         project(':parser'),
         project(':interpreter'),
         project(":linter"),
-        project(":formatter")
+        project(":formatter"),
+        project(":cli")
 ]
 
 configure(publishTargets) {
