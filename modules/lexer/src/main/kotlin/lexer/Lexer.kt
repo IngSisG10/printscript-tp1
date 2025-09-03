@@ -2,6 +2,7 @@ package lexer
 
 import exception.UnknownExpressionException
 import lexer.token.TokenRule
+import token.NewLineToken
 import token.WhiteSpaceToken
 import token.abs.TokenInterface
 
@@ -22,6 +23,7 @@ class Lexer(
             val c = text[i]
             when {
                 c == '\n' -> {
+                    tokens.add(NewLineToken(row, i))
                     row++
                     i++
                 }
