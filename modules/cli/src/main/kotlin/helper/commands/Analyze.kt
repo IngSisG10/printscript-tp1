@@ -21,8 +21,8 @@ class Analyze :
     private val file by argument()
     private val config by argument()
 
-    private val fileText = tryFindFile(file) ?: throw throw InvalidFileException("No file was found")
-    private val configFileText = tryFindFile(config) ?: throw throw InvalidFileException("No file was found")
+    private val fileText = findFile(file) ?: throw throw InvalidFileException("No file was found")
+    private val configFileText = findFile(config) ?: throw throw InvalidFileException("No file was found")
 
     override fun run() {
         val linter = addConfig(configFileText)

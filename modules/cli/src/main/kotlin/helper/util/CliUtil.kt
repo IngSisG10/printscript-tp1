@@ -3,7 +3,7 @@ package helper.util
 import java.io.File
 
 interface CliUtil {
-    fun tryFindFile(filename: String): String? {
+    fun findFile(filename: String): String? {
         val file = File(filename)
 
         if (!file.exists()) {
