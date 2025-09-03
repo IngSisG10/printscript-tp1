@@ -18,11 +18,11 @@ class LexerKeywordsTest {
     fun testEachKeywordIndividually() {
         val cases =
             listOf(
-                "println" to common.token.FunctionToken::class.java,
-                "let" to common.token.VariableDeclaratorToken::class.java,
-                "String" to common.token.TypeToken::class.java,
-                "Number" to common.token.TypeToken::class.java,
-                "Any" to common.token.TypeToken::class.java,
+                "println" to FunctionToken::class.java,
+                "let" to VariableDeclaratorToken::class.java,
+                "String" to TypeToken::class.java,
+                "Number" to TypeToken::class.java,
+                "Any" to TypeToken::class.java,
             )
 
         for ((code, expectedType) in cases) {
