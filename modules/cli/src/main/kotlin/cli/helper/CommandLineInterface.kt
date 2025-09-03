@@ -1,4 +1,4 @@
-package helper
+package cli.helper
 
 import com.github.ajalt.clikt.core.CliktCommand
 

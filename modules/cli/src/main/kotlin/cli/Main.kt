@@ -1,9 +1,11 @@
+package cli
+
+import cli.helper.CommandLineInterface
+import cli.helper.commands.Analyze
+import cli.helper.commands.Execute
+import cli.helper.commands.Format
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.core.subcommands
-import helper.CommandLineInterface
-import helper.commands.Analyze
-import helper.commands.Execute
-import helper.commands.Format
 
 fun main(args: Array<String>): Unit =
     CommandLineInterface()

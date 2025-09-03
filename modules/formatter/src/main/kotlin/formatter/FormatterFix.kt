@@ -1,3 +1,5 @@
+package formatter
+
 import data.LinterData
 import token.abs.TokenInterface
 

@@ -1,12 +1,12 @@
-package helper.commands
+package cli.helper.commands
 
+import cli.helper.util.CliUtil
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import exception.InvalidFileException
-import helper.util.CliUtil
 import interpreter.PrintScriptInterpreter
 import parser.Parser
 

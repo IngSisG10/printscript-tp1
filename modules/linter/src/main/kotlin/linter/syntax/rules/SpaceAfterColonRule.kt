@@ -1,18 +1,18 @@
-package syntax.rules
+package linter.syntax.rules
 
 import data.LinterData
-import exception.NoSpaceBeforeColonException
-import syntax.LinterRule
+import exception.NoSpaceAfterColonException
+import linter.syntax.LinterRule
 import token.TypeDeclaratorToken
 import token.WhiteSpaceToken
 import token.abs.TokenInterface
 
-class SpaceBeforeColonRule : LinterRule {
+class SpaceAfterColonRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {
             if (token is TypeDeclaratorToken) {
-                if (tokens[index - 1] !is WhiteSpaceToken) {
-                    throw NoSpaceBeforeColonException()
+                if (tokens[index + 1] !is WhiteSpaceToken) {
+                    throw NoSpaceAfterColonException()
                 }
             }
         }
@@ -23,10 +23,10 @@ class SpaceBeforeColonRule : LinterRule {
         val list = mutableListOf<LinterData>()
         for ((index, token) in tokens.withIndex()) {
             if (token is TypeDeclaratorToken) {
-                if (tokens[index - 1] !is WhiteSpaceToken) {
+                if (tokens[index + 1] !is WhiteSpaceToken) {
                     list.add(
                         LinterData(
-                            exception = NoSpaceBeforeColonException(),
+                            exception = NoSpaceAfterColonException(),
                             position = index,
                         ),
                     )
@@ -36,5 +36,5 @@ class SpaceBeforeColonRule : LinterRule {
         return list
     }
 
-    override fun getName(): String = "space_before_colon_rule"
+    override fun getName(): String = "space_after_colon_rule"
 }

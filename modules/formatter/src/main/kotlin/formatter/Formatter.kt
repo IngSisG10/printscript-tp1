@@ -1,4 +1,9 @@
+package formatter
+
 import data.LinterData
+import formatter.fixes.SpaceAfterColon
+import formatter.fixes.SpaceBeforeColon
+import linter.Linter
 import token.abs.TokenInterface
 
 class Formatter(
@@ -6,8 +11,8 @@ class Formatter(
 ) {
     private val formatterRules: List<FormatterFix> =
         listOf(
-            fixes.SpaceBeforeColon(),
-            fixes.SpaceAfterColon(),
+            SpaceBeforeColon(),
+            SpaceAfterColon(),
         )
 
     fun format(tokens: List<TokenInterface>): String {

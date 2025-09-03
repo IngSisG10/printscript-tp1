@@ -1,5 +1,7 @@
+package linter
+
 import data.LinterData
-import syntax.LinterRule
+import linter.syntax.LinterRule
 import token.abs.TokenInterface
 
 class Linter(

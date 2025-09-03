@@ -1,8 +1,8 @@
-package fixes
+package formatter.fixes
 
-import FormatterFix
 import data.LinterData
 import exception.NoSpaceBeforeColonException
+import formatter.FormatterFix
 import token.TypeDeclaratorToken
 import token.abs.TokenInterface
 

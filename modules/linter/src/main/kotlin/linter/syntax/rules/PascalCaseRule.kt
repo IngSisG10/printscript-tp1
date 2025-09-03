@@ -1,18 +1,18 @@
-package syntax.rules
+package linter.syntax.rules
 
 import data.LinterData
-import exception.InvalidCamelCaseException
-import syntax.LinterRule
+import exception.InvalidPascalCaseException
+import linter.syntax.LinterRule
 import token.VariableToken
 import token.abs.TokenInterface
 
-class CamelCaseRule : LinterRule {
+class PascalCaseRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {
         for (token in tokens) {
             if (token is VariableToken) {
                 val varName = token.value
-                if (!varName.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
-                    return InvalidCamelCaseException("Invalid camelCase identifier at row ${token.row}, index ${token.position}")
+                if (!varName.matches(Regex("\\b(?:[A-Z][a-z0-9]*)+\\b"))) {
+                    return InvalidPascalCaseException("Invalid PascalCase identifier at row ${token.row}, index ${token.position}")
                 }
             }
         }
@@ -24,13 +24,13 @@ class CamelCaseRule : LinterRule {
         for ((index, token) in tokens.withIndex()) {
             if (token is VariableToken) {
                 val varName = token.value
-                if (!varName.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
+                if (!varName.matches(Regex("\\b(?:[A-Z][a-z0-9]*)+\\b"))) {
                     list.add(
                         LinterData(
                             position = index,
                             exception =
-                                InvalidCamelCaseException(
-                                    "Invalid camelCase identifier at row ${token.row}, index ${token.position}",
+                                InvalidPascalCaseException(
+                                    "Invalid PascalCase identifier at row ${token.row}, index ${token.position}",
                                 ),
                         ),
                     )
@@ -40,5 +40,5 @@ class CamelCaseRule : LinterRule {
         return list
     }
 
-    override fun getName(): String = "camel_case_rule"
+    override fun getName(): String = "pascal_case_rule"
 }

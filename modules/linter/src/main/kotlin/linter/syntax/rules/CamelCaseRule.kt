@@ -1,18 +1,18 @@
-package syntax.rules
+package linter.syntax.rules
 
 import data.LinterData
-import exception.InvalidSnakeCaseException
-import syntax.LinterRule
+import exception.InvalidCamelCaseException
+import linter.syntax.LinterRule
 import token.VariableToken
 import token.abs.TokenInterface
 
-class SnakeCaseRule : LinterRule {
+class CamelCaseRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {
         for (token in tokens) {
             if (token is VariableToken) {
                 val varName = token.value
-                if (!varName.matches(Regex("\\b[a-z0-9]+(?:_[a-z0-9]+)*\\b"))) {
-                    return InvalidSnakeCaseException("Invalid snake_case identifier at row ${token.row}, index ${token.position}")
+                if (!varName.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
+                    return InvalidCamelCaseException("Invalid camelCase identifier at row ${token.row}, index ${token.position}")
                 }
             }
         }
@@ -24,13 +24,13 @@ class SnakeCaseRule : LinterRule {
         for ((index, token) in tokens.withIndex()) {
             if (token is VariableToken) {
                 val varName = token.value
-                if (!varName.matches(Regex("\\b[a-z0-9]+(?:_[a-z0-9]+)*\\b"))) {
+                if (!varName.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
                     list.add(
                         LinterData(
                             position = index,
                             exception =
-                                InvalidSnakeCaseException(
-                                    "Invalid snake_case identifier at row ${token.row}, index ${token.position}",
+                                InvalidCamelCaseException(
+                                    "Invalid camelCase identifier at row ${token.row}, index ${token.position}",
                                 ),
                         ),
                     )
@@ -40,5 +40,5 @@ class SnakeCaseRule : LinterRule {
         return list
     }
 
-    override fun getName(): String = "snake_case_rule"
+    override fun getName(): String = "camel_case_rule"
 }

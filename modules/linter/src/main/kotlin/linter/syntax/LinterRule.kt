@@ -1,4 +1,4 @@
-package syntax
+package linter.syntax
 
 import data.LinterData
 import token.abs.TokenInterface

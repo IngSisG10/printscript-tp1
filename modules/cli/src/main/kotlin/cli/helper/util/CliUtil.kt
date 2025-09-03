@@ -1,6 +1,5 @@
-package helper.util
+package cli.helper.util
 
-import Linter
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import lexer.Lexer
@@ -12,12 +11,13 @@ import lexer.token.rules.NumberLiteralRule
 import lexer.token.rules.ParenthesisRule
 import lexer.token.rules.SingleCharRule
 import lexer.token.rules.StringLiteralRule
-import syntax.LinterRule
-import syntax.rules.CamelCaseRule
-import syntax.rules.PascalCaseRule
-import syntax.rules.SnakeCaseRule
-import syntax.rules.SpaceAfterColonRule
-import syntax.rules.SpaceBeforeColonRule
+import linter.Linter
+import linter.syntax.LinterRule
+import linter.syntax.rules.CamelCaseRule
+import linter.syntax.rules.PascalCaseRule
+import linter.syntax.rules.SnakeCaseRule
+import linter.syntax.rules.SpaceAfterColonRule
+import linter.syntax.rules.SpaceBeforeColonRule
 import java.io.File
 
 @Serializable

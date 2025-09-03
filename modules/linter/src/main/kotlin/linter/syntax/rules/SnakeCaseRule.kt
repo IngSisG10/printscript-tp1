@@ -1,18 +1,18 @@
-package syntax.rules
+package linter.syntax.rules
 
 import data.LinterData
-import exception.InvalidPascalCaseException
-import syntax.LinterRule
+import exception.InvalidSnakeCaseException
+import linter.syntax.LinterRule
 import token.VariableToken
 import token.abs.TokenInterface
 
-class PascalCaseRule : LinterRule {
+class SnakeCaseRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {
         for (token in tokens) {
             if (token is VariableToken) {
                 val varName = token.value
-                if (!varName.matches(Regex("\\b(?:[A-Z][a-z0-9]*)+\\b"))) {
-                    return InvalidPascalCaseException("Invalid PascalCase identifier at row ${token.row}, index ${token.position}")
+                if (!varName.matches(Regex("\\b[a-z0-9]+(?:_[a-z0-9]+)*\\b"))) {
+                    return InvalidSnakeCaseException("Invalid snake_case identifier at row ${token.row}, index ${token.position}")
                 }
             }
         }
@@ -24,13 +24,13 @@ class PascalCaseRule : LinterRule {
         for ((index, token) in tokens.withIndex()) {
             if (token is VariableToken) {
                 val varName = token.value
-                if (!varName.matches(Regex("\\b(?:[A-Z][a-z0-9]*)+\\b"))) {
+                if (!varName.matches(Regex("\\b[a-z0-9]+(?:_[a-z0-9]+)*\\b"))) {
                     list.add(
                         LinterData(
                             position = index,
                             exception =
-                                InvalidPascalCaseException(
-                                    "Invalid PascalCase identifier at row ${token.row}, index ${token.position}",
+                                InvalidSnakeCaseException(
+                                    "Invalid snake_case identifier at row ${token.row}, index ${token.position}",
                                 ),
                         ),
                     )
@@ -40,5 +40,5 @@ class PascalCaseRule : LinterRule {
         return list
     }
 
-    override fun getName(): String = "pascal_case_rule"
+    override fun getName(): String = "snake_case_rule"
 }
