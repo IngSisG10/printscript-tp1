@@ -13,10 +13,9 @@ class Analyze :
     private val config by argument()
     private val version by argument().default("1.0")
 
-    private val fileText = findFile(file) ?: throw throw InvalidFileException("No file was found")
-    private val configFileText = findFile(config) ?: throw throw InvalidFileException("No file was found")
-
     override fun run() {
+        val fileText = findFile(file) ?: throw throw InvalidFileException("No file was found")
+        val configFileText = findFile(config) ?: throw throw InvalidFileException("No file was found")
         val linter = createLinter(configFileText)
         val lexer = createLexer(version)
         val tokens = lexer.lex(fileText)

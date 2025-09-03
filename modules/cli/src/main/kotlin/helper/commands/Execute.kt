@@ -13,12 +13,12 @@ class Execute :
     CliktCommand(),
     CliUtil {
     private val fileName by argument()
-    private val fileText = findFile(fileName) ?: throw throw InvalidFileException("No file was found")
     private val version by argument().default("1.0")
 
     override fun help(context: Context) = "Execute the desired file"
 
     override fun run() {
+        val fileText = findFile(fileName) ?: throw throw InvalidFileException("No file was found")
         val lexer = createLexer(version)
         val tokens = lexer.lex(fileText)
         val parser = Parser(tokens)

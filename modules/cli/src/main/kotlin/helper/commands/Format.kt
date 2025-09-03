@@ -3,7 +3,8 @@ package helper.commands
 import Formatter
 import com.github.ajalt.clikt.core.CoreCliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.default
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.option
 import exception.InvalidFileException
 import helper.util.CliUtil
 
@@ -12,7 +13,7 @@ class Format :
     CliUtil {
     private val file by argument()
     private val config by argument()
-    private val version by argument().default("1.0")
+    private val version by option().default("1.0")
 
     override fun run() {
         val code = findFile(file) ?: throw InvalidFileException()
