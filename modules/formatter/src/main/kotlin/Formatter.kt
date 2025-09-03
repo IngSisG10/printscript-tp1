@@ -2,7 +2,7 @@ import data.LinterData
 import token.abs.TokenInterface
 
 class Formatter(
-    private val tokens: List<TokenInterface>,
+    private val linter: Linter = Linter(),
 ) {
     private val formatterRules: List<FormatterFix> =
         listOf(
@@ -10,9 +10,7 @@ class Formatter(
             fixes.SpaceAfterColon(),
         )
 
-    private val linter = Linter()
-
-    fun format(): String {
+    fun format(tokens: List<TokenInterface>): String {
         val issues: List<LinterData> = linter.formatterLint(tokens)
         if (issues.isEmpty()) return convert(tokens)
         var newTokenList: List<TokenInterface> = tokens
