@@ -1,21 +1,20 @@
 package lexer.token.rules
 
-import enums.FunctionEnum
 import enums.TypeEnum
 import lexer.token.TokenRule
-import token.FunctionToken
+import token.ConstantDeclaratorToken
+import token.ElseToken
+import token.IfToken
 import token.TypeToken
-import token.VariableDeclaratorToken
 import token.abs.TokenInterface
 
-class KeywordRule : TokenRule {
+class KeywordOnePointOneRule : TokenRule {
     private val keywords: List<Pair<String, (Int, Int) -> TokenInterface>> =
         listOf(
-            "println" to { r, c -> FunctionToken(FunctionEnum.PRINTLN, r, c) },
-            "let" to { r, c -> VariableDeclaratorToken(r, c) },
-            "String" to { r, c -> TypeToken(TypeEnum.STRING, r, c) },
-            "Number" to { r, c -> TypeToken(TypeEnum.NUMBER, r, c) },
-            "Any" to { r, c -> TypeToken(TypeEnum.ANY, r, c) },
+            "Boolean" to { r, c -> TypeToken(TypeEnum.BOOLEAN, r, c) },
+            "const" to { r, c -> ConstantDeclaratorToken(r, c) },
+            "if" to { r, c -> IfToken(r, c) },
+            "else" to { r, c -> ElseToken(r, c) },
         )
 
     override fun match(
