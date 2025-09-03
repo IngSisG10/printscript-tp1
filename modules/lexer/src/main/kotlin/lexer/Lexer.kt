@@ -2,32 +2,16 @@ package lexer
 
 import exception.UnknownExpressionException
 import lexer.token.TokenRule
-import lexer.token.rules.IdentifierRule
-import lexer.token.rules.KeywordRule
-import lexer.token.rules.NumberLiteralRule
-import lexer.token.rules.ParenthesisRule
-import lexer.token.rules.SingleCharRule
-import lexer.token.rules.StringLiteralRule
 import token.WhiteSpaceToken
 import token.abs.TokenInterface
 
 class Lexer(
-    private val code: String,
+    private val tokenRules: List<TokenRule>,
 ) {
-    private val tokenRules: List<TokenRule> =
-        listOf(
-            StringLiteralRule(),
-            NumberLiteralRule(),
-            KeywordRule(),
-            ParenthesisRule(),
-            SingleCharRule(),
-            IdentifierRule(),
-        )
-
     private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
 
-    fun lex(): List<TokenInterface> {
+    fun lex(code: String): List<TokenInterface> {
         tokenize(code)
         return tokens
     }

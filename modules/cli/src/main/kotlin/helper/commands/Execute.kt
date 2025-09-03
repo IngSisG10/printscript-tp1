@@ -7,7 +7,6 @@ import com.github.ajalt.clikt.parameters.arguments.default
 import exception.InvalidFileException
 import helper.util.CliUtil
 import interpreter.PrintScriptInterpreter
-import lexer.Lexer
 import parser.Parser
 
 class Execute :
@@ -15,13 +14,13 @@ class Execute :
     CliUtil {
     private val fileName by argument()
     private val fileText = findFile(fileName) ?: throw throw InvalidFileException("No file was found")
-    private val version by argument().default("1.1")
+    private val version by argument().default("1.0")
 
     override fun help(context: Context) = "Execute the desired file"
 
     override fun run() {
-        val lexer = Lexer(fileText)
-        val tokens = lexer.lex()
+        val lexer = createLexer(version)
+        val tokens = lexer.lex(fileText)
         val parser = Parser(tokens)
         val ast = parser.parse()
         val interpreter = PrintScriptInterpreter()
