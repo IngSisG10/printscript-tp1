@@ -1,11 +1,12 @@
-import helper.Cli
+import com.github.ajalt.clikt.core.main
+import com.github.ajalt.clikt.core.subcommands
+import helper.CommandLineInterface
+import helper.commands.Analyze
+import helper.commands.Execute
 
-fun main(args: Array<String>) {
-    val cli = Cli()
-    cli.execute(args)
-
-//    val lexer = Lexer("let a : Number = 5 + 5;")
-//    val tokens = lexer.lex()
-//    val parser = Parser(tokens)
-//    val ast = parser.parse()
-}
+fun main(args: Array<String>): Unit =
+    CommandLineInterface()
+        .subcommands(
+            Execute(),
+            Analyze(),
+        ).main(args)

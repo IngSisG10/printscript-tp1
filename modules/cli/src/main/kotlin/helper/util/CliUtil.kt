@@ -1,10 +1,8 @@
-package helper.commands
+package helper.util
 
 import java.io.File
 
-interface CliCommand {
-    fun tryRun(args: Array<String>)
-
+interface CliUtil {
     fun tryFindFile(filename: String): String? {
         val file = File(filename)
 

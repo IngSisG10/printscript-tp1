@@ -1,7 +1,10 @@
 package helper.commands
 
 import Linter
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.parameters.arguments.argument
 import exception.InvalidFileException
+import helper.util.CliUtil
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import lexer.Lexer
@@ -12,22 +15,27 @@ import syntax.rules.SnakeCaseRule
 import syntax.rules.SpaceAfterColonRule
 import syntax.rules.SpaceBeforeColonRule
 
-@Serializable
-data class Config(
-    val rules: List<String>,
-)
+class Analyze :
+    CliktCommand(),
+    CliUtil {
+    private val file by argument()
+    private val config by argument()
 
-class AnalyzingCommand : CliCommand {
-    override fun tryRun(args: Array<String>) {
-        if (args[0] != "analyze") return
-        val fileText = tryFindFile(args[1]) ?: throw InvalidFileException("No file was found")
-        val configFileText = tryFindFile(args[2]) ?: throw InvalidFileException("No config file was found")
+    private val fileText = tryFindFile(file) ?: throw throw InvalidFileException("No file was found")
+    private val configFileText = tryFindFile(config) ?: throw throw InvalidFileException("No file was found")
+
+    override fun run() {
         val linter = addConfig(configFileText)
         val lexer = Lexer(fileText)
         val tokens = lexer.lex()
         linter.lint(tokens)
         println("Code is in order")
     }
+
+    @Serializable
+    data class Config(
+        val rules: List<String>,
+    )
 
     private fun addConfig(configFileText: String): Linter {
         val config = Json.decodeFromString<Config>(configFileText)
