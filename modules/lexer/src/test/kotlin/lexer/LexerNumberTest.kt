@@ -10,14 +10,14 @@ import token.WhiteSpaceToken
 class LexerNumberTest {
     @Test
     fun testSingleNumber() {
-        val tokens = Lexer("123").lex()
+        val tokens = Lexer().lex("123")
         assertEquals(1, tokens.size)
         assertInstanceOf(NumberLiteralToken::class.java, tokens[0])
     }
 
     @Test
     fun testMultipleNumbersSeparatedBySpaces() {
-        val tokens = Lexer("0 1 2345").lex()
+        val tokens = Lexer().lex("0 1 2345")
         assertEquals(5, tokens.size)
         assertInstanceOf(NumberLiteralToken::class.java, tokens[0])
         assertInstanceOf(WhiteSpaceToken::class.java, tokens[1])
@@ -28,7 +28,7 @@ class LexerNumberTest {
 
     @Test
     fun testNumbersWithOperators() {
-        val tokens = Lexer("1+2-3*4/5").lex()
+        val tokens = Lexer().lex("1+2-3*4/5")
         // Expect: N, Op, N, Op, N, Op, N, Op, N  -> 9 tokens
         assertEquals(9, tokens.size)
         for (i in tokens.indices) {
@@ -42,7 +42,7 @@ class LexerNumberTest {
 
     @Test
     fun testNegativeNumbersAreMinusThenNumber() {
-        val tokens = Lexer("-1 -2").lex()
+        val tokens = Lexer().lex("-1 -2")
         // Expect: Op, N, Op, N
         assertEquals(5, tokens.size)
         assertInstanceOf(OperationToken::class.java, tokens[0])

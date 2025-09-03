@@ -23,16 +23,6 @@ interface CliUtil {
     }
 
     fun createLexer(version: String): Lexer {
-        val versionOnePointZero =
-            listOf<TokenRule>(
-                StringLiteralRule(),
-                NumberLiteralRule(),
-                KeywordRule(),
-                ParenthesisRule(),
-                SingleCharRule(),
-                IdentifierRule(),
-            )
-
         val versionOnePointOne =
             listOf<TokenRule>(
                 StringLiteralRule(),
@@ -46,7 +36,7 @@ interface CliUtil {
 
         return when (version) {
             "1.1" -> Lexer(versionOnePointOne)
-            "1.0" -> Lexer(versionOnePointZero)
+            "1.0" -> Lexer() // 1.0 is default
             else -> throw Exception("Unsupported version")
         }
     }

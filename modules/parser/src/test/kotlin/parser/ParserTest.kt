@@ -10,8 +10,8 @@ import kotlin.test.Test
 // fixme
 class ParserTest {
     private fun parseCode(code: String): List<Any> {
-        val lexer = Lexer(code)
-        val tokens = lexer.lex()
+        val lexer = Lexer()
+        val tokens = lexer.lex(code)
         val parser = Parser(tokens)
         return parser.parse()
     }

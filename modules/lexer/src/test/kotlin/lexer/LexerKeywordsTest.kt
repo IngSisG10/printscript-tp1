@@ -10,7 +10,7 @@ import token.VariableDeclaratorToken
 class LexerKeywordsTest {
     @Test
     fun testKeywordsInOneLine() {
-        val tokens = Lexer("println let String Boolean Number Any").lex()
+        val tokens = Lexer().lex("println let String Boolean Number Any")
         assertEquals(11, tokens.size)
     }
 
@@ -27,7 +27,7 @@ class LexerKeywordsTest {
             )
 
         for ((code, expectedType) in cases) {
-            val tokens = Lexer(code).lex()
+            val tokens = Lexer().lex(code)
             assertEquals(1, tokens.size, "Unexpected token count for input: $code")
             assertInstanceOf(expectedType, tokens.first(), "Unexpected token type for input: $code")
         }
