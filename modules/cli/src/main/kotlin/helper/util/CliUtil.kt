@@ -6,6 +6,7 @@ import kotlinx.serialization.json.Json
 import lexer.Lexer
 import lexer.token.TokenRule
 import lexer.token.rules.IdentifierRule
+import lexer.token.rules.KeywordOnePointOneRule
 import lexer.token.rules.KeywordRule
 import lexer.token.rules.NumberLiteralRule
 import lexer.token.rules.ParenthesisRule
@@ -42,6 +43,7 @@ interface CliUtil {
                 StringLiteralRule(),
                 NumberLiteralRule(),
                 KeywordRule(),
+                KeywordOnePointOneRule(),
                 ParenthesisRule(),
                 SingleCharRule(),
                 IdentifierRule(),

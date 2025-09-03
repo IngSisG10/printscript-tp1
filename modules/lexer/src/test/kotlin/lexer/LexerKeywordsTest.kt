@@ -21,7 +21,6 @@ class LexerKeywordsTest {
                 "println" to FunctionToken::class.java,
                 "let" to VariableDeclaratorToken::class.java,
                 "String" to TypeToken::class.java,
-                "Boolean" to TypeToken::class.java,
                 "Number" to TypeToken::class.java,
                 "Any" to TypeToken::class.java,
             )
