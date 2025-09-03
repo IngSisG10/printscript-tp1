@@ -70,6 +70,7 @@ interface CliUtil {
                 SnakeCaseRule(),
                 SpaceAfterColonRule(),
                 SpaceBeforeColonRule(),
+                // TODO: implement new rules here
             )
         val appliedRules = mutableListOf<LinterRule>()
         for (rule in rules) {
