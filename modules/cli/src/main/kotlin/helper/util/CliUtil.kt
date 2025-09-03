@@ -63,16 +63,22 @@ interface CliUtil {
     }
 
     private fun addLinterRules(rules: List<String>): List<LinterRule> {
-        val linterRules = mutableListOf<LinterRule>()
+        val linterRules =
+            listOf(
+                CamelCaseRule(),
+                PascalCaseRule(),
+                SnakeCaseRule(),
+                SpaceAfterColonRule(),
+                SpaceBeforeColonRule(),
+            )
+        val appliedRules = mutableListOf<LinterRule>()
         for (rule in rules) {
-            when (rule) {
-                "CamelCase" -> linterRules.add(CamelCaseRule())
-                "PascalCase" -> linterRules.add(PascalCaseRule())
-                "SnakeCaseRule" -> linterRules.add(SnakeCaseRule())
-                "SpaceAfterColon" -> linterRules.add(SpaceAfterColonRule())
-                "SpaceBeforeColon" -> linterRules.add(SpaceBeforeColonRule())
+            for (linterRule in linterRules) {
+                if (linterRule.getName() == rule) {
+                    appliedRules.add(linterRule)
+                }
             }
         }
-        return linterRules
+        return appliedRules
     }
 }
