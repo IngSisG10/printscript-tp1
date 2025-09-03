@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import exception.InvalidFileException
+import common.exception.InvalidFileException
 import interpreter.PrintScriptInterpreter
 import parser.Parser
 
@@ -23,7 +23,7 @@ class Execute :
     override fun help(context: Context) = "Execute the desired file"
 
     override fun run() {
-        val fileText = findFile(fileName) ?: throw throw InvalidFileException("No file was found")
+        val fileText = findFile(fileName) ?: throw throw common.exception.InvalidFileException("No file was found")
         val lexer = createLexer(version)
         val tokens = lexer.lex(fileText)
         val parser = Parser(tokens)

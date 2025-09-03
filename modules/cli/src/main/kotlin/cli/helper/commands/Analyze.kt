@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import exception.InvalidFileException
+import common.exception.InvalidFileException
 
 class Analyze :
     CliktCommand(),
@@ -19,8 +19,8 @@ class Analyze :
     ).default("1.0")
 
     override fun run() {
-        val fileText = findFile(file) ?: throw throw InvalidFileException("No file was found")
-        val configFileText = findFile(config) ?: throw throw InvalidFileException("No file was found")
+        val fileText = findFile(file) ?: throw throw common.exception.InvalidFileException("No file was found")
+        val configFileText = findFile(config) ?: throw throw common.exception.InvalidFileException("No file was found")
         val linter = createLinter(configFileText)
         val lexer = createLexer(version)
         val tokens = lexer.lex(fileText)

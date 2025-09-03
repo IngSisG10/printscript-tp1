@@ -1,9 +1,9 @@
 package lexer.token.rules
 
-import exception.NoMatchingParenthesisException
+import common.exception.NoMatchingParenthesisException
+import common.token.CloseParenthesisToken
+import common.token.OpenParenthesisToken
 import lexer.token.TokenRule
-import token.CloseParenthesisToken
-import token.OpenParenthesisToken
 
 class ParenthesisRule : TokenRule {
     private fun checkIfCorrectParenthesis(
@@ -16,14 +16,14 @@ class ParenthesisRule : TokenRule {
         return when (line[index]) {
             '(' ->
                 if (!hasMatchingClosing(line, index)) {
-                    NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
+                    common.exception.NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
                 } else {
                     null
                 }
 
             ')' ->
                 if (!hasMatchingOpening(line, index)) {
-                    NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
+                    common.exception.NoMatchingParenthesisException("No matching parenthesis found at row $row, index $index")
                 } else {
                     null
                 }
@@ -73,13 +73,13 @@ class ParenthesisRule : TokenRule {
     ): TokenRule.MatchResult? {
         checkIfCorrectParenthesis(line, index, row)
         if (line[index] == '(') {
-            val token = OpenParenthesisToken(row, index)
+            val token = common.token.OpenParenthesisToken(row, index)
             return TokenRule.MatchResult(
                 token,
                 index + 1,
             )
         } else if (line[index] == ')') {
-            val token = CloseParenthesisToken(row, index)
+            val token = common.token.CloseParenthesisToken(row, index)
             return TokenRule.MatchResult(
                 token,
                 index + 1,

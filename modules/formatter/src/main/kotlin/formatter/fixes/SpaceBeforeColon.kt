@@ -1,19 +1,19 @@
 package formatter.fixes
 
-import data.LinterData
-import exception.NoSpaceBeforeColonException
+import common.data.LinterData
+import common.exception.NoSpaceBeforeColonException
+import common.token.TypeDeclaratorToken
+import common.token.abs.TokenInterface
 import formatter.FormatterFix
-import token.TypeDeclaratorToken
-import token.abs.TokenInterface
 
 class SpaceBeforeColon : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceBeforeColonException
+    override fun canFix(issue: common.data.LinterData): Boolean = issue.exception is common.exception.NoSpaceBeforeColonException
 
     // string -> FormattedCode (lista de tokens formateada)
     override fun fix(
-        issue: LinterData,
-        tokens: List<TokenInterface>,
-    ): List<TokenInterface> {
+        issue: common.data.LinterData,
+        tokens: List<common.token.abs.TokenInterface>,
+    ): List<common.token.abs.TokenInterface> {
         // utilizo index para trabajar dentro de la lista de tokens
         // recorro cada index e intento fixearlo
         // si lo fixeo, retorno el codigo formateado
@@ -26,13 +26,13 @@ class SpaceBeforeColon : FormatterFix {
             val current = mutableTokens[i]
 
             // Encontramos un ":"
-            if (current is TypeDeclaratorToken && current.value == ":") {
+            if (current is common.token.TypeDeclaratorToken && current.value == ":") {
                 val prev = mutableTokens[i - 1]
 
                 // Si el token anterior NO es un Whitespace, insertamos uno
-                if (prev !is token.WhiteSpaceToken) {
+                if (prev !is common.token.WhiteSpaceToken) {
                     // fixme: los valores de row y position son arbitrarios
-                    mutableTokens.add(i, token.WhiteSpaceToken(1, 2))
+                    mutableTokens.add(i, common.token.WhiteSpaceToken(1, 2))
                     return mutableTokens
                 }
             }

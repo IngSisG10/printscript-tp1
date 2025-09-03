@@ -1,12 +1,12 @@
 package linter.syntax
 
-import data.LinterData
-import token.abs.TokenInterface
+import common.data.LinterData
+import common.token.abs.TokenInterface
 
 interface LinterRule {
     fun getName(): String
 
-    fun match(tokens: List<TokenInterface>): Exception?
+    fun match(tokens: List<common.token.abs.TokenInterface>): Exception?
 
-    fun matchWithData(tokens: List<TokenInterface>): List<LinterData>
+    fun matchWithData(tokens: List<common.token.abs.TokenInterface>): List<common.data.LinterData>
 }

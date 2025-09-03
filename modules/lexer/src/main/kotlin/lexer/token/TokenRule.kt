@@ -1,6 +1,6 @@
 package lexer.token
 
-import token.abs.TokenInterface
+import common.token.abs.TokenInterface
 
 interface TokenRule {
     fun match(
@@ -10,7 +10,7 @@ interface TokenRule {
     ): MatchResult?
 
     data class MatchResult(
-        val token: TokenInterface?,
+        val token: common.token.abs.TokenInterface?,
         val nextIndex: Int,
         val rowDelta: Int = 0,
     )

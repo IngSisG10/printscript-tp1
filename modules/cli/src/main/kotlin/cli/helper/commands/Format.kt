@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import exception.InvalidFileException
+import common.exception.InvalidFileException
 import formatter.Formatter
 
 class Format :
@@ -20,10 +20,10 @@ class Format :
     ).default("1.0")
 
     override fun run() {
-        val code = findFile(file) ?: throw InvalidFileException()
+        val code = findFile(file) ?: throw common.exception.InvalidFileException()
         val lexer = createLexer(version)
         val tokens = lexer.lex(code)
-        val configText = findFile(config) ?: throw InvalidFileException()
+        val configText = findFile(config) ?: throw common.exception.InvalidFileException()
         val linter = createLinter(configText)
         val formatter = Formatter(linter)
         val formattedCode = formatter.format(tokens)

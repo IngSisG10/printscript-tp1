@@ -1,35 +1,37 @@
 package linter.syntax.rules
 
-import data.LinterData
-import exception.InvalidPascalCaseException
+import common.data.LinterData
+import common.exception.InvalidPascalCaseException
+import common.token.VariableToken
+import common.token.abs.TokenInterface
 import linter.syntax.LinterRule
-import token.VariableToken
-import token.abs.TokenInterface
 
 class PascalCaseRule : LinterRule {
-    override fun match(tokens: List<TokenInterface>): Exception? {
+    override fun match(tokens: List<common.token.abs.TokenInterface>): Exception? {
         for (token in tokens) {
-            if (token is VariableToken) {
+            if (token is common.token.VariableToken) {
                 val varName = token.value
                 if (!varName.matches(Regex("\\b(?:[A-Z][a-z0-9]*)+\\b"))) {
-                    return InvalidPascalCaseException("Invalid PascalCase identifier at row ${token.row}, index ${token.position}")
+                    return common.exception.InvalidPascalCaseException(
+                        "Invalid PascalCase identifier at row ${token.row}, index ${token.position}",
+                    )
                 }
             }
         }
         return null
     }
 
-    override fun matchWithData(tokens: List<TokenInterface>): List<LinterData> {
-        val list = mutableListOf<LinterData>()
+    override fun matchWithData(tokens: List<common.token.abs.TokenInterface>): List<common.data.LinterData> {
+        val list = mutableListOf<common.data.LinterData>()
         for ((index, token) in tokens.withIndex()) {
-            if (token is VariableToken) {
+            if (token is common.token.VariableToken) {
                 val varName = token.value
                 if (!varName.matches(Regex("\\b(?:[A-Z][a-z0-9]*)+\\b"))) {
                     list.add(
-                        LinterData(
+                        common.data.LinterData(
                             position = index,
                             exception =
-                                InvalidPascalCaseException(
+                                common.exception.InvalidPascalCaseException(
                                     "Invalid PascalCase identifier at row ${token.row}, index ${token.position}",
                                 ),
                         ),

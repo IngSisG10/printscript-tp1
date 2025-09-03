@@ -1,6 +1,6 @@
 package parser
 
-import ast.abs.AstInterface
+import common.ast.abs.AstInterface
 
 interface SemanticRule {
     // fun canApply(node: AstInterface)
