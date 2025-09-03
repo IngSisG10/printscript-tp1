@@ -4,6 +4,7 @@ import ast.AssignmentNode
 import ast.BinaryOpNode
 import ast.DeclaratorNode
 import ast.LiteralNode
+import ast.VariableNode
 import ast.abs.AstInterface
 import enums.OperationEnum
 import enums.TypeEnum
@@ -15,6 +16,7 @@ object TypeAnalysis {
             is BinaryOpNode -> getBinaryOpType(node) // a = "5" + 5
             is AssignmentNode -> getAssignmentType(node)
             is DeclaratorNode -> getDeclaratorType(node)
+            is VariableNode -> getVariableType(node)
             else -> TypeEnum.ANY // Exception -> UnrecognizedNodeError("Unknown node")
         }
 
@@ -36,6 +38,7 @@ object TypeAnalysis {
                 when {
                     leftType == TypeEnum.NUMBER && rightType == TypeEnum.NUMBER -> TypeEnum.NUMBER
                     leftType == TypeEnum.STRING && rightType == TypeEnum.STRING -> TypeEnum.STRING
+                    // TODO: manejar concatenación string + number y viceversa
                     else -> TypeEnum.ANY // O podrías lanzar error aquí
                 }
             }
@@ -51,6 +54,8 @@ object TypeAnalysis {
             else -> TypeEnum.ANY
         }
     }
+
+    private fun getVariableType(node: VariableNode): TypeEnum = node.type
 
     private fun getAssignmentType(node: AssignmentNode): TypeEnum = getExpressionType(node.right)
 }

@@ -8,6 +8,7 @@ include 'parser'
 include 'interpreter'
 include 'common'
 include 'linter'
+include 'integration-tests'
 include 'formatter'
 
 project(":cli").projectDir = file("modules/cli")
@@ -16,5 +17,6 @@ project(":parser").projectDir = file("modules/parser")
 project(":interpreter").projectDir = file("modules/interpreter")
 project(":common").projectDir = file("modules/common")
 project(":linter").projectDir = file("modules/linter")
+project(":integration-tests").projectDir = file("modules/integration-tests")
 project(":formatter").projectDir = file("modules/formatter")
 

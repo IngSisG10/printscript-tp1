@@ -22,7 +22,7 @@ class AssignationNodeCreator : AstNodeCreator {
         assignationValidator.validate(line)
         return AssignmentNode(
             operator = OperationEnum.EQUAL,
-            left = IdentifierNode(line[0].name),
+            left = IdentifierNode(line[0].value.toString()),
             right = ExpressionParser.parseExpression(line, listOfAst), // BinaryOpNode, LiteralNode, etc
         )
     }
