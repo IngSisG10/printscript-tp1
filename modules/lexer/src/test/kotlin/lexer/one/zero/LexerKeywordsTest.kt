@@ -1,6 +1,7 @@
 package lexer.one.zero
 
 import common.token.FunctionToken
+import common.token.PointToken
 import common.token.TypeToken
 import common.token.VariableDeclaratorToken
 import lexer.Lexer
@@ -24,6 +25,7 @@ class LexerKeywordsTest {
                 "String" to TypeToken::class.java,
                 "Number" to TypeToken::class.java,
                 "Any" to TypeToken::class.java,
+                "." to PointToken::class.java,
             )
 
         for ((code, expectedType) in cases) {
