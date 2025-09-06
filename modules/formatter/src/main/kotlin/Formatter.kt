@@ -3,6 +3,7 @@ import token.abs.TokenInterface
 
 class Formatter(
     private val tokens: List<TokenInterface>,
+    private val linter: Linter = Linter(),
 ) {
     private val formatterRules: List<FormatterFix> =
         listOf(
@@ -14,8 +15,6 @@ class Formatter(
             fixes.LineJumpAfterSemiColon(),
             fixes.LineJumpSpaceBeforePrintln(),
         )
-
-    private val linter = Linter()
 
     fun format(): String {
         val issues: List<LinterData> = linter.formatterLint(tokens)

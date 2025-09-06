@@ -4,42 +4,46 @@ import FormatterFix
 import data.LinterData
 import enums.FunctionEnum
 import exception.InvalidNewLineBeforePrintlnException
+import token.FunctionToken
+import token.NewLineToken
+import token.abs.TokenInterface
 
-class LineJumpSpaceBeforePrintln : FormatterFix {
+class LineJumpSpaceBeforePrintln(
+    private val maxNewLines: Int = 2, // configurable, default = 2
+) : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is InvalidNewLineBeforePrintlnException
-
-    // todo: modificarlo para que un futuro pueda especificar cuántos espacios quiere.
 
     override fun fix(
         issue: LinterData,
-        tokens: List<token.abs.TokenInterface>,
-    ): List<token.abs.TokenInterface> {
+        tokens: List<TokenInterface>,
+    ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
 
-        for (i in tokens.indices) {
-            val current = tokens[i]
+        for (i in mutableTokens.indices) {
+            val current = mutableTokens[i]
 
-            if (current is token.FunctionToken && current.value == FunctionEnum.PRINTLN) { // Tenemos un token "println" ?
-
+            if (current is FunctionToken && current.value == FunctionEnum.PRINTLN) {
+                // Count consecutive newlines before println
                 var newLineCount = 0
                 var j = i - 1
-
-                while (j >= 0 && tokens[j] is token.WhiteSpaceToken) { // Contamos los saltos de línea antes del "println", hay que crear un
-
-                    // token NewLineToken (?)
+                while (j >= 0 && mutableTokens[j] is NewLineToken) {
                     newLineCount++
                     j--
                 }
 
-                if (newLineCount > 2) {
-                    val toRemove = newLineCount - 2
+                // Too many newlines? Trim to maxNewLines
+                if (newLineCount > maxNewLines) {
+                    val toRemove = newLineCount - maxNewLines
                     repeat(toRemove) {
                         mutableTokens.removeAt(i - newLineCount)
                     }
                 }
+
+                // stop after fixing first println (or remove `return` if you want to fix all)
                 return mutableTokens
             }
         }
-        return tokens
+
+        return mutableTokens
     }
 }

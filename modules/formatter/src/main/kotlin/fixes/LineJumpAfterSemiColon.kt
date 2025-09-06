@@ -20,13 +20,13 @@ class LineJumpAfterSemiColon : FormatterFix {
             if (current is token.EndSentenceToken && current.value == ";") {
                 if (i + 1 < tokens.size) {
                     val next = tokens[i + 1]
-                    if (next !is token.FunctionToken) { // todo: falta crear el token de salto de línea.
+                    if (next !is token.NewLineToken) {
                         // Insertamos un salto de línea después del punto y coma
-                        mutableTokens.add(i + 1, token.FunctionToken("\n")) // todo: cambiar el token
+                        mutableTokens.add(i + 1, token.NewLineToken(1, 2))
                     }
                 } else {
                     // Si el punto y coma es el último token, simplemente añadimos un salto de línea al final
-                    mutableTokens.add(token.FunctionToken("\n")) // todo: cambiar el token
+                    mutableTokens.add(token.NewLineToken(1, 2))
                 }
                 break // Salimos del bucle después de arreglar el primer punto y coma encontrado
             }

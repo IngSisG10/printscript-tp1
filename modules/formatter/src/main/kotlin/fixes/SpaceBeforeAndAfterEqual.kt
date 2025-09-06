@@ -38,8 +38,7 @@ class SpaceBeforeAndAfterEqual : FormatterFix {
                     mutableTokens.add(equalsIndex + 1, token.WhiteSpaceToken(1, 2))
                 }
             }
-            return mutableTokens
         }
-        return tokens
+        return mutableTokens
     }
 }
