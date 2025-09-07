@@ -4,7 +4,6 @@ import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
 import common.ast.LiteralNode
 import common.ast.VariableNode
-import common.ast.abs.AstInterface
 import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

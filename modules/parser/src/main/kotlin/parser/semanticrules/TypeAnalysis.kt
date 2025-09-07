@@ -5,7 +5,6 @@ import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
 import common.ast.LiteralNode
 import common.ast.VariableNode
-import common.ast.abs.AstInterface
 import common.enums.OperationEnum
 import common.enums.TypeEnum
 

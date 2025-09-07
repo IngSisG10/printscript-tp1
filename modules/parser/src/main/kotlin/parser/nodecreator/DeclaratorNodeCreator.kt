@@ -2,7 +2,6 @@ package parser.nodecreator
 
 import common.ast.DeclaratorNode
 import common.ast.VariableNode
-import common.ast.abs.AstInterface
 import common.token.TypeToken
 import common.token.VariableDeclaratorToken
 import common.token.abs.TokenInterface

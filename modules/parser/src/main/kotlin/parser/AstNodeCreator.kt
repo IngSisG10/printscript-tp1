@@ -1,6 +1,5 @@
 package parser
 
-import common.ast.abs.AstInterface
 import common.token.abs.TokenInterface
 
 // fixme: Es necesario que sepa el listado de ASTs?

@@ -1,6 +1,5 @@
 package parser
 
-import common.ast.abs.AstInterface
 import common.exception.UnrecognizedLineException
 import common.token.NewLineToken
 import common.token.WhiteSpaceToken

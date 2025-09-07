@@ -1,6 +1,5 @@
 package integration
 
-import common.ast.abs.AstInterface
 import interpreter.PrintScriptInterpreter
 import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertThrows

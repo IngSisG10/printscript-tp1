@@ -1,7 +1,6 @@
 package parser.semanticrules
 
 import common.ast.DeclaratorNode
-import common.ast.abs.AstInterface
 import common.enums.TypeEnum
 import parser.SemanticError
 import parser.SemanticRule
