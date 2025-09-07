@@ -7,13 +7,13 @@ class Formatter(
 ) {
     private val formatterRules: List<FormatterFix> =
         listOf(
-            fixes.SpaceBeforeColon(),
-            fixes.SpaceAfterColon(),
-            fixes.OneSpaceAfterTokenMax(),
-            fixes.SpaceBeforeAndAfterEqual(),
-            fixes.SpaceBeforeAndAfterOperator(),
-            fixes.LineJumpAfterSemiColon(),
-            fixes.LineJumpSpaceBeforePrintln(),
+            fixes.SpaceBeforeColonFix(),
+            fixes.SpaceAfterColonFix(),
+            fixes.OneSpaceAfterTokenMaxFix(),
+            fixes.SpaceBeforeAndAfterEqualFix(),
+            fixes.SpaceBeforeAndAfterOperatorFix(),
+            fixes.LineJumpAfterSemiColonFix(),
+            fixes.LineJumpSpaceBeforePrintlnFix(),
         )
 
     fun format(): String {

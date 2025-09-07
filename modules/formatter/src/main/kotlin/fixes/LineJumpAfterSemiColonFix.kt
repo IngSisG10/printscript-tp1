@@ -5,7 +5,7 @@ import data.LinterData
 import exception.NoNewLineAfterSemiColon
 import token.abs.TokenInterface
 
-class LineJumpAfterSemiColon : FormatterFix {
+class LineJumpAfterSemiColonFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is NoNewLineAfterSemiColon
 
     override fun fix(

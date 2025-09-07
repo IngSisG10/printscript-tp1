@@ -5,6 +5,7 @@ import enums.FunctionEnum
 import exception.InvalidNewLineBeforePrintlnException
 import syntax.LinterRule
 import token.FunctionToken
+import token.NewLineToken
 import token.abs.TokenInterface
 
 class NewLineBeforePrintlnRule(
@@ -40,18 +41,16 @@ class NewLineBeforePrintlnRule(
         return list
     }
 
-    // todo: revisar esta logica
     private fun countConsecutiveNewLines(
         tokens: List<TokenInterface>,
         startIndex: Int,
     ): Int {
-//        var count = 0
-//        var i = startIndex
-//        while (i >= 0 && tokens[i] is NewLineToken) {
-//            count++
-//            i--
-//        }
-//        return count
-        TODO()
+        var count = 0
+        var i = startIndex
+        while (i >= 0 && tokens[i] is NewLineToken) {
+            count++
+            i--
+        }
+        return count
     }
 }

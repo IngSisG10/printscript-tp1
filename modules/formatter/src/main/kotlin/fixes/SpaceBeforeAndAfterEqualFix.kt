@@ -7,7 +7,7 @@ import exception.NoSpaceBeforeAssignationException
 import token.OperationToken
 import token.abs.TokenInterface
 
-class SpaceBeforeAndAfterEqual : FormatterFix {
+class SpaceBeforeAndAfterEqualFix : FormatterFix {
     override fun canFix(issue: data.LinterData): Boolean =
         issue.exception is NoSpaceBeforeAssignationException ||
             issue.exception is NoSpaceAfterAssignationException

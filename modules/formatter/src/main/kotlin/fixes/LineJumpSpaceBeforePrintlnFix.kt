@@ -8,7 +8,7 @@ import token.FunctionToken
 import token.NewLineToken
 import token.abs.TokenInterface
 
-class LineJumpSpaceBeforePrintln(
+class LineJumpSpaceBeforePrintlnFix(
     private val maxNewLines: Int = 2, // configurable, default = 2
 ) : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is InvalidNewLineBeforePrintlnException

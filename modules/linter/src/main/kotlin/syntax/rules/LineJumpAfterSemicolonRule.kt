@@ -1,20 +1,21 @@
 package syntax.rules
 
 import data.LinterData
+import exception.NoNewLineAfterSemiColon
 import syntax.LinterRule
 import token.EndSentenceToken
+import token.NewLineToken
 import token.abs.TokenInterface
 
-class NewLineAfterSemicolonRule : LinterRule {
+class LineJumpAfterSemicolonRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {
             if (token is EndSentenceToken) {
                 val next = tokens.getOrNull(index + 1)
 
-                // fixme, esta logica es un poco rara
-//                if (next !is NewLineToken) {
-//                    return MissingNewLineAfterSemicolonException()
-//                }
+                if (next !is NewLineToken) {
+                    return NoNewLineAfterSemiColon()
+                }
             }
         }
         return null
@@ -25,15 +26,14 @@ class NewLineAfterSemicolonRule : LinterRule {
         for ((index, token) in tokens.withIndex()) {
             if (token is EndSentenceToken) {
                 val next = tokens.getOrNull(index + 1)
-                // fixme, esta logica es un poco rara
-//                if (next !is NewLineToken) {
-//                    list.add(
-//                        LinterData(
-//                            exception = MissingNewLineAfterSemicolonException(),
-//                            position = index
-//                        )
-//                    )
-//                }
+                if (next !is NewLineToken) {
+                    list.add(
+                        LinterData(
+                            exception = NoNewLineAfterSemiColon(),
+                            position = index,
+                        ),
+                    )
+                }
             }
         }
         return list

@@ -10,7 +10,7 @@ import exception.NoSpaceBeforeColonException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import syntax.rules.CamelCaseRule
-import syntax.rules.NewLineAfterSemicolonRule
+import syntax.rules.LineJumpAfterSemicolonRule
 import syntax.rules.PascalCaseRule
 import syntax.rules.SnakeCaseRule
 import syntax.rules.SpaceAfterAssignationRule
@@ -272,7 +272,7 @@ class LinterTest {
 
     @Test
     fun `NewLineAfterSemicolonRule should not throw when properly implemented`() {
-        val rule = NewLineAfterSemicolonRule()
+        val rule = LineJumpAfterSemicolonRule()
         val tokens =
             listOf(
                 VariableToken("variable", 1, 1),
@@ -363,7 +363,7 @@ class LinterTest {
                 SpaceBeforeColonRule(),
                 SpaceAfterAssignationRule(),
                 SpaceBeforeAssignationRule(),
-                NewLineAfterSemicolonRule(),
+                LineJumpAfterSemicolonRule(),
             )
 
         val emptyTokens = emptyList<token.abs.TokenInterface>()

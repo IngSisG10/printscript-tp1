@@ -6,7 +6,7 @@ import exception.NoSpaceAfterOperatorException
 import exception.NoSpaceBeforeOperatorException
 import token.abs.TokenInterface
 
-class SpaceBeforeAndAfterOperator : FormatterFix {
+class SpaceBeforeAndAfterOperatorFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean =
         issue.exception is NoSpaceBeforeOperatorException ||
             issue.exception is NoSpaceAfterOperatorException

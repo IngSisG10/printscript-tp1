@@ -6,7 +6,7 @@ import exception.NoSpaceBeforeColonException
 import token.TypeDeclaratorToken
 import token.abs.TokenInterface
 
-class SpaceBeforeColon : FormatterFix {
+class SpaceBeforeColonFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceBeforeColonException
 
     // string -> FormattedCode (lista de tokens formateada)

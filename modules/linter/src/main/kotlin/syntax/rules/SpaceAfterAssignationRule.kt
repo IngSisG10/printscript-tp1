@@ -18,7 +18,6 @@ class SpaceAfterAssignationRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {
             if (token is OperationToken && token.value == OperationEnum.EQUAL) {
-                // fixme analizar bien tema index+1 para el caso particular de Assignation
                 if (tokens.getOrNull(index + 1) !is token.WhiteSpaceToken) {
                     throw NoSpaceAfterAssignationException()
                 }
@@ -31,7 +30,6 @@ class SpaceAfterAssignationRule : LinterRule {
         val list = mutableListOf<LinterData>()
         for ((index, token) in tokens.withIndex()) {
             if (token is OperationToken && token.value == OperationEnum.EQUAL) {
-                // fixme: analizar bien tema index+1 para el caso particular de Assignation
                 if (tokens.getOrNull(index + 1) !is token.WhiteSpaceToken) {
                     list.add(
                         LinterData(

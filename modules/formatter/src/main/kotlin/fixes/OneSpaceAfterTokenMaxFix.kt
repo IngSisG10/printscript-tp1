@@ -5,7 +5,7 @@ import data.LinterData
 import exception.MoreThanOneSpaceAfterTokenException
 import token.abs.TokenInterface
 
-class OneSpaceAfterTokenMax : FormatterFix {
+class OneSpaceAfterTokenMaxFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is MoreThanOneSpaceAfterTokenException
 
     override fun fix(
