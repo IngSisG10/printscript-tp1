@@ -1,5 +1,6 @@
 package parser
 
+import common.ast.AstNode
 import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
 import common.ast.LiteralNode
@@ -28,7 +29,7 @@ class AstStructureTest {
         assertTrue(fields.contains("value"))
     }
 
-    private fun containsBinaryOpNode(node: AstInterface): Boolean =
+    private fun containsBinaryOpNode(node: AstNode): Boolean =
         when (node) {
             is BinaryOpNode -> true
             is DeclaratorNode -> containsBinaryOpNode(node.value)

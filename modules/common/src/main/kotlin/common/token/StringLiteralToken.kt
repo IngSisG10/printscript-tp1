@@ -6,6 +6,6 @@ class StringLiteralToken(
     override val value: String,
     override val row: Int,
     override val position: Int, // position que tiene en la linea
-) : common.token.abs.TokenInterface {
+) : TokenInterface {
     override val name: String = "string_literal"
 }

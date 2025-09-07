@@ -1,13 +1,14 @@
 package parser
 
+import common.ast.AstNode
 import common.token.abs.TokenInterface
 
 // fixme: Es necesario que sepa el listado de ASTs?
 interface AstNodeCreator {
-    fun matches(line: List<common.token.abs.TokenInterface>): Boolean
+    fun matches(line: List<TokenInterface>): Boolean
 
     fun createAstNode(
-        line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface
+        line: List<TokenInterface>,
+        listOfAst: List<AstNode>,
+    ): AstNode
 }

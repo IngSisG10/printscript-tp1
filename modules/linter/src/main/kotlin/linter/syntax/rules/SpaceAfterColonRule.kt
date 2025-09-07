@@ -8,25 +8,25 @@ import common.token.abs.TokenInterface
 import linter.syntax.LinterRule
 
 class SpaceAfterColonRule : LinterRule {
-    override fun match(tokens: List<common.token.abs.TokenInterface>): Exception? {
+    override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {
-            if (token is common.token.TypeDeclaratorToken) {
-                if (tokens[index + 1] !is common.token.WhiteSpaceToken) {
-                    throw common.exception.NoSpaceAfterColonException()
+            if (token is TypeDeclaratorToken) {
+                if (tokens[index + 1] !is WhiteSpaceToken) {
+                    throw NoSpaceAfterColonException()
                 }
             }
         }
         return null
     }
 
-    override fun matchWithData(tokens: List<common.token.abs.TokenInterface>): List<common.data.LinterData> {
-        val list = mutableListOf<common.data.LinterData>()
+    override fun matchWithData(tokens: List<TokenInterface>): List<LinterData> {
+        val list = mutableListOf<LinterData>()
         for ((index, token) in tokens.withIndex()) {
-            if (token is common.token.TypeDeclaratorToken) {
-                if (tokens[index + 1] !is common.token.WhiteSpaceToken) {
+            if (token is TypeDeclaratorToken) {
+                if (tokens[index + 1] !is WhiteSpaceToken) {
                     list.add(
-                        common.data.LinterData(
-                            exception = common.exception.NoSpaceAfterColonException(),
+                        LinterData(
+                            exception = NoSpaceAfterColonException(),
                             position = index,
                         ),
                     )

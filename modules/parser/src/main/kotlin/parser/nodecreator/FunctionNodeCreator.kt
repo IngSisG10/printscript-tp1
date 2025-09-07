@@ -1,5 +1,6 @@
 package parser.nodecreator
 
+import common.ast.AstNode
 import common.ast.FunctionNode
 import common.token.FunctionToken
 import common.token.ParenthesisToken
@@ -11,15 +12,15 @@ import parser.validators.FunctionValidator
 class FunctionNodeCreator : AstNodeCreator {
     private val functionValidator = FunctionValidator()
 
-    override fun matches(line: List<common.token.abs.TokenInterface>): Boolean = line.isNotEmpty() && line[0] is common.token.FunctionToken
+    override fun matches(line: List<TokenInterface>): Boolean = line.isNotEmpty() && line[0] is FunctionToken
 
     override fun createAstNode(
-        line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        line: List<TokenInterface>,
+        listOfAst: List<AstNode>,
+    ): AstNode {
         functionValidator.validate(line)
-        val variableName = (line[0] as common.token.FunctionToken).value
-        val parenthesisToken = line[1] as common.token.ParenthesisToken
+        val variableName = (line[0] as FunctionToken).value
+        val parenthesisToken = line[1] as ParenthesisToken
 
         return FunctionNode(
             functionName = variableName,

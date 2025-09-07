@@ -1,6 +1,7 @@
 package parser.semanticrules
 
 import common.ast.AssignmentNode
+import common.ast.AstNode
 import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
 import common.ast.LiteralNode
@@ -9,52 +10,52 @@ import common.enums.OperationEnum
 import common.enums.TypeEnum
 
 object TypeAnalysis {
-    fun getExpressionType(node: AstInterface): common.enums.TypeEnum =
+    fun getExpressionType(node: AstNode): TypeEnum =
         when (node) {
             is LiteralNode -> getLiteralType(node)
             is BinaryOpNode -> getBinaryOpType(node) // a = "5" + 5
             is AssignmentNode -> getAssignmentType(node)
             is DeclaratorNode -> getDeclaratorType(node)
             is VariableNode -> getVariableType(node)
-            else -> common.enums.TypeEnum.ANY // Exception -> UnrecognizedNodeError("Unknown node")
+            else -> TypeEnum.ANY // Exception -> UnrecognizedNodeError("Unknown node")
         }
 
-    private fun getLiteralType(node: LiteralNode): common.enums.TypeEnum =
+    private fun getLiteralType(node: LiteralNode): TypeEnum =
         when (node.type) {
-            common.enums.TypeEnum.STRING -> common.enums.TypeEnum.STRING
-            common.enums.TypeEnum.NUMBER -> common.enums.TypeEnum.NUMBER
-            else -> common.enums.TypeEnum.ANY
+            TypeEnum.STRING -> TypeEnum.STRING
+            TypeEnum.NUMBER -> TypeEnum.NUMBER
+            else -> TypeEnum.ANY
         }
 
-    private fun getDeclaratorType(node: DeclaratorNode): common.enums.TypeEnum = getExpressionType(node.value)
+    private fun getDeclaratorType(node: DeclaratorNode): TypeEnum = getExpressionType(node.value)
 
-    private fun getBinaryOpType(node: BinaryOpNode): common.enums.TypeEnum {
+    private fun getBinaryOpType(node: BinaryOpNode): TypeEnum {
         val leftType = getExpressionType(node.left)
         val rightType = getExpressionType(node.right)
 
         return when (node.operator) {
-            common.enums.OperationEnum.SUM -> {
+            OperationEnum.SUM -> {
                 when {
-                    leftType == common.enums.TypeEnum.NUMBER && rightType == common.enums.TypeEnum.NUMBER -> common.enums.TypeEnum.NUMBER
-                    leftType == common.enums.TypeEnum.STRING && rightType == common.enums.TypeEnum.STRING -> common.enums.TypeEnum.STRING
+                    leftType == TypeEnum.NUMBER && rightType == TypeEnum.NUMBER -> TypeEnum.NUMBER
+                    leftType == TypeEnum.STRING && rightType == TypeEnum.STRING -> TypeEnum.STRING
                     // TODO: manejar concatenación string + number y viceversa
-                    else -> common.enums.TypeEnum.ANY // O podrías lanzar error aquí
+                    else -> TypeEnum.ANY // O podrías lanzar error aquí
                 }
             }
 
-            common.enums.OperationEnum.MINUS, common.enums.OperationEnum.MULTIPLY, common.enums.OperationEnum.DIVIDE -> {
-                if (leftType == common.enums.TypeEnum.NUMBER && rightType == common.enums.TypeEnum.NUMBER) {
-                    common.enums.TypeEnum.NUMBER
+            OperationEnum.MINUS, OperationEnum.MULTIPLY, OperationEnum.DIVIDE -> {
+                if (leftType == TypeEnum.NUMBER && rightType == TypeEnum.NUMBER) {
+                    TypeEnum.NUMBER
                 } else {
-                    common.enums.TypeEnum.ANY // O error para operaciones aritméticas inválidas
+                    TypeEnum.ANY // O error para operaciones aritméticas inválidas
                 }
             }
 
-            else -> common.enums.TypeEnum.ANY
+            else -> TypeEnum.ANY
         }
     }
 
-    private fun getVariableType(node: VariableNode): common.enums.TypeEnum = node.type
+    private fun getVariableType(node: VariableNode): TypeEnum = node.type
 
-    private fun getAssignmentType(node: AssignmentNode): common.enums.TypeEnum = getExpressionType(node.right)
+    private fun getAssignmentType(node: AssignmentNode): TypeEnum = getExpressionType(node.right)
 }

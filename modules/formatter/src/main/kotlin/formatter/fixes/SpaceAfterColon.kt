@@ -6,12 +6,12 @@ import common.token.abs.TokenInterface
 import formatter.FormatterFix
 
 class SpaceAfterColon : FormatterFix {
-    override fun canFix(issue: common.data.LinterData): Boolean = issue.exception is common.exception.NoSpaceAfterColonException
+    override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceAfterColonException
 
     override fun fix(
-        issue: common.data.LinterData,
-        tokens: List<common.token.abs.TokenInterface>,
-    ): List<common.token.abs.TokenInterface> {
+        issue: LinterData,
+        tokens: List<TokenInterface>,
+    ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
 
         for (i in 0 until mutableTokens.size - 1) {

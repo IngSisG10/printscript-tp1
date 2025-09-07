@@ -15,10 +15,10 @@ class Formatter(
             SpaceAfterColon(),
         )
 
-    fun format(tokens: List<common.token.abs.TokenInterface>): String {
-        val issues: List<common.data.LinterData> = linter.formatterLint(tokens)
+    fun format(tokens: List<TokenInterface>): String {
+        val issues: List<LinterData> = linter.formatterLint(tokens)
         if (issues.isEmpty()) return convert(tokens)
-        var newTokenList: List<common.token.abs.TokenInterface> = tokens
+        var newTokenList: List<TokenInterface> = tokens
         for (issue in issues) {
             var fixed = false
             for (rule in formatterRules) {
@@ -36,7 +36,7 @@ class Formatter(
         return convert(newTokenList)
     }
 
-    private fun convert(tokens: List<common.token.abs.TokenInterface>): String {
+    private fun convert(tokens: List<TokenInterface>): String {
         val builder = StringBuilder()
         for (token in tokens) {
             builder.append(token.value)

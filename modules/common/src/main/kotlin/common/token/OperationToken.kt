@@ -7,6 +7,6 @@ class OperationToken(
     override val value: common.enums.OperationEnum,
     override val row: Int,
     override val position: Int,
-) : common.token.abs.TokenInterface {
+) : TokenInterface {
     override val name: String = "operation"
 }

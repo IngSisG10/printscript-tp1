@@ -7,7 +7,7 @@ import linter.syntax.LinterRule
 class Linter(
     private val linterRules: List<LinterRule> = emptyList(),
 ) {
-    fun lint(tokens: List<common.token.abs.TokenInterface>) {
+    fun lint(tokens: List<TokenInterface>) {
         for (rule in linterRules) {
             val res = rule.match(tokens)
             if (res != null) {
@@ -16,8 +16,8 @@ class Linter(
         }
     }
 
-    fun formatterLint(tokens: List<common.token.abs.TokenInterface>): List<common.data.LinterData> {
-        val list = mutableListOf<common.data.LinterData>()
+    fun formatterLint(tokens: List<TokenInterface>): List<LinterData> {
+        val list = mutableListOf<LinterData>()
         for (rule in linterRules) {
             val res = rule.matchWithData(tokens)
             list.addAll(res)

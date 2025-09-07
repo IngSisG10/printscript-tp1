@@ -1,10 +1,9 @@
 package parser.nodecreator
 
 import common.ast.AssignmentNode
+import common.ast.AstNode
 import common.ast.IdentifierNode
 import common.enums.OperationEnum
-import common.token.VariableToken
-import common.token.abs.TokenInterface
 import parser.AstNodeCreator
 import parser.ExpressionParser
 import parser.validators.AssignationValidator
@@ -16,8 +15,8 @@ class AssignationNodeCreator : AstNodeCreator {
 
     override fun createAstNode(
         line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        listOfAst: List<AstNode>,
+    ): AstNode {
         assignationValidator.validate(line)
         return AssignmentNode(
             operator = OperationEnum.EQUAL,
