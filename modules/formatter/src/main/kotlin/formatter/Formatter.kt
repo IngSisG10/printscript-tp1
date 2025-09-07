@@ -2,8 +2,13 @@ package formatter
 
 import common.data.LinterData
 import common.token.abs.TokenInterface
-import formatter.fixes.SpaceAfterColon
-import formatter.fixes.SpaceBeforeColon
+import formatter.fixes.LineJumpAfterSemiColonFix
+import formatter.fixes.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.OneSpaceAfterTokenMaxFix
+import formatter.fixes.SpaceAfterColonFix
+import formatter.fixes.SpaceBeforeAndAfterEqualFix
+import formatter.fixes.SpaceBeforeAndAfterOperatorFix
+import formatter.fixes.SpaceBeforeColonFix
 import linter.Linter
 
 class Formatter(
@@ -11,8 +16,13 @@ class Formatter(
 ) {
     private val formatterRules: List<FormatterFix> =
         listOf(
-            SpaceBeforeColon(),
-            SpaceAfterColon(),
+            SpaceBeforeColonFix(),
+            SpaceAfterColonFix(),
+            OneSpaceAfterTokenMaxFix(),
+            SpaceBeforeAndAfterEqualFix(),
+            SpaceBeforeAndAfterOperatorFix(),
+            LineJumpAfterSemiColonFix(),
+            LineJumpSpaceBeforePrintlnFix(),
         )
 
     fun format(tokens: List<TokenInterface>): String {

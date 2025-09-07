@@ -73,6 +73,6 @@ class ValueTest {
         val numberValue = NumberValue(42.0)
         val stringValue = StringValue("42.0")
 
-        assertEquals(false, numberValue == stringValue)
+        assertEquals(false, numberValue.equals(stringValue))
     }
 }
