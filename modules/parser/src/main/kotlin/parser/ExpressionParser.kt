@@ -65,7 +65,7 @@ object ExpressionParser {
                 val left = parseAddition(line.subList(0, i), listOfAst)
                 val right = parseMultiplication(line.subList(i + 1, line.size), listOfAst)
                 return BinaryOpNode(
-                    operator = token.value as OperationEnum,
+                    operator = token.value,
                     left = left,
                     right = right,
                 )
@@ -91,7 +91,7 @@ object ExpressionParser {
                 val left = parseMultiplication(line.subList(0, i), listOfAst)
                 val right = parsePrimary(line.subList(i + 1, line.size), listOfAst)
                 return BinaryOpNode(
-                    operator = token.value as OperationEnum,
+                    operator = token.value,
                     left = left,
                     right = right,
                 )
