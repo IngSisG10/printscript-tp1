@@ -1,9 +1,6 @@
 package parser
 
-import common.ast.abs.AstInterface
-import common.exception.UnrecognizedLineException
-import common.token.NewLineToken
-import common.token.WhiteSpaceToken
+import common.ast.AstNode
 import common.token.abs.TokenInterface
 import parser.nodecreator.AssignationNodeCreator
 import parser.nodecreator.DeclaratorNodeCreator
@@ -15,7 +12,7 @@ import parser.semanticrules.InvalidDeclaration
 // Analisis Semantico
 
 class Parser(
-    private val tokens: List<common.token.abs.TokenInterface>,
+    private val tokens: List<TokenInterface>,
     private val semanticRules: List<SemanticRule> =
         listOf(
             InvalidDeclaration(),
@@ -27,11 +24,11 @@ class Parser(
             FunctionNodeCreator(),
         ),
 ) {
-    private val listOfAST = mutableListOf<AstInterface>()
+    private val listOfAST = mutableListOf<AstNode>()
 
     private val semanticErrors = mutableListOf<SemanticError>()
 
-    fun parse(): List<AstInterface> {
+    fun parse(): List<AstNode> {
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens)
         addNodeToAst(listOfTokensByLine)
@@ -57,22 +54,22 @@ class Parser(
         }
     }
 
-    private fun addNodeToAst(listOfTokensByLine: List<List<common.token.abs.TokenInterface>>) {
+    private fun addNodeToAst(listOfTokensByLine: List<List<TokenInterface>>) {
         for (line in listOfTokensByLine) {
             listOfAST.add(this.parseLine(line))
         }
     }
 
-    private fun parseLine(line: List<common.token.abs.TokenInterface>): AstInterface {
+    private fun parseLine(line: List<TokenInterface>): AstNode {
         val creator =
             nodeCreators.firstOrNull { it.matches(line) }
                 ?: throw common.exception.UnrecognizedLineException("No matching node creator for line starting with: ${line[0].name}")
         return creator.createAstNode(line, listOfAST)
     }
 
-    private fun splitTokensIntoLines(tokens: List<common.token.abs.TokenInterface>): List<List<common.token.abs.TokenInterface>> {
-        val listOfTokensByLine = mutableListOf<MutableList<common.token.abs.TokenInterface>>()
-        var currentList = mutableListOf<common.token.abs.TokenInterface>()
+    private fun splitTokensIntoLines(tokens: List<TokenInterface>): List<List<TokenInterface>> {
+        val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
+        var currentList = mutableListOf<TokenInterface>()
 
         val filteredTokens = tokens.filterNot { it is common.token.WhiteSpaceToken || it is common.token.NewLineToken }
 

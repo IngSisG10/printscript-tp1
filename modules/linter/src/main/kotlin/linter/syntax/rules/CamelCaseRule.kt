@@ -7,12 +7,12 @@ import common.token.abs.TokenInterface
 import linter.syntax.LinterRule
 
 class CamelCaseRule : LinterRule {
-    override fun match(tokens: List<common.token.abs.TokenInterface>): Exception? {
+    override fun match(tokens: List<TokenInterface>): Exception? {
         for (token in tokens) {
-            if (token is common.token.VariableToken) {
+            if (token is VariableToken) {
                 val varName = token.value
                 if (!varName.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
-                    return common.exception.InvalidCamelCaseException(
+                    return InvalidCamelCaseException(
                         "Invalid camelCase identifier at row ${token.row}, index ${token.position}",
                     )
                 }
@@ -21,17 +21,17 @@ class CamelCaseRule : LinterRule {
         return null
     }
 
-    override fun matchWithData(tokens: List<common.token.abs.TokenInterface>): List<common.data.LinterData> {
-        val list = mutableListOf<common.data.LinterData>()
+    override fun matchWithData(tokens: List<TokenInterface>): List<LinterData> {
+        val list = mutableListOf<LinterData>()
         for ((index, token) in tokens.withIndex()) {
-            if (token is common.token.VariableToken) {
+            if (token is VariableToken) {
                 val varName = token.value
                 if (!varName.matches(Regex("\\b[a-z][a-z0-9]*(?:[A-Z0-9]+[a-z0-9]*)*\\b"))) {
                     list.add(
-                        common.data.LinterData(
+                        LinterData(
                             position = index,
                             exception =
-                                common.exception.InvalidCamelCaseException(
+                                InvalidCamelCaseException(
                                     "Invalid camelCase identifier at row ${token.row}, index ${token.position}",
                                 ),
                         ),

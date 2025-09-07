@@ -1,24 +1,19 @@
 package parser
 
+import common.ast.AstNode
 import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
 import common.ast.LiteralNode
 import common.ast.VariableNode
-import common.ast.abs.AstInterface
 import common.enums.OperationEnum
 import common.enums.TypeEnum
-import common.exception.UnrecognizedLineException
-import common.token.NumberLiteralToken
-import common.token.OperationToken
-import common.token.StringLiteralToken
-import common.token.VariableToken
 import common.token.abs.TokenInterface
 
 object ExpressionParser {
     fun parseExpression(
-        line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        line: List<TokenInterface>,
+        listOfAst: List<AstNode>,
+    ): AstNode {
         if (line.isEmpty()) {
             throw common.exception.UnrecognizedLineException("Empty expression")
         }
@@ -26,7 +21,7 @@ object ExpressionParser {
         return parseAddition(line, listOfAst)
     }
 
-    private fun validateExpression(line: List<common.token.abs.TokenInterface>) {
+    private fun validateExpression(line: List<TokenInterface>) {
         if (line.isEmpty()) {
             throw common.exception.UnrecognizedLineException("Empty expression")
         }
@@ -59,18 +54,18 @@ object ExpressionParser {
     }
 
     private fun parseAddition(
-        line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        line: List<TokenInterface>,
+        listOfAst: List<AstNode>,
+    ): AstNode {
         for (i in line.size - 1 downTo 0) {
             val token = line[i]
             if (token is common.token.OperationToken &&
-                (token.value == common.enums.OperationEnum.SUM || token.value == common.enums.OperationEnum.MINUS)
+                (token.value == OperationEnum.SUM || token.value == OperationEnum.MINUS)
             ) {
                 val left = parseAddition(line.subList(0, i), listOfAst)
                 val right = parseMultiplication(line.subList(i + 1, line.size), listOfAst)
                 return BinaryOpNode(
-                    operator = token.value as OperationEnum,
+                    operator = token.value,
                     left = left,
                     right = right,
                 )
@@ -81,9 +76,9 @@ object ExpressionParser {
     }
 
     private fun parseMultiplication(
-        line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        line: List<TokenInterface>,
+        listOfAst: List<AstNode>,
+    ): AstNode {
         if (line.isEmpty()) {
             throw common.exception.UnrecognizedLineException("Empty multiplication expression")
         }
@@ -91,12 +86,12 @@ object ExpressionParser {
         for (i in line.size - 1 downTo 0) {
             val token = line[i]
             if (token is common.token.OperationToken &&
-                (token.value == common.enums.OperationEnum.MULTIPLY || token.value == common.enums.OperationEnum.DIVIDE)
+                (token.value == OperationEnum.MULTIPLY || token.value == OperationEnum.DIVIDE)
             ) {
                 val left = parseMultiplication(line.subList(0, i), listOfAst)
                 val right = parsePrimary(line.subList(i + 1, line.size), listOfAst)
                 return BinaryOpNode(
-                    operator = token.value as OperationEnum,
+                    operator = token.value,
                     left = left,
                     right = right,
                 )
@@ -106,9 +101,9 @@ object ExpressionParser {
     }
 
     private fun parsePrimary(
-        line: List<common.token.abs.TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        line: List<TokenInterface>,
+        listOfAst: List<AstNode>,
+    ): AstNode {
         if (line.isEmpty()) {
             throw common.exception.UnrecognizedLineException("Empty primary expression")
         }
@@ -135,8 +130,8 @@ object ExpressionParser {
 
     private fun findVariableType(
         name: String,
-        listOfAst: List<AstInterface>,
-    ): common.enums.TypeEnum {
+        listOfAst: List<AstNode>,
+    ): TypeEnum {
         for (ast in listOfAst) {
             if (ast is DeclaratorNode && ast.variableNode.name == name) {
                 return ast.variableNode.type

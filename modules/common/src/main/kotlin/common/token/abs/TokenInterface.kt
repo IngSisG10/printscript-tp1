@@ -11,5 +11,5 @@ interface TokenInterface {
     val row: Int
     val position: Int
 
-    fun getPosition(): common.token.abs.TokenPosition = common.token.abs.TokenPosition(row, position)
+    fun getPosition(): TokenPosition = TokenPosition(row, position)
 }

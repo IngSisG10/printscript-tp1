@@ -1,6 +1,5 @@
 package integration
 
-import common.ast.abs.AstInterface
 import interpreter.PrintScriptInterpreter
 import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -11,7 +10,7 @@ class PrintScriptIntegrationTest {
     private fun executeCode(code: String): List<String> {
         val tokens = Lexer().lex(code)
         val ast = Parser(tokens).parse()
-        return PrintScriptInterpreter().interpret(ast as List<AstInterface>)
+        return PrintScriptInterpreter().interpret(ast)
     }
 
 //    @Test
