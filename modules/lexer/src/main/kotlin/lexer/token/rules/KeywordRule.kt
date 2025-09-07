@@ -1,22 +1,21 @@
 package lexer.token.rules
 
-import enums.FunctionEnum
-import enums.TypeEnum
+import common.enums.FunctionEnum
+import common.enums.TypeEnum
+import common.token.FunctionToken
+import common.token.TypeToken
+import common.token.VariableDeclaratorToken
+import common.token.abs.TokenInterface
 import lexer.token.TokenRule
-import token.FunctionToken
-import token.TypeToken
-import token.VariableDeclaratorToken
-import token.abs.TokenInterface
 
 class KeywordRule : TokenRule {
-    private val keywords: List<Pair<String, (Int, Int) -> TokenInterface>> =
+    private val keywords: List<Pair<String, (Int, Int) -> common.token.abs.TokenInterface>> =
         listOf(
-            "println" to { r, c -> FunctionToken(FunctionEnum.PRINTLN, r, c) },
-            "let" to { r, c -> VariableDeclaratorToken(r, c) },
-            "String" to { r, c -> TypeToken(TypeEnum.STRING, r, c) },
-            "Number" to { r, c -> TypeToken(TypeEnum.NUMBER, r, c) },
-            "Boolean" to { r, c -> TypeToken(TypeEnum.BOOLEAN, r, c) },
-            "Any" to { r, c -> TypeToken(TypeEnum.ANY, r, c) },
+            "println" to { r, c -> common.token.FunctionToken(common.enums.FunctionEnum.PRINTLN, r, c) },
+            "let" to { r, c -> common.token.VariableDeclaratorToken(r, c) },
+            "String" to { r, c -> common.token.TypeToken(common.enums.TypeEnum.STRING, r, c) },
+            "Number" to { r, c -> common.token.TypeToken(common.enums.TypeEnum.NUMBER, r, c) },
+            "Any" to { r, c -> common.token.TypeToken(common.enums.TypeEnum.ANY, r, c) },
         )
 
     override fun match(

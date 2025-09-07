@@ -1,5 +1,10 @@
 package exception
 
+import common.exception.DivisionByZeroException
+import common.exception.InterpreterException
+import common.exception.TypeMismatchException
+import common.exception.UndefinedVariableException
+import common.exception.UninitializedVariableException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

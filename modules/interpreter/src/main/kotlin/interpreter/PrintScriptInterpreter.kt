@@ -1,56 +1,59 @@
 package interpreter
 
-import ast.AssignmentNode
-import ast.BinaryOpNode
-import ast.DeclaratorNode
-import ast.FunctionNode
-import ast.IdentifierNode
-import ast.LiteralNode
-import ast.MonoOpNode
-import ast.VariableNode
-import ast.abs.AstInterface
-import ast.abs.AstVisitor
-import enums.FunctionEnum
-import enums.OperationEnum
-import enums.TypeEnum
-import exception.DivisionByZeroException
-import exception.InterpreterException
-import exception.TypeMismatchException
+import common.ast.AssignmentNode
+import common.ast.AstNode
+import common.ast.BinaryOpNode
+import common.ast.DeclaratorNode
+import common.ast.FunctionNode
+import common.ast.IdentifierNode
+import common.ast.LiteralNode
+import common.ast.MonoOpNode
+import common.ast.VariableNode
+import common.enums.FunctionEnum
+import common.enums.OperationEnum
+import common.enums.TypeEnum
+import common.exception.DivisionByZeroException
+import common.exception.InterpreterException
+import common.exception.TypeMismatchException
 
-// hacer un dispatcher para las funciones
-class PrintScriptInterpreter : AstVisitor {
+class PrintScriptInterpreter {
     private val environment = Environment()
     private val output = mutableListOf<String>()
-    private var currentValue: Value? = null
 
-    fun interpret(astList: List<AstInterface>): List<String> {
+    fun interpret(astList: List<AstNode>): List<String> {
         output.clear()
         for (astNode in astList) {
-            astNode.accept(this)
+            evaluate(astNode)
         }
         return output.toList()
     }
 
-    override fun visitBinaryOp(node: BinaryOpNode) {
-        node.left.accept(this)
-        val leftValue = currentValue ?: throw InterpreterException("Left operand did not produce a value")
+    private fun evaluate(node: AstNode): Value? =
+        when (node) {
+            is BinaryOpNode -> evaluateBinaryOp(node)
+            is LiteralNode -> evaluateLiteral(node)
+            is DeclaratorNode -> evaluateDeclarator(node)
+            is VariableNode -> evaluateVariable(node)
+            is IdentifierNode -> evaluateIdentifier(node)
+            is AssignmentNode -> evaluateAssignment(node)
+            is FunctionNode -> evaluateFunction(node)
+            is MonoOpNode -> evaluateMonoOp(node)
+        }
 
-        node.right.accept(this)
-        val rightValue = currentValue ?: throw InterpreterException("Right operand did not produce a value")
+    private fun evaluateBinaryOp(node: BinaryOpNode): Value {
+        val leftValue = evaluate(node.left) ?: throw InterpreterException("Left operand did not produce a value")
+        val rightValue = evaluate(node.right) ?: throw InterpreterException("Right operand did not produce a value")
 
-        currentValue =
-            when (node.operator) {
-                OperationEnum.SUM -> evaluateAddition(leftValue, rightValue)
-                OperationEnum.MINUS -> evaluateSubtraction(leftValue, rightValue)
-                OperationEnum.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
-                OperationEnum.DIVIDE -> evaluateDivision(leftValue, rightValue)
-                else -> throw InterpreterException("Unknown operator: ${node.operator}")
-            }
+        return when (node.operator) {
+            OperationEnum.SUM -> evaluateAddition(leftValue, rightValue)
+            OperationEnum.MINUS -> evaluateSubtraction(leftValue, rightValue)
+            OperationEnum.MULTIPLY -> evaluateMultiplication(leftValue, rightValue)
+            OperationEnum.DIVIDE -> evaluateDivision(leftValue, rightValue)
+            else -> throw InterpreterException("Unknown operator: ${node.operator}")
+        }
     }
 
-    override fun visitIdentifier(node: IdentifierNode) {
-        currentValue = environment.getValue(node.name)
-    }
+    private fun evaluateIdentifier(node: IdentifierNode): Value = environment.getValue(node.name)
 
     private fun evaluateAddition(
         left: Value,
@@ -105,50 +108,43 @@ class PrintScriptInterpreter : AstVisitor {
         throw TypeMismatchException("Division requires two numbers")
     }
 
-    override fun visitLiteral(node: LiteralNode) {
+    private fun evaluateLiteral(node: LiteralNode): Value {
         val literalValue = node.value
-        currentValue =
-            when (node.type) {
-                TypeEnum.NUMBER -> {
-                    val value =
-                        when (literalValue) {
-                            is Number -> literalValue.toDouble()
-                            is String ->
-                                literalValue.toDoubleOrNull()
-                                    ?: throw InterpreterException("Invalid number literal: $literalValue")
-
-                            else -> throw InterpreterException("Invalid number literal: $literalValue")
-                        }
-                    NumberValue(value)
-                }
-
-                TypeEnum.STRING -> {
-                    StringValue(literalValue?.toString() ?: "")
-                }
-
-                TypeEnum.BOOLEAN -> {
-                    throw InterpreterException("Boolean type not supported in PrintScript 1.0")
-                }
-
-                TypeEnum.ANY -> {
+        return when (node.type) {
+            TypeEnum.NUMBER -> {
+                val value =
                     when (literalValue) {
-                        is Number -> NumberValue(literalValue.toDouble())
-                        is String -> StringValue(literalValue)
-                        else -> throw InterpreterException("Unsupported literal type: $literalValue")
+                        is Number -> literalValue.toDouble()
+                        is String ->
+                            literalValue.toDoubleOrNull()
+                                ?: throw InterpreterException("Invalid number literal: $literalValue")
+
+                        else -> throw InterpreterException("Invalid number literal: $literalValue")
                     }
+                NumberValue(value)
+            }
+
+            TypeEnum.STRING -> {
+                StringValue(literalValue?.toString() ?: "")
+            }
+
+            TypeEnum.BOOLEAN -> {
+                throw InterpreterException("Boolean type not supported in PrintScript 1.0")
+            }
+
+            TypeEnum.ANY -> {
+                when (literalValue) {
+                    is Number -> NumberValue(literalValue.toDouble())
+                    is String -> StringValue(literalValue)
+                    else -> throw InterpreterException("Unsupported literal type: $literalValue")
                 }
             }
+        }
     }
 
-    override fun visitDeclarator(node: DeclaratorNode) {
+    private fun evaluateDeclarator(node: DeclaratorNode): Value? {
         val variable = node.variableNode
-        val initialValue =
-            if (node.value != null) {
-                node.value.accept(this)
-                currentValue
-            } else {
-                null
-            }
+        val initialValue = evaluate(node.value)
 
         val typedValue =
             if (initialValue != null) {
@@ -159,6 +155,7 @@ class PrintScriptInterpreter : AstVisitor {
             }
 
         environment.declareVariable(variable.name, variable.type, typedValue)
+        return null
     }
 
     private fun validateValueForType(
@@ -183,34 +180,27 @@ class PrintScriptInterpreter : AstVisitor {
         }
     }
 
-    override fun visitVariable(node: VariableNode) {
-        return
-    }
+    private fun evaluateVariable(node: VariableNode): Value = environment.getValue(node.name)
 
-    override fun visitMonoOp(node: MonoOpNode) {
-        node.inner.accept(this)
-    }
+    private fun evaluateMonoOp(node: MonoOpNode): Value? = evaluate(node.inner)
 
-    override fun visitFunction(node: FunctionNode) {
+    private fun evaluateFunction(node: FunctionNode): Value? {
         when (node.functionName) {
             FunctionEnum.PRINTLN -> {
-                node.arguments.accept(this)
-                val value = currentValue ?: throw InterpreterException("println argument did not produce a value")
+                val value = evaluate(node.arguments) ?: throw InterpreterException("println argument did not produce a value")
                 output.add(value.toStringValue())
-                currentValue = null
             }
         }
+        return null
     }
 
-    override fun visitAssignment(node: AssignmentNode) {
+    private fun evaluateAssignment(node: AssignmentNode): Value? {
         if (node.operator != OperationEnum.EQUAL) {
             throw InterpreterException("Unsupported assignment operator: ${node.operator}")
         }
-
-        node.right.accept(this)
-        val value = currentValue ?: throw InterpreterException("Right operand did not produce a value")
+        val value = evaluate(node.right) ?: throw InterpreterException("Right operand did not produce a value")
 
         environment.setVariable(node.left.name, value)
-        currentValue = null
+        return null
     }
 }

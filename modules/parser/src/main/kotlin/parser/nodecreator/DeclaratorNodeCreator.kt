@@ -1,14 +1,14 @@
 package parser.nodecreator
 
-import ast.DeclaratorNode
-import ast.VariableNode
-import ast.abs.AstInterface
+import common.ast.AstNode
+import common.ast.DeclaratorNode
+import common.ast.VariableNode
+import common.token.TypeToken
+import common.token.VariableDeclaratorToken
+import common.token.abs.TokenInterface
 import parser.AstNodeCreator
 import parser.ExpressionParser
 import parser.validators.DeclarationValidator
-import token.TypeToken
-import token.VariableDeclaratorToken
-import token.abs.TokenInterface
 
 class DeclaratorNodeCreator : AstNodeCreator {
     private val declaratorValidator = DeclarationValidator()
@@ -17,8 +17,8 @@ class DeclaratorNodeCreator : AstNodeCreator {
 
     override fun createAstNode(
         line: List<TokenInterface>,
-        listOfAst: List<AstInterface>,
-    ): AstInterface {
+        listOfAst: List<AstNode>,
+    ): AstNode {
         declaratorValidator.validate(line)
         val variableName = line[1].value.toString() // a
         val variableType = (line[3] as TypeToken).value // Number

@@ -1,7 +1,7 @@
 package lexer.token.rules
 
+import common.token.NumberLiteralToken
 import lexer.token.TokenRule
-import token.NumberLiteralToken
 
 class NumberLiteralRule : TokenRule {
     private val regex = Regex("\\d+")
@@ -12,7 +12,7 @@ class NumberLiteralRule : TokenRule {
         row: Int,
     ): TokenRule.MatchResult? {
         val m = regex.find(line, index)?.takeIf { it.range.first == index } ?: return null
-        val token = NumberLiteralToken(m.value.toInt(), row, index)
+        val token = common.token.NumberLiteralToken(m.value.toInt(), row, index)
         return TokenRule.MatchResult(token, m.range.last + 1)
     }
 }

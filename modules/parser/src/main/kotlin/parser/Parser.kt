@@ -1,14 +1,11 @@
 package parser
 
-import ast.abs.AstInterface
-import exception.UnrecognizedLineException
+import common.ast.AstNode
+import common.token.abs.TokenInterface
 import parser.nodecreator.AssignationNodeCreator
 import parser.nodecreator.DeclaratorNodeCreator
 import parser.nodecreator.FunctionNodeCreator
 import parser.semanticrules.InvalidDeclaration
-import token.NewLineToken
-import token.WhiteSpaceToken
-import token.abs.TokenInterface
 
 // Construccion de nodos
 // Analisis Sintactico
@@ -27,11 +24,11 @@ class Parser(
             FunctionNodeCreator(),
         ),
 ) {
-    private val listOfAST = mutableListOf<AstInterface>()
+    private val listOfAST = mutableListOf<AstNode>()
 
     private val semanticErrors = mutableListOf<SemanticError>()
 
-    fun parse(): List<AstInterface> {
+    fun parse(): List<AstNode> {
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens)
         addNodeToAst(listOfTokensByLine)
@@ -63,10 +60,10 @@ class Parser(
         }
     }
 
-    private fun parseLine(line: List<TokenInterface>): AstInterface {
+    private fun parseLine(line: List<TokenInterface>): AstNode {
         val creator =
             nodeCreators.firstOrNull { it.matches(line) }
-                ?: throw UnrecognizedLineException("No matching node creator for line starting with: ${line[0].name}")
+                ?: throw common.exception.UnrecognizedLineException("No matching node creator for line starting with: ${line[0].name}")
         return creator.createAstNode(line, listOfAST)
     }
 
@@ -74,7 +71,7 @@ class Parser(
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
         var currentList = mutableListOf<TokenInterface>()
 
-        val filteredTokens = tokens.filterNot { it is WhiteSpaceToken || it is NewLineToken }
+        val filteredTokens = tokens.filterNot { it is common.token.WhiteSpaceToken || it is common.token.NewLineToken }
 
         for (token in filteredTokens) {
             if (token.name == "end_sentence") {

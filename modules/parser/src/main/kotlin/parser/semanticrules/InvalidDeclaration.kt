@@ -1,15 +1,15 @@
 package parser.semanticrules
 
-import ast.DeclaratorNode
-import ast.abs.AstInterface
-import enums.TypeEnum
+import common.ast.AstNode
+import common.ast.DeclaratorNode
+import common.enums.TypeEnum
 import parser.SemanticError
 import parser.SemanticRule
 
 // let a: Number = "string"
 // let b: String = 5 + 3
 class InvalidDeclaration : SemanticRule {
-    override fun analyze(node: AstInterface): SemanticError? {
+    override fun analyze(node: AstNode): SemanticError? {
         if (node is DeclaratorNode) {
             val expectedType = node.variableNode.type
             val actualType = TypeAnalysis.getExpressionType(node.value)

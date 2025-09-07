@@ -4,13 +4,15 @@ plugins {
 }
 
 dependencies {
+    implementation("com.github.ajalt.clikt:clikt:5.0.1")
+    implementation project (":common")
     implementation project (":lexer")
     implementation project (":parser")
     implementation project (":interpreter")
-    implementation project (":common")
     implementation project (":linter")
+    implementation project (":formatter")
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("cli/MainKt")
 }

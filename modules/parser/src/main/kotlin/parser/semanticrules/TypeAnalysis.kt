@@ -1,20 +1,22 @@
 package parser.semanticrules
 
-import ast.AssignmentNode
-import ast.BinaryOpNode
-import ast.DeclaratorNode
-import ast.LiteralNode
-import ast.abs.AstInterface
-import enums.OperationEnum
-import enums.TypeEnum
+import common.ast.AssignmentNode
+import common.ast.AstNode
+import common.ast.BinaryOpNode
+import common.ast.DeclaratorNode
+import common.ast.LiteralNode
+import common.ast.VariableNode
+import common.enums.OperationEnum
+import common.enums.TypeEnum
 
 object TypeAnalysis {
-    fun getExpressionType(node: AstInterface): TypeEnum =
+    fun getExpressionType(node: AstNode): TypeEnum =
         when (node) {
             is LiteralNode -> getLiteralType(node)
             is BinaryOpNode -> getBinaryOpType(node) // a = "5" + 5
             is AssignmentNode -> getAssignmentType(node)
             is DeclaratorNode -> getDeclaratorType(node)
+            is VariableNode -> getVariableType(node)
             else -> TypeEnum.ANY // Exception -> UnrecognizedNodeError("Unknown node")
         }
 
@@ -36,6 +38,7 @@ object TypeAnalysis {
                 when {
                     leftType == TypeEnum.NUMBER && rightType == TypeEnum.NUMBER -> TypeEnum.NUMBER
                     leftType == TypeEnum.STRING && rightType == TypeEnum.STRING -> TypeEnum.STRING
+                    // TODO: manejar concatenación string + number y viceversa
                     else -> TypeEnum.ANY // O podrías lanzar error aquí
                 }
             }
@@ -51,6 +54,8 @@ object TypeAnalysis {
             else -> TypeEnum.ANY
         }
     }
+
+    private fun getVariableType(node: VariableNode): TypeEnum = node.type
 
     private fun getAssignmentType(node: AssignmentNode): TypeEnum = getExpressionType(node.right)
 }

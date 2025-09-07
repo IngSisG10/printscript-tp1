@@ -1,29 +1,31 @@
-import enums.OperationEnum
-import enums.TypeEnum
-import exception.InvalidCamelCaseException
-import exception.InvalidPascalCaseException
-import exception.InvalidSnakeCaseException
+import common.enums.OperationEnum
+import common.enums.TypeEnum
+import common.exception.InvalidCamelCaseException
+import common.exception.InvalidPascalCaseException
+import common.exception.InvalidSnakeCaseException
+import common.exception.NoSpaceAfterColonException
+import common.exception.NoSpaceBeforeColonException
+import common.token.NumberLiteralToken
+import common.token.OperationToken
+import common.token.StringLiteralToken
+import common.token.TypeDeclaratorToken
+import common.token.TypeToken
+import common.token.VariableToken
+import common.token.WhiteSpaceToken
+import common.token.abs.TokenInterface
 import exception.NoSpaceAfterAssignationException
-import exception.NoSpaceAfterColonException
 import exception.NoSpaceBeforeAssignationException
-import exception.NoSpaceBeforeColonException
+import linter.Linter
+import linter.syntax.rules.CamelCaseRule
+import linter.syntax.rules.LineJumpAfterSemicolonRule
+import linter.syntax.rules.PascalCaseRule
+import linter.syntax.rules.SnakeCaseRule
+import linter.syntax.rules.SpaceAfterAssignationRule
+import linter.syntax.rules.SpaceAfterColonRule
+import linter.syntax.rules.SpaceBeforeAssignationRule
+import linter.syntax.rules.SpaceBeforeColonRule
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import syntax.rules.CamelCaseRule
-import syntax.rules.LineJumpAfterSemicolonRule
-import syntax.rules.PascalCaseRule
-import syntax.rules.SnakeCaseRule
-import syntax.rules.SpaceAfterAssignationRule
-import syntax.rules.SpaceAfterColonRule
-import syntax.rules.SpaceBeforeAssignationRule
-import syntax.rules.SpaceBeforeColonRule
-import token.NumberLiteralToken
-import token.OperationToken
-import token.StringLiteralToken
-import token.TypeDeclaratorToken
-import token.TypeToken
-import token.VariableToken
-import token.WhiteSpaceToken
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -368,7 +370,7 @@ class LinterTest {
                 LineJumpAfterSemicolonRule(),
             )
 
-        val emptyTokens = emptyList<token.abs.TokenInterface>()
+        val emptyTokens = emptyList<TokenInterface>()
 
         rules.forEach { rule ->
             assertNull(rule.match(emptyTokens))

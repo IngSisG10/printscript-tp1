@@ -1,21 +1,20 @@
 package formatter
 
-import Formatter
-import Linter
-import enums.OperationEnum
-import enums.TypeEnum
+import common.enums.OperationEnum
+import common.enums.TypeEnum
+import common.token.NumberLiteralToken
+import common.token.OperationToken
+import common.token.TypeDeclaratorToken
+import common.token.TypeToken
+import common.token.VariableToken
+import common.token.WhiteSpaceToken
+import linter.Linter
+import linter.syntax.rules.SpaceAfterAssignationRule
+import linter.syntax.rules.SpaceAfterColonRule
+import linter.syntax.rules.SpaceBeforeAssignationRule
+import linter.syntax.rules.SpaceBeforeColonRule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import syntax.rules.SpaceAfterAssignationRule
-import syntax.rules.SpaceAfterColonRule
-import syntax.rules.SpaceBeforeAssignationRule
-import syntax.rules.SpaceBeforeColonRule
-import token.NumberLiteralToken
-import token.OperationToken
-import token.TypeDeclaratorToken
-import token.TypeToken
-import token.VariableToken
-import token.WhiteSpaceToken
 
 class FormatterTest {
     @Test
@@ -28,9 +27,9 @@ class FormatterTest {
                 TypeToken(TypeEnum.STRING, 1, 4),
             )
         val linter = Linter(listOf(SpaceAfterColonRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING", result)
     }
@@ -46,9 +45,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceBeforeColonRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING", result)
     }
@@ -63,9 +62,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceBeforeColonRule(), SpaceAfterColonRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING", result)
     }
@@ -80,9 +79,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceAfterAssignationRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable:STRING", result)
     }
@@ -102,9 +101,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceBeforeAssignationRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
     }
@@ -124,9 +123,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceAfterAssignationRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
     }
@@ -145,9 +144,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceBeforeAssignationRule(), SpaceAfterAssignationRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
     }
@@ -168,9 +167,9 @@ class FormatterTest {
             )
 
         val linter = Linter(listOf(SpaceBeforeAssignationRule(), SpaceAfterAssignationRule()))
-        val formatter = Formatter(tokens, linter)
+        val formatter = Formatter(linter)
 
-        val result = formatter.format()
+        val result = formatter.format(tokens)
 
         assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
     }
@@ -186,13 +185,14 @@ class FormatterTest {
 //                FunctionToken(FunctionEnum.PRINTLN, 4, 1),
 //            )
 //        val linter = Linter(listOf(NewLineBeforePrintlnRule()))
-//        val formatter = Formatter(tokens, linter)
-//        val result = formatter.format()
-//        val expected = "x\n\nprintln"
+//        val formatter = Formatter(linter)
+//        val result = formatter.format(tokens)
+//        val expected = "x"
 //
 //        assertEquals(expected, result) // No corre correctamente.
 //    }
-
+//
+//    @Test
 //    fun `trims newlines before operator`() {
 //        val tokens =
 //            listOf(
