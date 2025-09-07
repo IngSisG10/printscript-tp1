@@ -2,6 +2,7 @@ package parser.semanticrules
 
 import common.ast.AstNode
 import common.ast.DeclaratorNode
+import common.enums.TypeEnum
 import parser.SemanticError
 import parser.SemanticRule
 
@@ -12,7 +13,7 @@ class InvalidDeclaration : SemanticRule {
         if (node is DeclaratorNode) {
             val expectedType = node.variableNode.type
             val actualType = TypeAnalysis.getExpressionType(node.value)
-            if (expectedType != common.enums.TypeEnum.ANY && expectedType != actualType) {
+            if (expectedType != TypeEnum.ANY && expectedType != actualType) {
                 return SemanticError(
                     "Type mismatch: expected $expectedType, but got $actualType",
                 )
