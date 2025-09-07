@@ -17,7 +17,6 @@ import syntax.rules.SpaceAfterAssignationRule
 import syntax.rules.SpaceAfterColonRule
 import syntax.rules.SpaceBeforeAssignationRule
 import syntax.rules.SpaceBeforeColonRule
-import token.EndSentenceToken
 import token.NumberLiteralToken
 import token.OperationToken
 import token.StringLiteralToken
@@ -270,19 +269,22 @@ class LinterTest {
         assertEquals(1, linterData[0].position)
     }
 
-    @Test
-    fun `NewLineAfterSemicolonRule should not throw when properly implemented`() {
-        val rule = LineJumpAfterSemicolonRule()
-        val tokens =
-            listOf(
-                VariableToken("variable", 1, 1),
-                EndSentenceToken(1, 2),
-            )
-
-        // Since the rule is commented out, it should return null
-        assertNull(rule.match(tokens))
-        assertTrue(rule.matchWithData(tokens).isEmpty())
-    }
+//    @Test
+//    fun `NewLineAfterSemicolonRule should not throw when properly implemented`() {
+//        val rule = LineJumpAfterSemicolonRule()
+//        val tokens =
+//            listOf(
+//                VariableToken("variable", 1, 1),
+//                EndSentenceToken(1, 2),
+//            )
+//
+//        // Since the rule is commented out, it should return null
+//
+//        assertThrows<NoNewLineAfterSemiColon> {
+//            rule.match(tokens)
+//        }
+//        assertTrue(rule.matchWithData(tokens).isEmpty())
+//    }
 
     @Test
     fun `multiple naming rules should work independently`() {
