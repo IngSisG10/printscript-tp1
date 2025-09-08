@@ -23,18 +23,17 @@ data class Config(
 )
 
 interface LinterUtil {
-    fun createLinter(str: String): Linter {
+    fun createLinter(
+        str: String,
+        version: String = "1.0",
+    ): Linter {
         val config = Json.decodeFromString<Config>(str)
         return Linter(
-            linterRules = addLinterRules(config.rules),
+            linterRules = addLinterRules(config.rules, addVersionRules(version)),
         )
     }
 
-    // TODO: implement versions for linter
-    private fun addLinterRules(
-        rules: List<String>,
-        version: String = "1.0",
-    ): List<LinterRule> {
+    private fun addVersionRules(version: String): List<LinterRule> {
         val onePointZeroLinterRules =
             listOf(
                 CamelCaseRule(),
@@ -50,9 +49,36 @@ interface LinterUtil {
                 SpaceAfterOperatorRule(),
                 SpaceBeforeOperatorRule(),
             )
+        val onePointOneLinterRules =
+            listOf(
+                CamelCaseRule(),
+                PascalCaseRule(),
+                SnakeCaseRule(),
+                SpaceAfterColonRule(),
+                SpaceBeforeColonRule(),
+                LineJumpAfterSemicolonRule(),
+                NewLineBeforePrintlnRule(),
+                OneSpaceBetweenTokensRule(),
+                SpaceAfterAssignationRule(),
+                SpaceBeforeAssignationRule(),
+                SpaceAfterOperatorRule(),
+                SpaceBeforeOperatorRule(),
+                // TODO: add new linter rules
+            )
+        return when (version) {
+            "1.1" -> onePointOneLinterRules
+            else -> onePointZeroLinterRules
+        }
+    }
+
+    // TODO: implement versions for linter
+    private fun addLinterRules(
+        rules: List<String>,
+        possibleRules: List<LinterRule>,
+    ): List<LinterRule> {
         val appliedRules = mutableListOf<LinterRule>()
         for (rule in rules) {
-            for (linterRule in onePointZeroLinterRules) {
+            for (linterRule in possibleRules) {
                 if (linterRule.getName() == rule) {
                     appliedRules.add(linterRule)
                 }
