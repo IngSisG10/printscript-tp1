@@ -11,9 +11,7 @@ import linter.syntax.LinterRule
 class NewLineBeforePrintlnRule(
     private val allowedNewLines: Int = 1, // configurable: 0, 1 o 2
 ) : LinterRule {
-    override fun getName(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getName(): String = "new_line_before_println"
 
     override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {
