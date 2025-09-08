@@ -2,6 +2,7 @@ package common.converter
 
 import common.enums.FunctionEnum
 import common.enums.OperationEnum
+import common.enums.TypeEnum
 import common.token.abs.TokenInterface
 
 class Converter {
@@ -11,11 +12,20 @@ class Converter {
             when (token.value) {
                 is FunctionEnum -> builder.append(convertFunctionValue(token.value as FunctionEnum))
                 is OperationEnum -> builder.append(convertOperationValue(token.value as OperationEnum))
+                is TypeEnum -> builder.append(convertTypeValue(token.value as TypeEnum))
+                else -> builder.append(token.value)
             }
-            builder.append(token.value)
         }
         return builder.toString()
     }
+
+    private fun convertTypeValue(value: TypeEnum): String =
+        when (value) {
+            TypeEnum.ANY -> "Any"
+            TypeEnum.STRING -> "String"
+            TypeEnum.NUMBER -> "Number"
+            TypeEnum.BOOLEAN -> "Boolean"
+        }
 
     private fun convertOperationValue(value: OperationEnum): String =
         when (value) {

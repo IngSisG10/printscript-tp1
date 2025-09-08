@@ -31,7 +31,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING", result)
+        assertEquals("variable : String", result)
     }
 
     @Test
@@ -49,7 +49,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING", result)
+        assertEquals("variable : String", result)
     }
 
     @Test
@@ -66,7 +66,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING", result)
+        assertEquals("variable : String", result)
     }
 
     @Test
@@ -83,7 +83,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable:STRING", result)
+        assertEquals("variable:String", result)
     }
 
     @Test
@@ -105,7 +105,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
+        assertEquals("variable : String = 3", result)
     }
 
     @Test
@@ -127,7 +127,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
+        assertEquals("variable : String = 3", result)
     }
 
     @Test
@@ -148,7 +148,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
+        assertEquals("variable : String = 3", result)
     }
 
     @Test
@@ -171,7 +171,7 @@ class FormatterTest {
 
         val result = formatter.format(tokens)
 
-        assertEquals("variable : STRING " + OperationEnum.EQUAL + " 3", result)
+        assertEquals("variable : String = 3", result)
     }
 
 //    @Test
