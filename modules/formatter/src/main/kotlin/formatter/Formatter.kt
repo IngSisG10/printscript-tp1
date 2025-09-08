@@ -1,5 +1,6 @@
 package formatter
 
+import common.converter.Converter
 import common.data.LinterData
 import common.token.abs.TokenInterface
 import formatter.fixes.LineJumpAfterSemiColonFix
@@ -15,6 +16,7 @@ import linter.Linter
 class Formatter(
     private val linter: Linter = Linter(),
 ) {
+    private val converter = Converter()
     private val formatterRules: List<FormatterFix> =
         listOf(
             SpaceBeforeColonFix(),
@@ -28,7 +30,7 @@ class Formatter(
 
     fun format(tokens: List<TokenInterface>): String {
         val issues: List<LinterData> = linter.formatterLint(tokens)
-        if (issues.isEmpty()) return convert(tokens)
+        if (issues.isEmpty()) return converter.convert(tokens)
         var newTokenList: List<TokenInterface> = tokens
         for (issue in issues) {
             var fixed = false
@@ -44,14 +46,6 @@ class Formatter(
         }
 
         // return the original code if no fix is applied
-        return convert(newTokenList)
-    }
-
-    private fun convert(tokens: List<TokenInterface>): String {
-        val builder = StringBuilder()
-        for (token in tokens) {
-            builder.append(token.value)
-        }
-        return builder.toString()
+        return converter.convert(newTokenList)
     }
 }
