@@ -9,6 +9,7 @@ import formatter.fixes.SpaceAfterColonFix
 import formatter.fixes.SpaceBeforeAndAfterEqualFix
 import formatter.fixes.SpaceBeforeAndAfterOperatorFix
 import formatter.fixes.SpaceBeforeColonFix
+import formatter.fixes.abs.FormatterFix
 import linter.Linter
 
 class Formatter(

@@ -6,7 +6,7 @@ import common.exception.InvalidNewLineBeforePrintlnException
 import common.token.FunctionToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
-import formatter.FormatterFix
+import formatter.fixes.abs.FormatterFix
 
 class LineJumpSpaceBeforePrintlnFix(
     private val maxNewLines: Int = 2, // configurable, default = 2
