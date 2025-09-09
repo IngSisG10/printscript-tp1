@@ -2,6 +2,7 @@ package lexer.token.rules
 
 import common.enums.FunctionEnum
 import common.enums.TypeEnum
+import common.token.BooleanLiteralToken
 import common.token.ConstantDeclaratorToken
 import common.token.ElseToken
 import common.token.FunctionToken
@@ -19,6 +20,8 @@ class KeywordOnePointOneRule : TokenRule {
             "else" to { r, c -> ElseToken(r, c) },
             "readInput" to { r, c -> FunctionToken(FunctionEnum.READ_INPUT, r, c) },
             "readEnv" to { r, c -> FunctionToken(FunctionEnum.READ_ENV, r, c) },
+            "true" to { r, c -> BooleanLiteralToken(true, r, c) },
+            "false" to { r, c -> BooleanLiteralToken(false, r, c) },
         )
 
     override fun match(

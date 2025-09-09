@@ -13,11 +13,19 @@ class Converter {
                 is FunctionEnum -> builder.append(convertFunctionValue(token.value as FunctionEnum))
                 is OperationEnum -> builder.append(convertOperationValue(token.value as OperationEnum))
                 is TypeEnum -> builder.append(convertTypeValue(token.value as TypeEnum))
+                is Boolean -> builder.append(convertBooleanValue(token.value as Boolean))
                 else -> builder.append(token.value)
             }
         }
         return builder.toString()
     }
+
+    private fun convertBooleanValue(value: Boolean): String =
+        if (value) {
+            "true"
+        } else {
+            "false"
+        }
 
     private fun convertTypeValue(value: TypeEnum): String =
         when (value) {
