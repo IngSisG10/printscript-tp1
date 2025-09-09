@@ -9,7 +9,7 @@ import parser.Parser
 class PrintScriptIntegrationTest {
     private fun executeCode(code: String): List<String> {
         val tokens = Lexer().lex(code)
-        val ast = Parser(tokens).parse()
+        val ast = Parser().parse(tokens)
         return Interpreter().interpret(ast)
     }
 

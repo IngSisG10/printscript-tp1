@@ -11,7 +11,6 @@ import parser.nodecreator.FunctionNodeCreator
 import parser.nodecreator.abs.AstNodeCreator
 
 class Parser(
-    private val tokens: List<TokenInterface>,
     private val nodeCreators: List<AstNodeCreator> =
         listOf(
             DeclaratorNodeCreator(),
@@ -21,9 +20,9 @@ class Parser(
 ) {
     private val listOfAST = mutableListOf<AstNode>()
 
-    fun parse(): List<AstNode> {
+    fun parse(tokens: List<TokenInterface>): List<AstNode> {
         // separate between ";"
-        val listOfTokensByLine = splitTokensIntoLines(this.tokens)
+        val listOfTokensByLine = splitTokensIntoLines(tokens)
         addNodeToAst(listOfTokensByLine)
         return listOfAST
     }
