@@ -5,6 +5,7 @@ import common.ast.IdentifierNode
 import common.ast.LiteralNode
 import common.enums.TypeEnum
 import common.exception.UnrecognizedLineException
+import common.token.BooleanLiteralToken
 import common.token.NumberLiteralToken
 import common.token.StringLiteralToken
 import common.token.VariableToken
@@ -34,6 +35,12 @@ class SingleValueNodeCreator : AstNodeCreator {
             is VariableToken -> {
                 IdentifierNode(
                     name = token.value,
+                )
+            }
+            is BooleanLiteralToken -> {
+                LiteralNode(
+                    value = token.value,
+                    type = TypeEnum.BOOLEAN,
                 )
             }
             else -> throw UnrecognizedLineException("Unsupported value")

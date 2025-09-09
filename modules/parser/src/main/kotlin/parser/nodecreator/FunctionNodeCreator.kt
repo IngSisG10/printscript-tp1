@@ -18,9 +18,11 @@ class FunctionNodeCreator : AstNodeCreator {
         val variableName = (line[0] as FunctionToken).value
         val parenthesis = line.subList(1, line.size)
 
-        return FunctionNode(
-            functionName = variableName,
-            arguments = operationNodeCreator.createAstNode(parenthesis),
-        )
+        val functionNode =
+            FunctionNode(
+                functionName = variableName,
+                arguments = operationNodeCreator.createAstNode(parenthesis),
+            )
+        return functionNode
     }
 }
