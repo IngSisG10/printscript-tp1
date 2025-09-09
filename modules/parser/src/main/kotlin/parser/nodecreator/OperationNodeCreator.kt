@@ -33,7 +33,7 @@ class OperationNodeCreator : AstNodeCreator {
         if (line.size == 1) {
             return singleValueNodeCreator.createAstNode(line)
         } else if (isMinusValueCase(line)) {
-            return MonoOpNode(createAstNode(listOf(line[1])))
+            return MonoOpNode(OperationEnum.MINUS, createAstNode(listOf(line[1])))
         } else if (hasSingleParenthesis(line)) {
             return createAstNode(line.subList(1, line.size - 1))
         }
