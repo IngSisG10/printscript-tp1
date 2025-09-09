@@ -39,5 +39,7 @@ class Converter {
     private fun convertFunctionValue(value: FunctionEnum): String =
         when (value) {
             FunctionEnum.PRINTLN -> "println"
+            FunctionEnum.READ_INPUT -> "readInput"
+            FunctionEnum.READ_ENV -> "readEnv"
         }
 }
