@@ -6,23 +6,21 @@ import common.ast.VariableNode
 import common.token.TypeToken
 import common.token.VariableDeclaratorToken
 import common.token.abs.TokenInterface
-import parser.AstNodeCreator
-import parser.ExpressionParser
-import parser.validators.DeclarationValidator
+import parser.nodecreator.abs.AstNodeCreator
+import parser.nodecreator.validators.DeclarationValidator
 
+// let x : TypeEnum = (OPERATION)
 class DeclaratorNodeCreator : AstNodeCreator {
     private val declaratorValidator = DeclarationValidator()
+    private val operationCreator = OperationNodeCreator()
 
     override fun matches(line: List<TokenInterface>): Boolean = line.isNotEmpty() && line[0] is VariableDeclaratorToken
 
-    override fun createAstNode(
-        line: List<TokenInterface>,
-        listOfAst: List<AstNode>,
-    ): AstNode {
+    override fun createAstNode(line: List<TokenInterface>): AstNode {
         declaratorValidator.validate(line)
-        val variableName = line[1].value.toString() // a
-        val variableType = (line[3] as TypeToken).value // Number
-        val valueTokensList = line.subList(5, line.size)
+        val variableName = line[1].value.toString() // variable
+        val variableType = (line[3] as TypeToken).value // TypeEnum
+        val operationTokensList = line.subList(5, line.size)
 
         return DeclaratorNode(
             variableNode =
@@ -30,7 +28,7 @@ class DeclaratorNodeCreator : AstNodeCreator {
                     name = variableName,
                     type = variableType,
                 ),
-            value = ExpressionParser.parseExpression(valueTokensList, listOfAst),
+            value = operationCreator.createAstNode(operationTokensList),
         )
     }
 }
