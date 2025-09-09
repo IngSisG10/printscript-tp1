@@ -3,6 +3,7 @@ package parser.nodecreator
 import common.ast.AstNode
 import common.ast.DeclaratorNode
 import common.ast.VariableNode
+import common.enums.DeclarationTypeEnum
 import common.token.TypeToken
 import common.token.VariableDeclaratorToken
 import common.token.abs.TokenInterface
@@ -31,6 +32,7 @@ class DeclaratorNodeCreator : AstNodeCreator {
                     type = variableType,
                 ),
             value = ExpressionParser.parseExpression(valueTokensList, listOfAst),
+            declarationType = DeclarationTypeEnum.LET,
         )
     }
 }
