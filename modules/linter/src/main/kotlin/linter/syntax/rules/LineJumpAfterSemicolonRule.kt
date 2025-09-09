@@ -8,9 +8,7 @@ import common.token.abs.TokenInterface
 import linter.syntax.LinterRule
 
 class LineJumpAfterSemicolonRule : LinterRule {
-    override fun getName(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getName(): String = "line_jump_after_semicolon"
 
     override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {

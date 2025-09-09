@@ -2,6 +2,6 @@ package common.enums
 
 enum class FunctionEnum {
     PRINTLN,
-    READINPUT,
-    READENV,
+    READ_INPUT,
+    READ_ENV,
 }

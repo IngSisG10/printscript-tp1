@@ -7,7 +7,7 @@ import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import exception.NoSpaceAfterAssignationException
 import exception.NoSpaceBeforeAssignationException
-import formatter.FormatterFix
+import formatter.fixes.abs.FormatterFix
 
 class SpaceBeforeAndAfterEqualFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean =

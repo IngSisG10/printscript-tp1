@@ -3,7 +3,7 @@ package formatter.fixes
 import common.data.LinterData
 import common.exception.NoSpaceAfterColonException
 import common.token.abs.TokenInterface
-import formatter.FormatterFix
+import formatter.fixes.abs.FormatterFix
 
 class SpaceAfterColonFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceAfterColonException

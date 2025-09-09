@@ -16,9 +16,7 @@ import linter.syntax.LinterRule
 // a = 5
 
 class SpaceAfterAssignationRule : LinterRule {
-    override fun getName(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getName(): String = "space_after_assignation"
 
     override fun match(tokens: List<TokenInterface>): Exception? {
         for ((index, token) in tokens.withIndex()) {

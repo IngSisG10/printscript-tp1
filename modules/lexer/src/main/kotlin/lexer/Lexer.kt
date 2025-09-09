@@ -23,10 +23,10 @@ class Lexer(
             IdentifierRule(),
         ),
 ) {
-    private val tokens = mutableListOf<common.token.abs.TokenInterface>()
+    private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
 
-    fun lex(code: String): List<common.token.abs.TokenInterface> {
+    fun lex(code: String): List<TokenInterface> {
         tokenize(code)
         return tokens
     }
@@ -37,12 +37,12 @@ class Lexer(
             val c = text[i]
             when {
                 c == '\n' -> {
-                    tokens.add(common.token.NewLineToken(row, i))
+                    tokens.add(NewLineToken(row, i))
                     row++
                     i++
                 }
                 c.isWhitespace() -> {
-                    tokens.add(common.token.WhiteSpaceToken(row, i))
+                    tokens.add(WhiteSpaceToken(row, i))
                     i++
                 }
                 else -> {
@@ -58,7 +58,7 @@ class Lexer(
                         }
                     }
                     if (!matched) {
-                        throw common.exception.UnknownExpressionException(
+                        throw UnknownExpressionException(
                             "Unknown expression at row $row, column $i: '${text.substring(i)}'",
                         )
                     }

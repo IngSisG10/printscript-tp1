@@ -1,4 +1,4 @@
-package formatter
+package formatter.fixes.abs
 
 import common.data.LinterData
 import common.token.abs.TokenInterface

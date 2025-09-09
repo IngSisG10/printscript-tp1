@@ -5,7 +5,7 @@ import common.exception.NoNewLineAfterSemiColon
 import common.token.EndSentenceToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
-import formatter.FormatterFix
+import formatter.fixes.abs.FormatterFix
 
 class LineJumpAfterSemiColonFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is NoNewLineAfterSemiColon
