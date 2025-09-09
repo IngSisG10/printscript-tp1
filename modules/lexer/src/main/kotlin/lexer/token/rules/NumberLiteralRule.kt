@@ -4,7 +4,7 @@ import common.token.NumberLiteralToken
 import lexer.token.TokenRule
 
 class NumberLiteralRule : TokenRule {
-    private val regex = Regex("\\d+")
+    private val regex = Regex("\\d+(\\.\\d+)?")
 
     override fun match(
         line: String,
@@ -12,7 +12,7 @@ class NumberLiteralRule : TokenRule {
         row: Int,
     ): TokenRule.MatchResult? {
         val m = regex.find(line, index)?.takeIf { it.range.first == index } ?: return null
-        val token = common.token.NumberLiteralToken(m.value.toInt(), row, index)
+        val token = NumberLiteralToken(m.value.toFloat(), row, index)
         return TokenRule.MatchResult(token, m.range.last + 1)
     }
 }
