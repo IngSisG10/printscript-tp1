@@ -192,6 +192,7 @@ class PrintScriptInterpreter {
                 val value = evaluate(node.arguments) ?: throw InterpreterException("println argument did not produce a value")
                 output.add(value.toStringValue())
             }
+            else -> throw Exception("not yet implemented")
         }
         return null
     }
