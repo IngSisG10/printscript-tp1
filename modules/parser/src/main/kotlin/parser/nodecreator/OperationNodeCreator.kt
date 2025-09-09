@@ -2,15 +2,19 @@ package parser.nodecreator
 
 import common.ast.AstNode
 import common.ast.BinaryOpNode
+import common.ast.EmptyNode
 import common.enums.OperationEnum
 import common.token.CloseParenthesisToken
 import common.token.OpenParenthesisToken
 import common.token.abs.OperationInterface
 import common.token.abs.TokenInterface
 import parser.nodecreator.abs.AstNodeCreator
+import parser.nodecreator.validators.OperationValidator
 
 class OperationNodeCreator : AstNodeCreator {
     private val singleValueNodeCreator = SingleValueNodeCreator()
+
+    private val operationValidator = OperationValidator()
 
     override fun matches(line: List<TokenInterface>): Boolean {
         for (token in line) {
@@ -23,8 +27,11 @@ class OperationNodeCreator : AstNodeCreator {
 
     // (5 + 5) * 1 / variable - 1
     override fun createAstNode(line: List<TokenInterface>): AstNode {
+        operationValidator.validate(line)
         if (line.size == 1) {
             return singleValueNodeCreator.createAstNode(line)
+        } else if (line.isEmpty()) {
+            return EmptyNode
         } else if (hasSingleParenthesis(line)) {
             return createAstNode(line.subList(1, line.size - 1))
         }

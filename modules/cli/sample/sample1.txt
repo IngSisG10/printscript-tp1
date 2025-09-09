@@ -1,3 +1,2 @@
-let a : Number = (5 + 5) * 4 / (2 + 2);
-let b : Number = 5;
-println(a + "5" + b);
+let a : Number = (5 + 5) * 4 / (2 + 2;
+println(a);
