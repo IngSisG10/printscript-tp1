@@ -2,10 +2,12 @@ package parser.nodecreator
 
 import common.ast.AstNode
 import common.ast.BinaryOpNode
-import common.ast.EmptyNode
+import common.ast.MonoOpNode
 import common.enums.OperationEnum
 import common.token.CloseParenthesisToken
+import common.token.NumberLiteralToken
 import common.token.OpenParenthesisToken
+import common.token.OperationToken
 import common.token.abs.OperationInterface
 import common.token.abs.TokenInterface
 import parser.nodecreator.abs.AstNodeCreator
@@ -30,8 +32,8 @@ class OperationNodeCreator : AstNodeCreator {
         operationValidator.validate(line)
         if (line.size == 1) {
             return singleValueNodeCreator.createAstNode(line)
-        } else if (line.isEmpty()) {
-            return EmptyNode
+        } else if (isMinusValueCase(line)) {
+            return MonoOpNode(createAstNode(listOf(line[1])))
         } else if (hasSingleParenthesis(line)) {
             return createAstNode(line.subList(1, line.size - 1))
         }
@@ -41,6 +43,12 @@ class OperationNodeCreator : AstNodeCreator {
         val right = createAstNode(line.subList(opIndex + 1, line.size))
         return BinaryOpNode(opToken, left, right)
     }
+
+    private fun isMinusValueCase(line: List<TokenInterface>): Boolean =
+        line.size == 2 &&
+            line[0] is OperationToken &&
+            line[0].value == OperationEnum.MINUS &&
+            line[1] is NumberLiteralToken
 
     private fun findHighestPriorityOp(tokens: List<TokenInterface>): Int? {
         var highPriority = Int.MIN_VALUE

@@ -4,7 +4,6 @@ import common.ast.AssignmentNode
 import common.ast.AstNode
 import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
-import common.ast.EmptyNode
 import common.ast.FunctionNode
 import common.ast.IdentifierNode
 import common.ast.LiteralNode
@@ -39,7 +38,6 @@ class PrintScriptInterpreter {
             is AssignmentNode -> evaluateAssignment(node)
             is FunctionNode -> evaluateFunction(node)
             is MonoOpNode -> evaluateMonoOp(node)
-            is EmptyNode -> evaluateEmpty()
         }
 
     private fun evaluateEmpty(): Value? = null
