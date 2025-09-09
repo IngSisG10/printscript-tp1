@@ -1,6 +1,7 @@
 package parser.nodecreator.validators
 
 import common.exception.UnrecognizedLineException
+import common.token.OpenParenthesisToken
 import common.token.abs.TokenInterface
 import parser.nodecreator.validators.abs.StructureValidator
 
@@ -10,7 +11,7 @@ class FunctionValidator : StructureValidator {
         if (line.size > 2) {
             throw UnrecognizedLineException("Invalid function structure")
         }
-        if (line[1] !is common.token.ParenthesisToken) {
+        if (line[1] !is OpenParenthesisToken) {
             throw UnrecognizedLineException("Expected '(', got: ${line[1].name}")
         }
     }
