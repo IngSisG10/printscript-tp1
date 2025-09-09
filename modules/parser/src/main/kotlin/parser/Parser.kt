@@ -25,7 +25,6 @@ class Parser(
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens)
         addNodeToAst(listOfTokensByLine)
-        // Semantic Analysis
         return listOfAST
     }
 

@@ -15,10 +15,10 @@ class OperationToken(
 
     private fun evaluatePriority(): Int =
         when (value) {
-            OperationEnum.MINUS -> 9
             OperationEnum.SUM -> 8
             OperationEnum.MULTIPLY -> 7
             OperationEnum.DIVIDE -> 6
+            OperationEnum.MINUS -> 5
             else -> 0
         }
 }

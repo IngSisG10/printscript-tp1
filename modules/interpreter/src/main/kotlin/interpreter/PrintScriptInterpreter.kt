@@ -40,6 +40,8 @@ class PrintScriptInterpreter {
             is MonoOpNode -> evaluateMonoOp(node)
         }
 
+    private fun evaluateEmpty(): Value? = null
+
     private fun evaluateBinaryOp(node: BinaryOpNode): Value {
         val leftValue = evaluate(node.left) ?: throw InterpreterException("Left operand did not produce a value")
         val rightValue = evaluate(node.right) ?: throw InterpreterException("Right operand did not produce a value")
