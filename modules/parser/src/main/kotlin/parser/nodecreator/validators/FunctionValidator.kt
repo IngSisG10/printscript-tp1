@@ -2,7 +2,9 @@ package parser.nodecreator.validators
 
 import common.exception.UnrecognizedLineException
 import common.token.abs.TokenInterface
+import parser.nodecreator.validators.abs.StructureValidator
 
+// TODO: chequear el parentesis este bien hecho
 class FunctionValidator : StructureValidator {
     override fun validate(line: List<TokenInterface>) {
         if (line.size > 2) {

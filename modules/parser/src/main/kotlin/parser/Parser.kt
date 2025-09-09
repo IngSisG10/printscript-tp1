@@ -9,19 +9,9 @@ import parser.nodecreator.AssignationNodeCreator
 import parser.nodecreator.DeclaratorNodeCreator
 import parser.nodecreator.FunctionNodeCreator
 import parser.nodecreator.abs.AstNodeCreator
-import parser.semanticrules.SemanticError
-import parser.semanticrules.SemanticRule
-
-// Construccion de nodos
-// Analisis Sintactico
-// Analisis Semantico
 
 class Parser(
     private val tokens: List<TokenInterface>,
-    private val semanticRules: List<SemanticRule> =
-        listOf(
-            // InvalidDeclaration(),
-        ),
     private val nodeCreators: List<AstNodeCreator> =
         listOf(
             DeclaratorNodeCreator(),
@@ -31,32 +21,12 @@ class Parser(
 ) {
     private val listOfAST = mutableListOf<AstNode>()
 
-    private val semanticErrors = mutableListOf<SemanticError>()
-
     fun parse(): List<AstNode> {
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(this.tokens)
         addNodeToAst(listOfTokensByLine)
         // Semantic Analysis
-        checkSemanticRules()
         return listOfAST
-    }
-
-    private fun checkSemanticRules() {
-        for (node in listOfAST) {
-            for (rule in semanticRules) {
-                val error = rule.analyze(node)
-                if (error != null) {
-                    semanticErrors.add(error)
-                }
-            }
-        }
-
-        if (semanticErrors.isNotEmpty()) {
-            println("Semantic errors:")
-            semanticErrors.forEach { println("  - ${it.message}") }
-            throw RuntimeException("Semantic analysis failed")
-        }
     }
 
     private fun addNodeToAst(listOfTokensByLine: List<List<TokenInterface>>) {
