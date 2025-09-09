@@ -8,6 +8,7 @@ import common.token.CloseParenthesisToken
 import common.token.NumberLiteralToken
 import common.token.OpenParenthesisToken
 import common.token.OperationToken
+import common.token.VariableToken
 import common.token.abs.OperationInterface
 import common.token.abs.TokenInterface
 import parser.nodecreator.abs.AstNodeCreator
@@ -48,7 +49,7 @@ class OperationNodeCreator : AstNodeCreator {
         line.size == 2 &&
             line[0] is OperationToken &&
             line[0].value == OperationEnum.MINUS &&
-            line[1] is NumberLiteralToken
+            (line[1] is NumberLiteralToken || line[1] is VariableToken)
 
     private fun findHighestPriorityOp(tokens: List<TokenInterface>): Int? {
         var highPriority = Int.MIN_VALUE
