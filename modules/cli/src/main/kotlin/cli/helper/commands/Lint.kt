@@ -5,9 +5,8 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import common.exception.InvalidFileException
 
-class Analyze :
+class Lint :
     CliktCommand(),
     CliUtil {
     private val file by argument()

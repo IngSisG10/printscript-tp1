@@ -19,12 +19,12 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class PrintScriptInterpreterTest {
-    private lateinit var interpreter: PrintScriptInterpreter
+class InterpreterTest {
+    private lateinit var interpreter: Interpreter
 
     @BeforeEach
     fun setUp() {
-        interpreter = PrintScriptInterpreter()
+        interpreter = Interpreter()
     }
 
     @Test

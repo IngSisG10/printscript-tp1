@@ -6,8 +6,7 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import common.exception.InvalidFileException
-import interpreter.PrintScriptInterpreter
+import interpreter.Interpreter
 import parser.Parser
 
 class Execute :
@@ -28,7 +27,7 @@ class Execute :
         val tokens = lexer.lex(fileText)
         val parser = Parser(tokens)
         val ast = parser.parse()
-        val interpreter = PrintScriptInterpreter()
+        val interpreter = Interpreter()
         val output = interpreter.interpret(ast)
         for (line in output) println(line)
     }
