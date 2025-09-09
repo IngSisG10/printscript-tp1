@@ -1,7 +1,9 @@
 package common.ast
 
+import common.enums.DeclarationTypeEnum
+
 data class DeclaratorNode(
     val variableNode: VariableNode,
     val value: AstNode,
-    val isMutable: Boolean,
+    val declarationType: DeclarationTypeEnum,
 ) : AstNode

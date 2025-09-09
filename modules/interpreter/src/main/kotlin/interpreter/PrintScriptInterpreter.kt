@@ -155,7 +155,7 @@ class PrintScriptInterpreter {
                 null
             }
 
-        environment.declareVariable(variable.name, variable.type, typedValue)
+        environment.declareVariable(variable.name, variable.type, typedValue, node.declarationType)
         return null
     }
 
