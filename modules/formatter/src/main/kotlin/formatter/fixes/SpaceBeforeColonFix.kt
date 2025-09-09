@@ -5,7 +5,7 @@ import common.exception.NoSpaceBeforeColonException
 import common.token.TypeDeclaratorToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
-import formatter.FormatterFix
+import formatter.fixes.abs.FormatterFix
 
 class SpaceBeforeColonFix : FormatterFix {
     override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceBeforeColonException

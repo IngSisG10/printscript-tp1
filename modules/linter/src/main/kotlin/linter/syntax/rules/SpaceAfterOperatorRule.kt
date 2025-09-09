@@ -8,9 +8,7 @@ import exception.NoSpaceAfterOperatorException
 import linter.syntax.LinterRule
 
 class SpaceAfterOperatorRule : LinterRule {
-    override fun getName(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getName(): String = "space_after_operation"
 
     override fun match(tokens: List<TokenInterface>): Exception? {
         for (i in 0 until tokens.size - 1) {

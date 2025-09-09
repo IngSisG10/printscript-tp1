@@ -7,9 +7,7 @@ import exception.MoreThanOneSpaceAfterTokenException
 import linter.syntax.LinterRule
 
 class OneSpaceBetweenTokensRule : LinterRule {
-    override fun getName(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getName(): String = "one_space_between_tokens"
 
     override fun match(tokens: List<TokenInterface>): Exception? {
         for (i in 0 until tokens.size - 1) {
