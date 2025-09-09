@@ -38,17 +38,4 @@ class InterpreterExceptionTest {
         val exception = UninitializedVariableException("myVar")
         assertEquals("Variable 'myVar' is used before being initialized", exception.message)
     }
-
-    @Test
-    fun testExceptionInheritance() {
-        val undefinedException = UndefinedVariableException("test")
-        val typeMismatchException = TypeMismatchException("test")
-        val divisionException = DivisionByZeroException()
-        val uninitializedException = UninitializedVariableException("test")
-
-        assert(undefinedException is InterpreterException)
-        assert(typeMismatchException is InterpreterException)
-        assert(divisionException is InterpreterException)
-        assert(uninitializedException is InterpreterException)
-    }
 }

@@ -8,6 +8,7 @@ import common.exception.UninitializedVariableException
 data class Variable(
     val type: common.enums.TypeEnum,
     var value: Value? = null,
+    val isMutable: Boolean = true,
 )
 
 sealed class Value {
@@ -34,11 +35,12 @@ class Environment {
         name: String,
         type: common.enums.TypeEnum,
         value: Value? = null,
+        isMutable: Boolean = true,
     ) {
         if (variables.containsKey(name)) {
             throw InterpreterException("Variable '$name' is already declared")
         }
-        variables[name] = Variable(type, value)
+        variables[name] = Variable(type, value, isMutable)
     }
 
     fun setVariable(

@@ -152,7 +152,7 @@ class PrintScriptInterpreterTest {
     fun testVariableDeclarationWithInitialization() {
         val variableNode = VariableNode("x", TypeEnum.NUMBER)
         val initialValue = LiteralNode(42.0, TypeEnum.NUMBER)
-        val declarator = DeclaratorNode(variableNode, initialValue)
+        val declarator = DeclaratorNode(variableNode, initialValue, true)
 
         val result = interpreter.interpret(listOf(declarator))
         assertEquals(emptyList<String>(), result)
@@ -162,7 +162,7 @@ class PrintScriptInterpreterTest {
     fun testVariableAssignment() {
         val variableNode = VariableNode("x", TypeEnum.NUMBER)
         val initialValue = LiteralNode(5.0, TypeEnum.NUMBER)
-        val declarator = DeclaratorNode(variableNode, initialValue)
+        val declarator = DeclaratorNode(variableNode, initialValue, true)
         val newValue = LiteralNode(10.0, TypeEnum.NUMBER)
         val assignment = AssignmentNode(OperationEnum.EQUAL, IdentifierNode("x"), newValue)
 
@@ -174,7 +174,7 @@ class PrintScriptInterpreterTest {
     fun testVariableUsage() {
         val variableNode = VariableNode("x", TypeEnum.NUMBER)
         val initialValue = LiteralNode(42.0, TypeEnum.NUMBER)
-        val declarator = DeclaratorNode(variableNode, initialValue)
+        val declarator = DeclaratorNode(variableNode, initialValue, true)
         val identifier = IdentifierNode("x")
         val println = FunctionNode(FunctionEnum.PRINTLN, identifier)
 
@@ -195,7 +195,7 @@ class PrintScriptInterpreterTest {
     fun testTypeMismatchInDeclaration() {
         val variableNode = VariableNode("x", TypeEnum.NUMBER)
         val initialValue = LiteralNode("not a number", TypeEnum.STRING)
-        val declarator = DeclaratorNode(variableNode, initialValue)
+        val declarator = DeclaratorNode(variableNode, initialValue, true)
 
         assertThrows(TypeMismatchException::class.java) {
             interpreter.interpret(listOf(declarator))
@@ -205,7 +205,7 @@ class PrintScriptInterpreterTest {
     @Test
     fun testTypeMismatchInAssignment() {
         val variableNode = VariableNode("x", TypeEnum.NUMBER)
-        val declarator = DeclaratorNode(variableNode, LiteralNode(10.0, TypeEnum.NUMBER))
+        val declarator = DeclaratorNode(variableNode, LiteralNode(10.0, TypeEnum.NUMBER), true)
         val stringValue = LiteralNode("not a number", TypeEnum.STRING)
         val assignment = AssignmentNode(OperationEnum.EQUAL, IdentifierNode("x"), stringValue)
 
@@ -217,9 +217,9 @@ class PrintScriptInterpreterTest {
     @Test
     fun testVariableRedeclarationThrowsException() {
         val variableNode1 = VariableNode("x", TypeEnum.NUMBER)
-        val declarator1 = DeclaratorNode(variableNode1, LiteralNode(10.0, TypeEnum.NUMBER))
+        val declarator1 = DeclaratorNode(variableNode1, LiteralNode(10.0, TypeEnum.NUMBER), true)
         val variableNode2 = VariableNode("x", TypeEnum.STRING)
-        val declarator2 = DeclaratorNode(variableNode2, LiteralNode("hello", TypeEnum.STRING))
+        val declarator2 = DeclaratorNode(variableNode2, LiteralNode("hello", TypeEnum.STRING), true)
 
         assertThrows(InterpreterException::class.java) {
             interpreter.interpret(listOf(declarator1, declarator2))
@@ -230,8 +230,8 @@ class PrintScriptInterpreterTest {
     fun testComplexExpression() {
         val var1 = VariableNode("a", TypeEnum.NUMBER)
         val var2 = VariableNode("b", TypeEnum.NUMBER)
-        val decl1 = DeclaratorNode(var1, LiteralNode(10.0, TypeEnum.NUMBER))
-        val decl2 = DeclaratorNode(var2, LiteralNode(5.0, TypeEnum.NUMBER))
+        val decl1 = DeclaratorNode(var1, LiteralNode(10.0, TypeEnum.NUMBER), true)
+        val decl2 = DeclaratorNode(var2, LiteralNode(5.0, TypeEnum.NUMBER), true)
 
         val multiplication = BinaryOpNode(OperationEnum.MULTIPLY, IdentifierNode("a"), IdentifierNode("b"))
         val addition = BinaryOpNode(OperationEnum.SUM, multiplication, LiteralNode(2.0, TypeEnum.NUMBER))
@@ -244,7 +244,7 @@ class PrintScriptInterpreterTest {
     @Test
     fun testMultipleStatements() {
         val var1 = VariableNode("message", TypeEnum.STRING)
-        val decl1 = DeclaratorNode(var1, LiteralNode("Hello", TypeEnum.STRING))
+        val decl1 = DeclaratorNode(var1, LiteralNode("Hello", TypeEnum.STRING), true)
         val println1 = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("message"))
 
         val assignment = AssignmentNode(OperationEnum.EQUAL, IdentifierNode("message"), LiteralNode("World", TypeEnum.STRING))
@@ -269,7 +269,7 @@ class PrintScriptInterpreterTest {
     fun testAnyTypeWithNumber() {
         val variableNode = VariableNode("x", TypeEnum.ANY)
         val initialValue = LiteralNode(42.0, TypeEnum.ANY)
-        val declarator = DeclaratorNode(variableNode, initialValue)
+        val declarator = DeclaratorNode(variableNode, initialValue, true)
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("x"))
 
         val result = interpreter.interpret(listOf(declarator, println))
@@ -280,7 +280,7 @@ class PrintScriptInterpreterTest {
     fun testAnyTypeWithString() {
         val variableNode = VariableNode("x", TypeEnum.ANY)
         val initialValue = LiteralNode("Hello", TypeEnum.ANY)
-        val declarator = DeclaratorNode(variableNode, initialValue)
+        val declarator = DeclaratorNode(variableNode, initialValue, true)
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("x"))
 
         val result = interpreter.interpret(listOf(declarator, println))
@@ -299,7 +299,7 @@ class PrintScriptInterpreterTest {
     @Test
     fun testUnsupportedAssignmentOperator() {
         val variableNode = VariableNode("x", TypeEnum.NUMBER)
-        val declarator = DeclaratorNode(variableNode, LiteralNode(10.0, TypeEnum.NUMBER))
+        val declarator = DeclaratorNode(variableNode, LiteralNode(10.0, TypeEnum.NUMBER), true)
         val assignment = AssignmentNode(OperationEnum.SUM, IdentifierNode("x"), LiteralNode(5.0, TypeEnum.NUMBER))
 
         assertThrows(InterpreterException::class.java) {

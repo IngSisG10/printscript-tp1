@@ -38,6 +38,7 @@ class PrintScriptInterpreter {
             is AssignmentNode -> evaluateAssignment(node)
             is FunctionNode -> evaluateFunction(node)
             is MonoOpNode -> evaluateMonoOp(node)
+            else -> throw InterpreterException("Unknown AST node type: ${node::class.simpleName}") // TODO: add support for other nodes
         }
 
     private fun evaluateBinaryOp(node: BinaryOpNode): Value {
@@ -190,6 +191,7 @@ class PrintScriptInterpreter {
                 val value = evaluate(node.arguments) ?: throw InterpreterException("println argument did not produce a value")
                 output.add(value.toStringValue())
             }
+            else -> throw InterpreterException("Unknown function: ${node.functionName}") // TODO: add readInput and readEnv
         }
         return null
     }
