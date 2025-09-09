@@ -1,2 +1,2 @@
-let camelCase : Number = 5 + 5;
-println(a);
+let a : Number = (5 + 5) * 4 / (2 + 2);
+println(a + 5);

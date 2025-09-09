@@ -1,11 +1,14 @@
 package common.token
 
+import common.token.abs.OperationInterface
 import common.token.abs.TokenInterface
 
 class CloseParenthesisToken(
     override val row: Int,
     override val position: Int,
-) : TokenInterface {
+) : TokenInterface,
+    OperationInterface {
     override val name: String = "close_parenthesis"
     override val value: String = ")"
+    override val priority: Int = 2
 }

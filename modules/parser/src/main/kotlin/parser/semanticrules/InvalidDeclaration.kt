@@ -3,8 +3,6 @@ package parser.semanticrules
 import common.ast.AstNode
 import common.ast.DeclaratorNode
 import common.enums.TypeEnum
-import parser.SemanticError
-import parser.SemanticRule
 
 // let a: Number = "string"
 // let b: String = 5 + 3

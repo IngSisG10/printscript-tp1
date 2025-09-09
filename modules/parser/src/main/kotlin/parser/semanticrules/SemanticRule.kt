@@ -1,4 +1,4 @@
-package parser
+package parser.semanticrules
 
 import common.ast.AstNode
 

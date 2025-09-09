@@ -1,4 +1,4 @@
-package parser.validators
+package parser.nodecreator.validators
 
 import common.exception.UnrecognizedLineException
 import common.token.OperationToken
@@ -6,7 +6,6 @@ import common.token.TypeDeclaratorToken
 import common.token.TypeToken
 import common.token.VariableToken
 import common.token.abs.TokenInterface
-import parser.StructureValidator
 
 class DeclarationValidator : StructureValidator {
     override fun validate(line: List<TokenInterface>) {

@@ -1,11 +1,16 @@
 package parser
 
 import common.ast.AstNode
+import common.exception.UnrecognizedLineException
+import common.token.NewLineToken
+import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import parser.nodecreator.AssignationNodeCreator
 import parser.nodecreator.DeclaratorNodeCreator
 import parser.nodecreator.FunctionNodeCreator
-import parser.semanticrules.InvalidDeclaration
+import parser.nodecreator.abs.AstNodeCreator
+import parser.semanticrules.SemanticError
+import parser.semanticrules.SemanticRule
 
 // Construccion de nodos
 // Analisis Sintactico
@@ -15,7 +20,7 @@ class Parser(
     private val tokens: List<TokenInterface>,
     private val semanticRules: List<SemanticRule> =
         listOf(
-            InvalidDeclaration(),
+            // InvalidDeclaration(),
         ),
     private val nodeCreators: List<AstNodeCreator> =
         listOf(
@@ -63,15 +68,15 @@ class Parser(
     private fun parseLine(line: List<TokenInterface>): AstNode {
         val creator =
             nodeCreators.firstOrNull { it.matches(line) }
-                ?: throw common.exception.UnrecognizedLineException("No matching node creator for line starting with: ${line[0].name}")
-        return creator.createAstNode(line, listOfAST)
+                ?: throw UnrecognizedLineException("No matching node creator for line starting with: ${line[0].name}")
+        return creator.createAstNode(line)
     }
 
     private fun splitTokensIntoLines(tokens: List<TokenInterface>): List<List<TokenInterface>> {
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
         var currentList = mutableListOf<TokenInterface>()
 
-        val filteredTokens = tokens.filterNot { it is common.token.WhiteSpaceToken || it is common.token.NewLineToken }
+        val filteredTokens = tokens.filterNot { it is WhiteSpaceToken || it is NewLineToken }
 
         for (token in filteredTokens) {
             if (token.name == "end_sentence") {
