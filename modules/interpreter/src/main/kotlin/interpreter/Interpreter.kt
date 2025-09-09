@@ -38,9 +38,8 @@ class Interpreter {
             is AssignmentNode -> evaluateAssignment(node)
             is FunctionNode -> evaluateFunction(node)
             is MonoOpNode -> evaluateMonoOp(node)
+            else -> throw InterpreterException("Unknown AST node type: ${node::class.simpleName}") // TODO: add support for other nodes
         }
-
-    private fun evaluateEmpty(): Value? = null
 
     private fun evaluateBinaryOp(node: BinaryOpNode): Value {
         val leftValue = evaluate(node.left) ?: throw InterpreterException("Left operand did not produce a value")
@@ -156,7 +155,7 @@ class Interpreter {
                 null
             }
 
-        environment.declareVariable(variable.name, variable.type, typedValue)
+        environment.declareVariable(variable.name, variable.type, typedValue, node.declarationType)
         return null
     }
 
@@ -192,7 +191,7 @@ class Interpreter {
                 val value = evaluate(node.arguments) ?: throw InterpreterException("println argument did not produce a value")
                 output.add(value.toStringValue())
             }
-            else -> throw Exception("not yet implemented")
+            else -> throw InterpreterException("Unknown function: ${node.functionName}") // TODO: add readInput and readEnv
         }
         return null
     }
