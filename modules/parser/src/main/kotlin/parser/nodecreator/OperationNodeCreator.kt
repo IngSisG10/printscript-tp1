@@ -63,6 +63,7 @@ class OperationNodeCreator : AstNodeCreator {
     }
 
     private fun hasSingleParenthesis(line: List<TokenInterface>): Boolean {
+        if (line[0] !is OpenParenthesisToken || line[line.size - 1] !is CloseParenthesisToken) return false
         var depth = 0
         var numberOfParenthesis = 0
         for (token in line) {
