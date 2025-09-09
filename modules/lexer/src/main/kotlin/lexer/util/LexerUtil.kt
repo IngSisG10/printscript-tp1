@@ -7,6 +7,7 @@ import lexer.token.rules.KeywordOnePointOneRule
 import lexer.token.rules.KeywordRule
 import lexer.token.rules.NumberLiteralRule
 import lexer.token.rules.ParenthesisRule
+import lexer.token.rules.SingleCharOnePointOneRule
 import lexer.token.rules.SingleCharRule
 import lexer.token.rules.StringLiteralRule
 
@@ -20,6 +21,7 @@ interface LexerUtil {
                 KeywordOnePointOneRule(),
                 ParenthesisRule(),
                 SingleCharRule(),
+                SingleCharOnePointOneRule(),
                 IdentifierRule(),
                 // TODO: add new features here
             )
