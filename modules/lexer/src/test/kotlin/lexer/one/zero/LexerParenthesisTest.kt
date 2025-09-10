@@ -12,7 +12,7 @@ class LexerParenthesisTest {
     @Test
     fun createParenthesisWithContent() {
         val tokens =
-            Lexer().lex(" ( Value ) ").filterNot {
+            Lexer().lex(" ( Value ) ".byteInputStream()).filterNot {
                 it is WhiteSpaceToken || it is NewLineToken
             }
         assert(

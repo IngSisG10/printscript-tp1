@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test
 class LexerNumberTest {
     @Test
     fun testSingleNumber() {
-        val tokens = Lexer().lex("123")
+        val tokens = Lexer().lex("123".byteInputStream())
         assertEquals(1, tokens.size)
         assertInstanceOf(NumberLiteralToken::class.java, tokens[0])
     }
 
     @Test
     fun testMultipleNumbersSeparatedBySpaces() {
-        val tokens = Lexer().lex("0 1 2345")
+        val tokens = Lexer().lex("0 1 2345".byteInputStream())
         assertEquals(5, tokens.size)
         assertInstanceOf(NumberLiteralToken::class.java, tokens[0])
         assertInstanceOf(WhiteSpaceToken::class.java, tokens[1])
@@ -29,7 +29,7 @@ class LexerNumberTest {
 
     @Test
     fun testNumbersWithOperators() {
-        val tokens = Lexer().lex("1+2-3*4/5")
+        val tokens = Lexer().lex("1+2-3*4/5".byteInputStream())
         // Expect: N, Op, N, Op, N, Op, N, Op, N  -> 9 tokens
         assertEquals(9, tokens.size)
         for (i in tokens.indices) {
@@ -43,7 +43,7 @@ class LexerNumberTest {
 
     @Test
     fun testNegativeNumbersAreMinusThenNumber() {
-        val tokens = Lexer().lex("-1 -2")
+        val tokens = Lexer().lex("-1 -2".byteInputStream())
         // Expect: Op, N, Op, N
         assertEquals(5, tokens.size)
         assertInstanceOf(OperationToken::class.java, tokens[0])
