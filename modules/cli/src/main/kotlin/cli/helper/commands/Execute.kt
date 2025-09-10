@@ -23,7 +23,7 @@ class Execute : CliktCommand() {
     override fun run() {
         val fileText = CliUtil.findFile(fileName) ?: throw throw common.exception.InvalidFileException("No file was found")
         val lexer = createLexer(version)
-        val tokens = lexer.lex(fileText)
+        val tokens = lexer.lex(fileText.byteInputStream())
         val parser = Parser()
         val ast = parser.parse(tokens)
         val interpreter = Interpreter()

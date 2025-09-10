@@ -22,7 +22,7 @@ class Lint : CliktCommand() {
         val configFileText = CliUtil.findFile(config) ?: throw throw common.exception.InvalidFileException("No file was found")
         val linter = createLinter(configFileText)
         val lexer = createLexer(version)
-        val tokens = lexer.lex(fileText)
+        val tokens = lexer.lex(fileText.byteInputStream())
         linter.lint(tokens)
         println("Code is in order")
     }
