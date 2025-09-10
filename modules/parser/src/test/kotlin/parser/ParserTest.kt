@@ -11,7 +11,7 @@ import kotlin.test.Test
 class ParserTest {
     private fun parseCode(code: String): List<Any> {
         val lexer = Lexer()
-        val tokens = lexer.lex(code.byteInputStream())
+        val tokens = lexer.lex(code)
         val parser = Parser()
         return parser.parse(tokens)
     }

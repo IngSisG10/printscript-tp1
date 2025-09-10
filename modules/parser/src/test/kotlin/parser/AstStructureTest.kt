@@ -15,7 +15,7 @@ class AstStructureTest {
     fun `test declarator node structure`() {
         val code = "let a: Number = 5;"
         val lexer = Lexer()
-        val tokens = lexer.lex(code.byteInputStream())
+        val tokens = lexer.lex(code)
         val parser = Parser()
         val ast = parser.parse(tokens)
 
@@ -42,7 +42,7 @@ class AstStructureTest {
     fun `test binary operation node structure`() {
         val code = "let result: Number = 2 + 3;"
         val lexer = Lexer()
-        val tokens = lexer.lex(code.byteInputStream())
+        val tokens = lexer.lex(code)
         val parser = Parser()
         val ast = parser.parse(tokens)
 
