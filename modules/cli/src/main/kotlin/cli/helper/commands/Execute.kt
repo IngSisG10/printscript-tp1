@@ -6,6 +6,7 @@ import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
+import common.util.segmentsBySemicolon
 import interpreter.Interpreter
 import lexer.util.LexerUtil.Companion.createLexer
 import parser.Parser
@@ -23,11 +24,20 @@ class Execute : CliktCommand() {
     override fun run() {
         val fileText = CliUtil.findFile(fileName) ?: throw throw common.exception.InvalidFileException("No file was found")
         val lexer = createLexer(version)
-        val tokens = lexer.lex(fileText)
         val parser = Parser()
-        val ast = parser.parse(tokens)
         val interpreter = Interpreter()
-        val output = interpreter.interpret(ast)
-        for (line in output) println(line)
+        val inputStream = fileText.byteInputStream()
+        inputStream.segmentsBySemicolon().forEach { segment ->
+            try {
+                val tokens = lexer.lex(segment)
+                val ast = parser.parse(tokens)
+                val output = interpreter.interpret(ast)
+                for (line in output) {
+                    println(line)
+                }
+            } catch (t: Throwable) {
+                throw t
+            }
+        }
     }
 }
