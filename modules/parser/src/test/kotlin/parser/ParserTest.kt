@@ -12,8 +12,8 @@ class ParserTest {
     private fun parseCode(code: String): List<Any> {
         val lexer = Lexer()
         val tokens = lexer.lex(code)
-        val parser = Parser(tokens)
-        return parser.parse()
+        val parser = Parser()
+        return parser.parse(tokens)
     }
 
     @Test
