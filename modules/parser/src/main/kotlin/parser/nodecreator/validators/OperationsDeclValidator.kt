@@ -7,7 +7,7 @@ import common.token.StringLiteralToken
 import common.token.abs.TokenInterface
 import parser.nodecreator.validators.abs.StructureValidator
 
-class InvalidDeclarationValidator(
+class OperationsDeclValidator(
     private val variableType: TypeEnum,
 ) : StructureValidator {
     override fun validate(line: List<TokenInterface>) {

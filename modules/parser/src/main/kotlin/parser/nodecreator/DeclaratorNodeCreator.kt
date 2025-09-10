@@ -8,7 +8,7 @@ import common.token.VariableDeclaratorToken
 import common.token.abs.TokenInterface
 import parser.nodecreator.abs.AstNodeCreator
 import parser.nodecreator.validators.DeclarationValidator
-import parser.nodecreator.validators.InvalidDeclarationValidator
+import parser.nodecreator.validators.OperationsDeclValidator
 
 // let x : TypeEnum = (OPERATION)
 class DeclaratorNodeCreator : AstNodeCreator {
@@ -19,12 +19,13 @@ class DeclaratorNodeCreator : AstNodeCreator {
 
     override fun createAstNode(line: List<TokenInterface>): AstNode {
         declaratorValidator.validate(line)
-        val variableName = line[1].value.toString() // variable
-        val variableType = (line[3] as TypeToken).value // TypeEnum
+
+        val variableName = line[1].value.toString()
+        val variableType = (line[3] as TypeToken).value
         val operationTokensList = line.subList(5, line.size)
 
-        val invalidDeclarationValidator = InvalidDeclarationValidator(variableType)
-        invalidDeclarationValidator.validate(operationTokensList)
+        val operationsDeclValidator = OperationsDeclValidator(variableType)
+        operationsDeclValidator.validate(operationTokensList)
 
         return DeclaratorNode(
             variableNode =
