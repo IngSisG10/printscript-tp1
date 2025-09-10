@@ -12,7 +12,7 @@ class KeywordOnePointOneTest {
     @Test
     fun testIfToken() {
         assert(
-            lexer.lex("if".byteInputStream()).all {
+            lexer.lex("if").all {
                 it is IfToken
             },
         )
@@ -21,7 +21,7 @@ class KeywordOnePointOneTest {
     @Test
     fun testElseToken() {
         assert(
-            lexer.lex("else".byteInputStream()).all {
+            lexer.lex("else").all {
                 it is ElseToken
             },
         )
@@ -30,7 +30,7 @@ class KeywordOnePointOneTest {
     @Test
     fun testConstantDeclaratorToken() {
         assert(
-            lexer.lex("const".byteInputStream()).all {
+            lexer.lex("const").all {
                 it is ConstantDeclaratorToken
             },
         )

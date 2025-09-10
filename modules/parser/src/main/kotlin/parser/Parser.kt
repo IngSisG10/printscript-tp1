@@ -18,19 +18,14 @@ class Parser(
             FunctionNodeCreator(),
         ),
 ) {
-    private val listOfAST = mutableListOf<AstNode>()
-
     fun parse(tokens: List<TokenInterface>): List<AstNode> {
+        val listOfAST = mutableListOf<AstNode>()
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(tokens)
-        addNodeToAst(listOfTokensByLine)
-        return listOfAST
-    }
-
-    private fun addNodeToAst(listOfTokensByLine: List<List<TokenInterface>>) {
         for (line in listOfTokensByLine) {
             listOfAST.add(this.parseLine(line))
         }
+        return listOfAST
     }
 
     private fun parseLine(line: List<TokenInterface>): AstNode {

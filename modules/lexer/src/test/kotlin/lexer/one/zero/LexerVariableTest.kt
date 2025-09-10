@@ -10,7 +10,7 @@ class LexerVariableTest {
     fun generateVariableToken() {
         val lexer = Lexer()
         val tokens =
-            lexer.lex("myVariable another_var OtherVariable var123".byteInputStream()).filterNot {
+            lexer.lex("myVariable another_var OtherVariable var123").filterNot {
                 it is WhiteSpaceToken || it is NewLineToken
             }
         assert(tokens.size == 4) { "Expected 4 tokens, got ${tokens.size}" }

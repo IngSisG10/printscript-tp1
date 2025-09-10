@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 class LexerKeywordsTest {
     @Test
     fun testKeywordsInOneLine() {
-        val tokens = Lexer().lex("println let String Boolean Number Any".byteInputStream())
+        val tokens = Lexer().lex("println let String Boolean Number Any")
         assertEquals(11, tokens.size)
     }
 
@@ -29,7 +29,7 @@ class LexerKeywordsTest {
             )
 
         for ((code, expectedType) in cases) {
-            val tokens = Lexer().lex(code.byteInputStream())
+            val tokens = Lexer().lex(code)
             assertEquals(1, tokens.size, "Unexpected token count for input: $code")
             assertInstanceOf(expectedType, tokens.first(), "Unexpected token type for input: $code")
         }
