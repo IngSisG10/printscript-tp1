@@ -7,6 +7,7 @@ import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import common.exception.InvalidFileException
 import formatter.Formatter
+import lexer.util.LexerUtil.Companion.createLexer
 
 class Format :
     CliktCommand(),
