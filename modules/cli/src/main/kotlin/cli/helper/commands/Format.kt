@@ -21,7 +21,7 @@ class Format : CliktCommand() {
     override fun run() {
         val code = CliUtil.findFile(file) ?: throw common.exception.InvalidFileException()
         val lexer = createLexer(version)
-        val tokens = lexer.lex(code.byteInputStream())
+        val tokens = lexer.lex(code)
         val configText = CliUtil.findFile(config) ?: throw common.exception.InvalidFileException()
         val linter = createLinter(configText)
         val formatter = Formatter(linter)

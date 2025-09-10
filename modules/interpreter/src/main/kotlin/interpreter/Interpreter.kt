@@ -21,11 +21,12 @@ class Interpreter {
     private val output = mutableListOf<String>()
 
     fun interpret(astList: List<AstNode>): List<String> {
-        output.clear()
         for (astNode in astList) {
             evaluate(astNode)
         }
-        return output.toList()
+        val result = output.toList()
+        output.clear()
+        return result
     }
 
     private fun evaluate(node: AstNode): Value? =
