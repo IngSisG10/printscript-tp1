@@ -3,6 +3,7 @@ package parser.nodecreator
 import common.ast.AstNode
 import common.ast.DeclaratorNode
 import common.ast.VariableNode
+import common.enums.DeclarationTypeEnum
 import common.token.TypeToken
 import common.token.VariableDeclaratorToken
 import common.token.abs.TokenInterface
@@ -10,7 +11,6 @@ import parser.nodecreator.abs.AstNodeCreator
 import parser.nodecreator.validators.DeclarationValidator
 import parser.nodecreator.validators.OperationsDeclValidator
 
-// let x : TypeEnum = (OPERATION)
 class DeclaratorNodeCreator : AstNodeCreator {
     private val declaratorValidator = DeclarationValidator()
     private val operationCreator = OperationNodeCreator()
@@ -34,6 +34,7 @@ class DeclaratorNodeCreator : AstNodeCreator {
                     type = variableType,
                 ),
             value = operationCreator.createAstNode(operationTokensList),
+            declarationType = DeclarationTypeEnum.LET,
         )
     }
 }

@@ -1,6 +1,6 @@
 package integration
 
-import interpreter.PrintScriptInterpreter
+import interpreter.Interpreter
 import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
@@ -10,7 +10,7 @@ class PrintScriptIntegrationTest {
     private fun executeCode(code: String): List<String> {
         val tokens = Lexer().lex(code)
         val ast = Parser().parse(tokens)
-        return PrintScriptInterpreter().interpret(ast)
+        return Interpreter().interpret(ast)
     }
 
 //    @Test

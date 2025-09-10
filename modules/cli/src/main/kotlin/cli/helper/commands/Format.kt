@@ -5,12 +5,11 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import common.exception.InvalidFileException
 import formatter.Formatter
+import lexer.util.LexerUtil.Companion.createLexer
+import linter.util.LinterUtil.Companion.createLinter
 
-class Format :
-    CliktCommand(),
-    CliUtil {
+class Format : CliktCommand() {
     private val file by argument()
     private val config by argument()
     private val version by option(
@@ -20,10 +19,10 @@ class Format :
     ).default("1.0")
 
     override fun run() {
-        val code = findFile(file) ?: throw common.exception.InvalidFileException()
+        val code = CliUtil.findFile(file) ?: throw common.exception.InvalidFileException()
         val lexer = createLexer(version)
         val tokens = lexer.lex(code)
-        val configText = findFile(config) ?: throw common.exception.InvalidFileException()
+        val configText = CliUtil.findFile(config) ?: throw common.exception.InvalidFileException()
         val linter = createLinter(configText)
         val formatter = Formatter(linter)
         val formattedCode = formatter.format(tokens)

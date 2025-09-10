@@ -3,10 +3,10 @@ package lexer.one.one
 import common.token.ConstantDeclaratorToken
 import common.token.ElseToken
 import common.token.IfToken
-import lexer.util.LexerUtil
+import lexer.util.LexerUtil.Companion.createLexer
 import org.junit.jupiter.api.Test
 
-class KeywordOnePointOneTest : LexerUtil {
+class KeywordOnePointOneTest {
     private val lexer = createLexer("1.1")
 
     @Test

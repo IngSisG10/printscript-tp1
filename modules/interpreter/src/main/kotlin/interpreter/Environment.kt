@@ -1,13 +1,16 @@
 package interpreter
 
+import common.enums.DeclarationTypeEnum
+import common.enums.TypeEnum
 import common.exception.InterpreterException
 import common.exception.TypeMismatchException
 import common.exception.UndefinedVariableException
 import common.exception.UninitializedVariableException
 
 data class Variable(
-    val type: common.enums.TypeEnum,
+    val type: TypeEnum,
     var value: Value? = null,
+    val declarationType: DeclarationTypeEnum = DeclarationTypeEnum.LET,
 )
 
 sealed class Value {
@@ -32,13 +35,14 @@ class Environment {
 
     fun declareVariable(
         name: String,
-        type: common.enums.TypeEnum,
+        type: TypeEnum,
         value: Value? = null,
+        declarationType: DeclarationTypeEnum = DeclarationTypeEnum.LET,
     ) {
         if (variables.containsKey(name)) {
             throw InterpreterException("Variable '$name' is already declared")
         }
-        variables[name] = Variable(type, value)
+        variables[name] = Variable(type, value, declarationType)
     }
 
     fun setVariable(
@@ -47,10 +51,14 @@ class Environment {
     ) {
         val variable = variables[name] ?: throw UndefinedVariableException(name)
 
+        if (variable.declarationType == DeclarationTypeEnum.CONST) {
+            throw InterpreterException("Cannot reassign to constant variable '$name'")
+        }
+
         when {
-            variable.type == common.enums.TypeEnum.NUMBER && value !is NumberValue ->
+            variable.type == TypeEnum.NUMBER && value !is NumberValue ->
                 throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
-            variable.type == common.enums.TypeEnum.STRING && value !is StringValue ->
+            variable.type == TypeEnum.STRING && value !is StringValue ->
                 throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
         }
 

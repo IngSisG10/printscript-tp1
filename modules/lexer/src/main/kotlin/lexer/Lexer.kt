@@ -23,15 +23,12 @@ class Lexer(
             IdentifierRule(),
         ),
 ) {
-    private val tokens = mutableListOf<TokenInterface>()
     private var row = 0
 
-    fun lex(code: String): List<TokenInterface> {
-        tokenize(code)
-        return tokens
-    }
+    fun lex(segment: String): List<TokenInterface> = tokenize(segment)
 
-    private fun tokenize(text: String) {
+    private fun tokenize(text: String): List<TokenInterface> {
+        val tokens = mutableListOf<TokenInterface>()
         var i = 0
         while (i < text.length) {
             val c = text[i]
@@ -65,5 +62,6 @@ class Lexer(
                 }
             }
         }
+        return tokens.toList()
     }
 }
