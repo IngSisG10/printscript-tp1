@@ -10,9 +10,7 @@ import interpreter.Interpreter
 import lexer.util.LexerUtil.Companion.createLexer
 import parser.Parser
 
-class Execute :
-    CliktCommand(),
-    CliUtil {
+class Execute : CliktCommand() {
     private val fileName by argument()
     private val version by option(
         "-v",
@@ -23,7 +21,7 @@ class Execute :
     override fun help(context: Context) = "Execute the desired file"
 
     override fun run() {
-        val fileText = findFile(fileName) ?: throw throw common.exception.InvalidFileException("No file was found")
+        val fileText = CliUtil.findFile(fileName) ?: throw throw common.exception.InvalidFileException("No file was found")
         val lexer = createLexer(version)
         val tokens = lexer.lex(fileText)
         val parser = Parser()

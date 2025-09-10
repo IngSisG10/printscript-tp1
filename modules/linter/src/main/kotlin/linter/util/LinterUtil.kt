@@ -22,68 +22,70 @@ data class Config(
     val rules: List<String>,
 )
 
-interface LinterUtil {
-    fun createLinter(
-        str: String,
-        version: String = "1.0",
-    ): Linter {
-        val config = Json.decodeFromString<Config>(str)
-        return Linter(
-            linterRules = addLinterRules(config.rules, addVersionRules(version)),
-        )
-    }
-
-    private fun addVersionRules(version: String): List<LinterRule> {
-        val onePointZeroLinterRules =
-            listOf(
-                CamelCaseRule(),
-                PascalCaseRule(),
-                SnakeCaseRule(),
-                SpaceAfterColonRule(),
-                SpaceBeforeColonRule(),
-                LineJumpAfterSemicolonRule(),
-                NewLineBeforePrintlnRule(),
-                OneSpaceBetweenTokensRule(),
-                SpaceAfterAssignationRule(),
-                SpaceBeforeAssignationRule(),
-                SpaceAfterOperatorRule(),
-                SpaceBeforeOperatorRule(),
-            )
-        val onePointOneLinterRules =
-            listOf(
-                CamelCaseRule(),
-                PascalCaseRule(),
-                SnakeCaseRule(),
-                SpaceAfterColonRule(),
-                SpaceBeforeColonRule(),
-                LineJumpAfterSemicolonRule(),
-                NewLineBeforePrintlnRule(),
-                OneSpaceBetweenTokensRule(),
-                SpaceAfterAssignationRule(),
-                SpaceBeforeAssignationRule(),
-                SpaceAfterOperatorRule(),
-                SpaceBeforeOperatorRule(),
-                // TODO: add new linter rules
-            )
-        return when (version) {
-            "1.1" -> onePointOneLinterRules
-            else -> onePointZeroLinterRules
-        }
-    }
-
-    // TODO: implement versions for linter
-    private fun addLinterRules(
-        rules: List<String>,
-        possibleRules: List<LinterRule>,
-    ): List<LinterRule> {
-        val appliedRules = mutableListOf<LinterRule>()
-        for (rule in rules) {
-            for (linterRule in possibleRules) {
-                if (linterRule.getName() == rule) {
-                    appliedRules.add(linterRule)
-                }
+class LinterUtil {
+    companion object {
+        private fun addVersionRules(version: String): List<LinterRule> {
+            val onePointZeroLinterRules =
+                listOf(
+                    CamelCaseRule(),
+                    PascalCaseRule(),
+                    SnakeCaseRule(),
+                    SpaceAfterColonRule(),
+                    SpaceBeforeColonRule(),
+                    LineJumpAfterSemicolonRule(),
+                    NewLineBeforePrintlnRule(),
+                    OneSpaceBetweenTokensRule(),
+                    SpaceAfterAssignationRule(),
+                    SpaceBeforeAssignationRule(),
+                    SpaceAfterOperatorRule(),
+                    SpaceBeforeOperatorRule(),
+                )
+            val onePointOneLinterRules =
+                listOf(
+                    CamelCaseRule(),
+                    PascalCaseRule(),
+                    SnakeCaseRule(),
+                    SpaceAfterColonRule(),
+                    SpaceBeforeColonRule(),
+                    LineJumpAfterSemicolonRule(),
+                    NewLineBeforePrintlnRule(),
+                    OneSpaceBetweenTokensRule(),
+                    SpaceAfterAssignationRule(),
+                    SpaceBeforeAssignationRule(),
+                    SpaceAfterOperatorRule(),
+                    SpaceBeforeOperatorRule(),
+                    // TODO: add new linter rules
+                )
+            return when (version) {
+                "1.1" -> onePointOneLinterRules
+                else -> onePointZeroLinterRules
             }
         }
-        return appliedRules
+
+        // TODO: implement versions for linter
+        private fun addLinterRules(
+            rules: List<String>,
+            possibleRules: List<LinterRule>,
+        ): List<LinterRule> {
+            val appliedRules = mutableListOf<LinterRule>()
+            for (rule in rules) {
+                for (linterRule in possibleRules) {
+                    if (linterRule.getName() == rule) {
+                        appliedRules.add(linterRule)
+                    }
+                }
+            }
+            return appliedRules
+        }
+
+        fun createLinter(
+            str: String,
+            version: String = "1.0",
+        ): Linter {
+            val config = Json.decodeFromString<Config>(str)
+            return Linter(
+                linterRules = addLinterRules(config.rules, addVersionRules(version)),
+            )
+        }
     }
 }
