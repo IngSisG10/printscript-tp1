@@ -22,6 +22,7 @@ class Parser(
         val listOfAST = mutableListOf<AstNode>()
         // separate between ";"
         val listOfTokensByLine = splitTokensIntoLines(tokens)
+        if (listOfTokensByLine.containsAll(listOf(emptyList()))) return emptyList()
         for (line in listOfTokensByLine) {
             listOfAST.add(this.parseLine(line))
         }
@@ -38,14 +39,18 @@ class Parser(
     private fun splitTokensIntoLines(tokens: List<TokenInterface>): List<List<TokenInterface>> {
         val listOfTokensByLine = mutableListOf<MutableList<TokenInterface>>()
         var currentList = mutableListOf<TokenInterface>()
-
         val filteredTokens = tokens.filterNot { it is WhiteSpaceToken || it is NewLineToken }
+
+        if (filteredTokens.isEmpty()) return (listOf(filteredTokens))
+        if (filteredTokens[filteredTokens.size - 1].name != "end_sentence") throw UnrecognizedLineException()
 
         for (token in filteredTokens) {
             if (token.name == "end_sentence") {
                 if (currentList.isNotEmpty()) {
                     listOfTokensByLine.add(currentList)
                     currentList = mutableListOf()
+                } else {
+                    throw UnrecognizedLineException("empty declaration")
                 }
             } else {
                 currentList.add(token)
