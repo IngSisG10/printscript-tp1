@@ -111,4 +111,22 @@ class IfStatementNodeCreatorTest {
         assertTrue(ast[1] is IfStatementNode)
         assertNotNull((ast[1] as IfStatementNode).elseBlock)
     }
+
+    @Test
+    fun `parses if statement with else if (throws an error) `() {
+        val code =
+            """
+            let a: Boolean = true;    
+            
+            if (a) {
+                2
+            } else if (false){
+                3
+            };
+            
+            let b : Number = 5;
+            """.trimIndent()
+        // else if invalid
+        assertThrows(UnrecognizedLineException::class.java) { parseCode(code) }
+    }
 }

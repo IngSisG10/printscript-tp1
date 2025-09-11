@@ -53,7 +53,7 @@ class IfStatementNodeCreator : AstNodeCreator {
             // Find the opening and closing brackets for else block
             val elseOpenBracketIdx = ifBlockEnd + 2
             if (elseOpenBracketIdx >= line.size || line[elseOpenBracketIdx] !is OpenBraceToken) {
-                throw Exception("Missing opening bracket for else block")
+                throw UnrecognizedLineException("Missing opening bracket for else block or invalid token after else")
             }
             var elseBlockEnd = -1
             openBrackets = 1
