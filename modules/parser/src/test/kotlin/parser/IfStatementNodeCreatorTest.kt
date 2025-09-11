@@ -29,7 +29,6 @@ class IfStatementNodeCreatorTest {
             SingleCharRule(),
             SingleCharOnePointOneRule(),
             IdentifierRule(),
-            // TODO: add new features here
         )
 
     private fun parseCode(code: String): List<Any> {

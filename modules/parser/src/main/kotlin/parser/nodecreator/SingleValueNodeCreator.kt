@@ -13,7 +13,7 @@ import common.token.abs.TokenInterface
 import parser.nodecreator.abs.AstNodeCreator
 
 class SingleValueNodeCreator : AstNodeCreator {
-    override fun matches(line: List<TokenInterface>): Boolean = line.isNotEmpty()
+    override fun matches(line: List<TokenInterface>): Boolean = line.isNotEmpty() && line.size == 1
 
     override fun createAstNode(line: List<TokenInterface>): AstNode {
         if (line.size > 1) throw Exception()

@@ -5,19 +5,24 @@ import common.ast.BinaryOpNode
 import common.ast.DeclaratorNode
 import common.ast.LiteralNode
 import common.ast.VariableNode
+import common.enums.FunctionEnum
 import lexer.Lexer
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
 class AstStructureTest {
-    @Test
-    fun `test declarator node structure`() {
-        val code = "let a: Number = 5;"
+    private fun parseCode(code: String): List<AstNode> {
         val lexer = Lexer()
         val tokens = lexer.lex(code)
         val parser = Parser()
-        val ast = parser.parse(tokens)
+        return parser.parse(tokens)
+    }
+
+    @Test
+    fun `test declarator node structure`() {
+        val code = "let a: Number = 5;"
+        val ast = parseCode(code)
 
         assertEquals(1, ast.size)
         val node = ast[0]
@@ -41,10 +46,7 @@ class AstStructureTest {
     @Test
     fun `test binary operation node structure`() {
         val code = "let result: Number = 2 + 3;"
-        val lexer = Lexer()
-        val tokens = lexer.lex(code)
-        val parser = Parser()
-        val ast = parser.parse(tokens)
+        val ast = parseCode(code)
 
         println(ast)
 
@@ -52,22 +54,18 @@ class AstStructureTest {
         assertTrue(containsBinaryOp)
     }
 
-// fixme
-//    @Test
-//    fun `test function call node structure`() {
-//        val code = "println(\"test\");"
-//        val lexer = Lexer(code)
-//        val tokens = lexer.lex()
-//        val parser = Parser(tokens)
-//        val ast = parser.parse()
-//
-//        assertEquals(1, ast.size)
-//        val node = ast[0]
-//        assertEquals("FunctionNode", node.javaClass.simpleName)
-//
-//        val functionNameField = node.javaClass.getDeclaredField("functionName")
-//        functionNameField.isAccessible = true
-//        val functionName = functionNameField.get(node) as FunctionEnum
-//        assertEquals(FunctionEnum.PRINTLN, functionName)
-//    }
+    @Test
+    fun `test function call node structure`() {
+        val code = "println(\"test\");"
+        val ast = parseCode(code)
+
+        assertEquals(1, ast.size)
+        val node = ast[0]
+        assertEquals("FunctionNode", node.javaClass.simpleName)
+
+        val functionNameField = node.javaClass.getDeclaredField("functionName")
+        functionNameField.isAccessible = true
+        val functionName = functionNameField.get(node) as FunctionEnum
+        assertEquals(FunctionEnum.PRINTLN, functionName)
+    }
 }

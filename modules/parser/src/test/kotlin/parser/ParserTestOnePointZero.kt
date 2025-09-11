@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 
-// fixme
-class ParserTest {
+class ParserTestOnePointZero {
     private fun parseCode(code: String): List<Any> {
         val lexer = Lexer()
         val tokens = lexer.lex(code)
@@ -18,7 +17,7 @@ class ParserTest {
 
     @Test
     fun `test variable declaration with number literal`() {
-        val code = "let a: Number = 5;"
+        val code = "let a : Number = 5;"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -50,29 +49,28 @@ class ParserTest {
         assertEquals(2, ast.size)
     }
 
-// fixme
-//    @Test
-//    fun `test variable assignment`() {
-//        val code =
-//            """
-//            let a: Number = 5;
-//            a = 10;
-//            """.trimIndent()
-//
-//        val ast = parseCode(code)
-//
-//        assertNotNull(ast)
-//        assertEquals(2, ast.size)
-//    }
-//
-//    @Test
-//    fun `test function call`() {
-//        val code = "println(\"hello world\");"
-//        val ast = parseCode(code)
-//
-//        assertNotNull(ast)
-//        assertEquals(1, ast.size)
-//    }
+    @Test
+    fun `test variable assignment`() {
+        val code =
+            """
+            let a: Number = 5;
+            a = 10;
+            """.trimIndent()
+
+        val ast = parseCode(code)
+
+        assertNotNull(ast)
+        assertEquals(2, ast.size)
+    }
+
+    @Test
+    fun `test function call`() {
+        val code = "println(\"hello world\");"
+        val ast = parseCode(code)
+
+        assertNotNull(ast)
+        assertEquals(1, ast.size)
+    }
 
     @Test
     fun `test arithmetic expressions`() {
@@ -100,23 +98,22 @@ class ParserTest {
         assertEquals(1, ast.size)
     }
 
-//    @Test
-//    fun `test mixed statements`() {
-//        val code =
-//            """
-//            let a: Number = 5;
-//            let b: Number = 10;
-//            let sum: Number = a + b;
-//
-//            """
-//
-//        val ast = parseCode(code)
-//
-//        assertNotNull(ast)
-//        assertEquals(5, ast.size)
-//    }
+    @Test
+    fun `test mixed statements`() {
+        val code =
+            """
+            let a: Number = 5;
+            let b: Number = 10;
+            let sum: Number = a + b;
 
-    // Tests de casos de error
+            """
+
+        val ast = parseCode(code)
+
+        assertNotNull(ast)
+        assertEquals(3, ast.size)
+    }
+
     @Test
     fun `test missing semicolon should throw exception`() {
         val code = "let a: Number = 5" // Falta ;
@@ -160,24 +157,14 @@ class ParserTest {
 
         assertTrue(ast.isEmpty())
     }
-// fixme
-//    @Test
-//    fun `test whitespace only input should return empty list`() {
-//        val code = "   \t\n  "
-//        val ast = parseCode(code)
-//
-//        assertTrue(ast.isEmpty())
-//    }
 
-    // fixme -> lexer fails here -> why?
-//    @Test
-//    fun `test very large number`() {
-//        val code = "let big: Number = 999999999999999;"
-//        val ast = parseCode(code)
-//
-//        assertNotNull(ast)
-//        assertEquals(1, ast.size)
-//    }
+    @Test
+    fun `test whitespace only input should return empty list`() {
+        val code = "   \t\n  "
+        val ast = parseCode(code)
+
+        assertTrue(ast.isEmpty())
+    }
 
     @Test
     fun `test empty string`() {
@@ -197,14 +184,14 @@ class ParserTest {
         assertEquals(1, ast.size)
     }
 
-//    @Test
-//    fun `test nested expressions`() {
-//        val code = "let nested: Number = (2 * (3 + (4 - 1)));"
-//        val ast = parseCode(code)
-//
-//        assertNotNull(ast)
-//        assertEquals(1, ast.size)
-//    }
+    @Test
+    fun `test nested expressions`() {
+        val code = "let nested: Number = (2 * (3 + (4 - 1)));"
+        val ast = parseCode(code)
+
+        assertNotNull(ast)
+        assertEquals(1, ast.size)
+    }
 
     @Test
     fun `test multiple operations in single expression`() {
