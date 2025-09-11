@@ -13,9 +13,7 @@ import common.token.abs.TokenInterface
 import parser.nodecreator.abs.AstNodeCreator
 
 class SingleValueNodeCreator : AstNodeCreator {
-    override fun matches(line: List<TokenInterface>): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun matches(line: List<TokenInterface>): Boolean = line.isNotEmpty()
 
     override fun createAstNode(line: List<TokenInterface>): AstNode {
         if (line.size > 1) throw Exception()

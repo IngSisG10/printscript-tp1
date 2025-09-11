@@ -8,14 +8,21 @@ import common.token.abs.TokenInterface
 import parser.nodecreator.AssignationNodeCreator
 import parser.nodecreator.DeclaratorNodeCreator
 import parser.nodecreator.FunctionNodeCreator
+import parser.nodecreator.IfStatementNodeCreator
+import parser.nodecreator.SingleValueNodeCreator
 import parser.nodecreator.abs.AstNodeCreator
 
 class Parser(
     private val nodeCreators: List<AstNodeCreator> =
         listOf(
+            // version 1.0
             DeclaratorNodeCreator(),
             AssignationNodeCreator(),
-            FunctionNodeCreator(),
+            FunctionNodeCreator(), // adapted for both versions 1.0 and 1.1
+            // version 1.1
+            IfStatementNodeCreator(),
+            // edge cases
+            SingleValueNodeCreator(),
         ),
 ) {
     fun parse(tokens: List<TokenInterface>): List<AstNode> {
