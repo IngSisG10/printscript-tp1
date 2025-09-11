@@ -21,7 +21,7 @@ class AstStructureTest {
 
     @Test
     fun `test declarator node structure`() {
-        val code = "let a: Number = 5;"
+        val code = "let a: number = 5;"
         val ast = parseCode(code)
 
         assertEquals(1, ast.size)
@@ -45,7 +45,7 @@ class AstStructureTest {
 
     @Test
     fun `test binary operation node structure`() {
-        val code = "let result: Number = 2 + 3;"
+        val code = "let result: number = 2 + 3;"
         val ast = parseCode(code)
 
         println(ast)

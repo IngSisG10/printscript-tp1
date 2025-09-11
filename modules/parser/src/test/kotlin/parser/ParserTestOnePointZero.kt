@@ -17,7 +17,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test variable declaration with number literal`() {
-        val code = "let a : Number = 5;"
+        val code = "let a: number = 5;"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -26,7 +26,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test variable declaration with string literal`() {
-        val code = "let b: String = \"hello\";"
+        val code = "let b: string = \"hello\";"
         val ast = parseCode(code)
         assertNotNull(ast)
         assertEquals(1, ast.size)
@@ -34,7 +34,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test variable declaration with expression`() {
-        val code = "let result: Number = 5 + 3 * 2;"
+        val code = "let result: number = 5 + 3 * 2;"
         val ast = parseCode(code)
         assertNotNull(ast)
         assertEquals(1, ast.size)
@@ -42,7 +42,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test multiple declarations`() {
-        val code = "let a: Number = 5; let b: String = \"test\";"
+        val code = "let a: number = 5; let b: string = \"test\";"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -53,7 +53,7 @@ class ParserTestOnePointZero {
     fun `test variable assignment`() {
         val code =
             """
-            let a: Number = 5;
+            let a: number = 5;
             a = 10;
             """.trimIndent()
 
@@ -76,10 +76,10 @@ class ParserTestOnePointZero {
     fun `test arithmetic expressions`() {
         val codes =
             listOf(
-                "let a: Number = 1 + 2;",
-                "let b: Number = 3 - 4;",
-                "let c: Number = 5 * 6;",
-                "let d: Number = 7 / 8;",
+                "let a: number = 1 + 2;",
+                "let b: number = 3 - 4;",
+                "let c: number = 5 * 6;",
+                "let d: number = 7 / 8;",
             )
 
         codes.forEach { code ->
@@ -91,7 +91,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test complex expression with precedence`() {
-        val code = "let result: Number = 2 + 3 * 4 - 6 / 2;"
+        val code = "let result: number = 2 + 3 * 4 - 6 / 2;"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -102,9 +102,9 @@ class ParserTestOnePointZero {
     fun `test mixed statements`() {
         val code =
             """
-            let a: Number = 5;
-            let b: Number = 10;
-            let sum: Number = a + b;
+            let a: number = 5;
+            let b: number = 10;
+            let sum: number = a + b;
 
             """
 
@@ -116,11 +116,8 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test missing semicolon should throw exception`() {
-        val code = "let a: Number = 5" // Falta ;
-
-        val ast = parseCode(code)
-
-        print(ast)
+        val code = "let a: number = 5" // Falta ;
+        assertThrows<Exception> { parseCode(code) }
     }
 
     @Test
@@ -134,7 +131,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test unbalanced parentheses should throw exception`() {
-        val code = "let a: Number = (5 + 3;" // Falta )
+        val code = "let a: number = (5 + 3;" // Falta )
 
         assertThrows<Exception> {
             parseCode(code)
@@ -168,7 +165,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test empty string`() {
-        val code = "let empty: String = \"\";"
+        val code = "let empty: string = \"\";"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -177,7 +174,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test string with special characters`() {
-        val code = "let special: String = \"hello\\nworld\\t!\";"
+        val code = "let special: string = \"hello\\nworld\\t!\";"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -186,7 +183,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test nested expressions`() {
-        val code = "let nested: Number = (2 * (3 + (4 - 1)));"
+        val code = "let nested: number = (2 * (3 + (4 - 1)));"
         val ast = parseCode(code)
 
         assertNotNull(ast)
@@ -195,7 +192,7 @@ class ParserTestOnePointZero {
 
     @Test
     fun `test multiple operations in single expression`() {
-        val code = "let complex: Number = 1 + 2 - 3 * 4 / 5;"
+        val code = "let complex: number = 1 + 2 - 3 * 4 / 5;"
         val ast = parseCode(code)
 
         assertNotNull(ast)

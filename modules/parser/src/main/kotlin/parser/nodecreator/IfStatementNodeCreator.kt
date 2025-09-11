@@ -84,7 +84,11 @@ class IfStatementNodeCreator : AstNodeCreator {
                         type = TypeEnum.BOOLEAN, // BOOLEAN
                     )
                 },
-            thenBlock = BlockStatementNode(Parser().parse(ifBodyTokens)),
+            thenBlock =
+                BlockStatementNode(
+                    Parser()
+                        .parse(ifBodyTokens),
+                ),
             elseBlock = if (elseBodyTokens != null) BlockStatementNode(Parser().parse(elseBodyTokens)) else null,
         )
     }

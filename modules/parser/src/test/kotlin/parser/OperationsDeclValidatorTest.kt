@@ -48,7 +48,7 @@ class OperationsDeclValidatorTest {
     fun `test NUMBER type with number literal should not throw exception`() {
         val code =
             """
-            let a: Number = 5;
+            let a: number = 5;
             """.trimIndent()
 
         assertDoesNotThrow { parseCode(code) }
@@ -58,7 +58,7 @@ class OperationsDeclValidatorTest {
     fun `test NUMBER type with boolean literal should throw exception`() {
         val code =
             """
-            let a: Number = true;
+            let a: number = true;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -68,7 +68,7 @@ class OperationsDeclValidatorTest {
     fun `test STRING type with valid string literal should not throw`() {
         val code =
             """
-            let a: String = "Hello world";
+            let a: string = "Hello world";
             """.trimIndent()
 
         assertDoesNotThrow { parseCode(code) }
@@ -78,7 +78,7 @@ class OperationsDeclValidatorTest {
     fun `test STRING type with number literal should throw exception`() {
         val code =
             """
-            let a: String = 5;
+            let a: string = 5;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -88,7 +88,7 @@ class OperationsDeclValidatorTest {
     fun `test STRING type with boolean literal should throw exception`() {
         val code =
             """
-            let a: String = true;
+            let a: string = true;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -98,7 +98,7 @@ class OperationsDeclValidatorTest {
     fun `test BOOLEAN type with valid boolean literal should not throw`() {
         val code =
             """
-            let a: Boolean = true;
+            let a: boolean = true;
             """.trimIndent()
 
         assertDoesNotThrow { parseCode(code) }
@@ -108,7 +108,7 @@ class OperationsDeclValidatorTest {
     fun `test BOOLEAN type with number literal should throw exception`() {
         val code =
             """
-            let a: Boolean = 8;
+            let a: boolean = 8;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -118,7 +118,7 @@ class OperationsDeclValidatorTest {
     fun `test BOOLEAN type with string literal should throw exception`() {
         val code =
             """
-            let a: Boolean = "bad idea";
+            let a: boolean = "bad idea";
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -128,7 +128,7 @@ class OperationsDeclValidatorTest {
     fun `test mixed expression with NUMBER types - should ignore parenthesis - valid case`() {
         val code =
             """
-            let a: Number = (5 + (3 * 2)) - (4 / 2) + 7;
+            let a: number = (5 + (3 * 2)) - (4 / 2) + 7;
             """.trimIndent()
 
         assertDoesNotThrow {
@@ -140,7 +140,7 @@ class OperationsDeclValidatorTest {
     fun `test mixed expression with NUMBER type - valid case`() {
         val code =
             """
-            let a: Number = 5 + 3 * 2;
+            let a: number = 5 + 3 * 2;
             """.trimIndent()
 
         assertDoesNotThrow {
@@ -152,7 +152,7 @@ class OperationsDeclValidatorTest {
     fun `test mixed expression with NUMBER type - invalid case`() {
         val code =
             """
-            let a: Number = "5" + 3 * 2;
+            let a: number = "5" + 3 * 2;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -162,7 +162,7 @@ class OperationsDeclValidatorTest {
     fun `test mixed expression with STRING type - valid case`() {
         val code =
             """
-            let a: String = "hello" + "world";
+            let a: string = "hello" + "world";
             """.trimIndent()
 
         assertDoesNotThrow { parseCode(code) }
@@ -172,7 +172,7 @@ class OperationsDeclValidatorTest {
     fun `test mixed expression with STRING type - invalid case`() {
         val code =
             """
-            let a: String = "hello" + 42;
+            let a: string = "hello" + 42;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -182,7 +182,7 @@ class OperationsDeclValidatorTest {
     fun `test with identifiers and operators should not throw for NUMBER type`() {
         val code =
             """
-            let b: Number = a + 3 * 2;
+            let b: number = a + 3 * 2;
             """.trimIndent()
 
         assertDoesNotThrow {
@@ -194,7 +194,7 @@ class OperationsDeclValidatorTest {
     fun `test with identifiers and operators should not throw for STRING type`() {
         val code =
             """
-            let b: String = a + "world";
+            let b: string = a + "world";
             """.trimIndent()
 
         assertDoesNotThrow {
@@ -206,7 +206,7 @@ class OperationsDeclValidatorTest {
     fun `test complex expression with first invalid token for NUMBER type`() {
         val code =
             """
-            let b: Number = "world" + 5;
+            let b: number = "world" + 5;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
@@ -216,7 +216,7 @@ class OperationsDeclValidatorTest {
     fun `test complex expression with last invalid token for BOOLEAN type`() {
         val code =
             """
-            let b: Boolean = true + 1;
+            let b: boolean = true + 1;
             """.trimIndent()
 
         assertThrows(Exception::class.java) { parseCode(code) }
