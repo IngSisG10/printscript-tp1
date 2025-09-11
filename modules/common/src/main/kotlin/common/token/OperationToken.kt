@@ -16,9 +16,9 @@ class OperationToken(
     private fun evaluatePriority(): Int =
         when (value) {
             OperationEnum.SUM -> 8
-            OperationEnum.MULTIPLY -> 7
-            OperationEnum.DIVIDE -> 6
-            OperationEnum.MINUS -> 5
+            OperationEnum.MINUS -> 7
+            OperationEnum.MULTIPLY -> 6
+            OperationEnum.DIVIDE -> 5
             else -> 0
         }
 }
