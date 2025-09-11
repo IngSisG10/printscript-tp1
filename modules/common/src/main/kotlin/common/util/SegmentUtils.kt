@@ -27,3 +27,9 @@ fun InputStream.segmentsBySemicolon(): Sequence<String> =
             yield(buffer.toString())
         }
     }
+
+class InputStreamUtil {
+    companion object {
+        fun segmentsBySemicolon(filename: InputStream): Sequence<String> = filename.segmentsBySemicolon()
+    }
+}

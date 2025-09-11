@@ -1,7 +1,7 @@
 package common.ast
 
 data class IfStatementNode(
-    val condition: AstNode,
+    val condition: AstNode, // LiteralNode o VariableNode
     val thenBlock: BlockStatementNode,
     val elseBlock: BlockStatementNode?,
 ) : AstNode

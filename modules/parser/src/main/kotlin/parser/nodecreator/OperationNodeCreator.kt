@@ -61,7 +61,7 @@ class OperationNodeCreator : AstNodeCreator {
             } else if (token is CloseParenthesisToken) {
                 depth--
             } else if (token is OperationInterface && depth == 0) {
-                val priority = token.priority
+                val priority = giveTokenPriority(token, tokens, i)
                 if (priority > highPriority) {
                     highPriority = priority
                     highIndex = i
@@ -70,6 +70,21 @@ class OperationNodeCreator : AstNodeCreator {
         }
         return highIndex
     }
+
+    private fun giveTokenPriority(
+        token: OperationInterface,
+        tokens: List<TokenInterface>,
+        i: Int,
+    ): Int =
+        if (token is OperationToken && token.value == OperationEnum.MINUS) {
+            if (tokens[i - 1] !is NumberLiteralToken && tokens[i - 1] !is VariableToken) {
+                3
+            } else {
+                token.priority
+            }
+        } else {
+            token.priority
+        }
 
     private fun hasSingleParenthesis(line: List<TokenInterface>): Boolean {
         if (line[0] !is OpenParenthesisToken || line[line.size - 1] !is CloseParenthesisToken) return false
