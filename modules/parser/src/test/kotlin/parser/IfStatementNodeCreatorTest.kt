@@ -79,6 +79,18 @@ class IfStatementNodeCreatorTest {
     }
 
     @Test
+    fun `throws exception when using == in condition`() {
+        val code =
+            """
+            if (a == 1) {
+                1
+            }
+            """.trimIndent()
+        // Missing closing brace
+        assertThrows(UnrecognizedLineException::class.java) { parseCode(code) }
+    }
+
+    @Test
     fun `throws exception for missing closing brace for else block`() {
         val code =
             """
