@@ -13,7 +13,7 @@ import kotlin.test.Test
 class AstStructureTest {
     @Test
     fun `test declarator node structure`() {
-        val code = "let a: Number = 5;"
+        val code = "let a: number = 5;"
         val lexer = Lexer()
         val tokens = lexer.lex(code)
         val parser = Parser()
@@ -40,7 +40,7 @@ class AstStructureTest {
 
     @Test
     fun `test binary operation node structure`() {
-        val code = "let result: Number = 2 + 3;"
+        val code = "let result: number = 2 + 3;"
         val lexer = Lexer()
         val tokens = lexer.lex(code)
         val parser = Parser()
