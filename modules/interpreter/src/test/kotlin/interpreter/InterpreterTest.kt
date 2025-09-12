@@ -43,14 +43,6 @@ class InterpreterTest {
     }
 
     @Test
-    fun testBooleanLiteralNotSupported() {
-        val literal = LiteralNode(true, TypeEnum.BOOLEAN)
-        assertThrows(InterpreterException::class.java) {
-            interpreter.interpret(listOf(literal))
-        }
-    }
-
-    @Test
     fun testBinaryOpAdditionNumbers() {
         val left = LiteralNode(10.0, TypeEnum.NUMBER)
         val right = LiteralNode(5.0, TypeEnum.NUMBER)

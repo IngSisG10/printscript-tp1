@@ -3,9 +3,11 @@ package interpreter
 import common.ast.AssignmentNode
 import common.ast.AstNode
 import common.ast.BinaryOpNode
+import common.ast.BlockStatementNode
 import common.ast.DeclaratorNode
 import common.ast.FunctionNode
 import common.ast.IdentifierNode
+import common.ast.IfStatementNode
 import common.ast.LiteralNode
 import common.ast.MonoOpNode
 import common.ast.VariableNode
@@ -39,8 +41,36 @@ class Interpreter {
             is AssignmentNode -> evaluateAssignment(node)
             is FunctionNode -> evaluateFunction(node)
             is MonoOpNode -> evaluateMonoOp(node)
+            is IfStatementNode -> evaluateIfStatement(node)
+            is BlockStatementNode -> evaluateBlockStatement(node)
             else -> throw InterpreterException("Unknown AST node type: ${node::class.simpleName}") // TODO: add support for other nodes
         }
+
+    private fun evaluateIfStatement(node: IfStatementNode): Value? {
+        val condition = evaluate(node.condition)
+        if (condition !is BooleanValue) {
+            throw TypeMismatchException("If statement condition must be a boolean")
+        }
+
+        if (condition.value) {
+            evaluate(node.thenBlock)
+        } else {
+            node.elseBlock?.let { evaluate(it) }
+        }
+        return null
+    }
+
+    private fun evaluateBlockStatement(node: BlockStatementNode): Value? {
+        environment.enterScope()
+        try {
+            for (statement in node.statements) {
+                evaluate(statement)
+            }
+        } finally {
+            environment.exitScope()
+        }
+        return null
+    }
 
     private fun evaluateBinaryOp(node: BinaryOpNode): Value {
         val leftValue = evaluate(node.left) ?: throw InterpreterException("Left operand did not produce a value")
@@ -131,13 +161,20 @@ class Interpreter {
             }
 
             TypeEnum.BOOLEAN -> {
-                throw InterpreterException("Boolean type not supported in PrintScript 1.0")
+                val value =
+                    when (literalValue) {
+                        is Boolean -> literalValue
+                        is String -> literalValue.toBoolean()
+                        else -> throw InterpreterException("Invalid boolean literal: $literalValue")
+                    }
+                BooleanValue(value)
             }
 
             TypeEnum.ANY -> {
                 when (literalValue) {
                     is Number -> NumberValue(literalValue.toDouble())
                     is String -> StringValue(literalValue)
+                    is Boolean -> BooleanValue(literalValue)
                     else -> throw InterpreterException("Unsupported literal type: $literalValue")
                 }
             }
@@ -174,6 +211,12 @@ class Interpreter {
             TypeEnum.STRING -> {
                 if (value !is StringValue) {
                     throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
+                }
+            }
+
+            TypeEnum.BOOLEAN -> {
+                if (value !is BooleanValue) {
+                    throw TypeMismatchException("Cannot assign ${value::class.simpleName} to boolean variable")
                 }
             }
 
