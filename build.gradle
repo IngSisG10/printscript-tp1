@@ -27,7 +27,7 @@ subprojects {
 
     plugins.withId("maven-publish") {
         def env = new Properties()
-        file(".env").withInputStream { env.load(it) }
+        file(".env")?.withInputStream { env.load(it) }
         publishing {
             publications {
                 mavenJava(MavenPublication) {
