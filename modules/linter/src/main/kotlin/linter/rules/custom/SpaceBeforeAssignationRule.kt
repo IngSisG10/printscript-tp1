@@ -1,6 +1,5 @@
 package linter.syntax.rules
 
-import common.data.LinterData
 import common.enums.OperationEnum
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
@@ -27,22 +26,5 @@ class SpaceBeforeAssignationRule : LinterRule {
             }
         }
         return null
-    }
-
-    override fun matchWithData(tokens: List<TokenInterface>): List<LinterData> {
-        val list = mutableListOf<LinterData>()
-        for ((index, token) in tokens.withIndex()) {
-            if (token is OperationToken && token.value == OperationEnum.EQUAL) {
-                if (tokens.getOrNull(index - 1) !is WhiteSpaceToken) {
-                    list.add(
-                        LinterData(
-                            exception = NoSpaceBeforeAssignationException(),
-                            position = index,
-                        ),
-                    )
-                }
-            }
-        }
-        return list
     }
 }

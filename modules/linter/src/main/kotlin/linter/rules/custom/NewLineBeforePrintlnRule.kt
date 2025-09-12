@@ -1,6 +1,6 @@
 package linter.syntax.rules
 
-import common.data.LinterData
+import common.data.FormatterData
 import common.enums.FunctionEnum
 import common.exception.InvalidNewLineBeforePrintlnException
 import common.token.FunctionToken
@@ -25,23 +25,6 @@ class NewLineBeforePrintlnRule(
         return null
     }
 
-    override fun matchWithData(tokens: List<TokenInterface>): List<LinterData> {
-        val list = mutableListOf<LinterData>()
-        for ((index, token) in tokens.withIndex()) {
-            if (token is FunctionToken && token.value == FunctionEnum.PRINTLN) {
-                val newLines = countConsecutiveNewLines(tokens, index - 1)
-                if (newLines != allowedNewLines) {
-                    list.add(
-                        LinterData(
-                            exception = InvalidNewLineBeforePrintlnException(expected = allowedNewLines, found = newLines),
-                            position = index,
-                        ),
-                    )
-                }
-            }
-        }
-        return list
-    }
 
     private fun countConsecutiveNewLines(
         tokens: List<TokenInterface>,

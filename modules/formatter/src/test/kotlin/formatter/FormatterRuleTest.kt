@@ -16,7 +16,7 @@ import linter.syntax.rules.SpaceBeforeColonRule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class FormatterTest {
+class FormatterRulesTest {
     @Test
     fun `Formatter should add space after colon`() {
         val tokens =

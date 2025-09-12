@@ -1,6 +1,6 @@
 package linter.syntax.rules
 
-import common.data.LinterData
+import common.data.FormatterData
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
@@ -19,18 +19,5 @@ class SpaceBeforeOperatorRule : LinterRule {
         return null
     }
 
-    override fun matchWithData(tokens: List<TokenInterface>): List<LinterData> {
-        val issues = mutableListOf<LinterData>()
-        for (i in 0 until tokens.size + 1) {
-            if (tokens[i] is OperationToken && tokens[i + 1] !is WhiteSpaceToken) {
-                issues.add(
-                    LinterData(
-                        exception = NoSpaceBeforeOperatorException("No space before operator at index $i"),
-                        position = i,
-                    ),
-                )
-            }
-        }
-        return issues
-    }
+
 }
