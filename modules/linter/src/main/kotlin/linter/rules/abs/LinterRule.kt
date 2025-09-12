@@ -5,5 +5,5 @@ import common.token.abs.TokenInterface
 interface LinterRule {
     fun getName(): String
 
-    fun match(tokens: List<TokenInterface>): Exception?
+    fun match(tokens: List<TokenInterface>): List<Throwable>?
 }

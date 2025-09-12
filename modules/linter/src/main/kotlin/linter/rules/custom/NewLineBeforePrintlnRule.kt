@@ -12,16 +12,17 @@ class NewLineBeforePrintlnRule(
 ) : LinterRule {
     override fun getName(): String = "new_line_before_println"
 
-    override fun match(tokens: List<TokenInterface>): Exception? {
+    override fun match(tokens: List<TokenInterface>): List<Throwable> {
+        val list = mutableListOf<Throwable>()
         for ((index, token) in tokens.withIndex()) {
             if (token is FunctionToken && token.value == FunctionEnum.PRINTLN) {
                 val newLines = countConsecutiveNewLines(tokens, index - 1)
                 if (newLines != allowedNewLines) {
-                    return InvalidNewLineBeforePrintlnException(expected = allowedNewLines, found = newLines)
+                    list.add(InvalidNewLineBeforePrintlnException(expected = allowedNewLines, found = newLines))
                 }
             }
         }
-        return null
+        return list.toList()
     }
 
     private fun countConsecutiveNewLines(
