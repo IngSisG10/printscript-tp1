@@ -4,6 +4,9 @@ plugins {
     id 'org.jetbrains.kotlinx.kover' version '0.8.3'
 }
 
+def env = new Properties()
+file(".env").withInputStream { env.load(it) }
+
 dependencies {
     kover(project(':common'))
     kover(project(':lexer'))
@@ -41,8 +44,8 @@ subprojects {
                     name = "GitHubPackages"
                     url = uri("https://maven.pkg.github.com/IngSisG10/printscript-tp1")
                     credentials {
-                        username = System.getenv("GITHUB_ACTOR")
-                        password = System.getenv("GITHUB_TOKEN")
+                        username = env.getProperty("GITHUB_ACTOR")
+                        password = env.getProperty("GITHUB_TOKEN")
                     }
                 }
             }
