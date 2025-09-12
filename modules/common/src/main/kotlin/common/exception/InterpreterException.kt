@@ -19,3 +19,7 @@ class DivisionByZeroException : InterpreterException("Division by zero")
 class UninitializedVariableException(
     identifier: String,
 ) : InterpreterException("Variable '$identifier' is used before being initialized")
+
+class InvalidTypeConversionError(
+    message: String,
+) : InterpreterException("Invalid type conversion: $message")

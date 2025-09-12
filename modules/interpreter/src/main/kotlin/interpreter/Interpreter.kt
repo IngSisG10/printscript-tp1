@@ -16,9 +16,15 @@ import common.enums.OperationEnum
 import common.enums.TypeEnum
 import common.exception.DivisionByZeroException
 import common.exception.InterpreterException
+import common.exception.InvalidTypeConversionError
 import common.exception.TypeMismatchException
 
-class Interpreter {
+class Interpreter(
+    private val inputProvider: (prompt: String) -> String = {
+        print(it)
+        readln()
+    },
+) {
     private val environment = Environment()
     private val output = mutableListOf<String>()
 
@@ -163,7 +169,9 @@ class Interpreter {
                 val value =
                     when (literalValue) {
                         is Boolean -> literalValue
-                        is String -> literalValue.toBoolean()
+                        is String ->
+                            literalValue.toBooleanStrictOrNull()
+                                ?: throw InvalidTypeConversionError("Cannot convert '$literalValue' to a boolean")
                         else -> throw InterpreterException("Invalid boolean literal: $literalValue")
                     }
                 BooleanValue(value)
@@ -182,7 +190,18 @@ class Interpreter {
 
     private fun evaluateDeclarator(node: DeclaratorNode): Value? {
         val variable = node.variableNode
-        val initialValue = evaluate(node.value)
+        val initialValue =
+            if (
+                node.value is FunctionNode &&
+                (
+                    (node.value as FunctionNode).functionName == FunctionEnum.READ_INPUT ||
+                        (node.value as FunctionNode).functionName == FunctionEnum.READ_ENV
+                )
+            ) {
+                evaluateInputFunction(node.value as FunctionNode, variable.type)
+            } else {
+                evaluate(node.value)
+            }
 
         val typedValue =
             if (initialValue != null) {
@@ -194,6 +213,49 @@ class Interpreter {
 
         environment.declareVariable(variable.name, variable.type, typedValue, node.declarationType)
         return null
+    }
+
+    private fun convertInputToType(
+        input: String,
+        type: TypeEnum,
+    ): Value =
+        when (type) {
+            TypeEnum.STRING -> StringValue(input)
+            TypeEnum.NUMBER ->
+                NumberValue(
+                    input.toDoubleOrNull() ?: throw InvalidTypeConversionError("Cannot convert '$input' to a number"),
+                )
+            TypeEnum.BOOLEAN ->
+                BooleanValue(
+                    input.toBooleanStrictOrNull() ?: throw InvalidTypeConversionError("Cannot convert '$input' to a boolean"),
+                )
+            else -> throw InterpreterException("Unsupported type for input conversion: $type")
+        }
+
+    private fun evaluateInputFunction(
+        functionNode: FunctionNode,
+        targetType: TypeEnum,
+    ): Value {
+        val argument =
+            evaluate(functionNode.arguments)
+                ?: throw InterpreterException("Argument for ${functionNode.functionName} did not produce a value")
+
+        if (argument !is StringValue) {
+            throw TypeMismatchException("${functionNode.functionName} argument must be a string")
+        }
+
+        val rawValue =
+            when (functionNode.functionName) {
+                FunctionEnum.READ_INPUT -> {
+                    inputProvider(argument.value)
+                }
+                FunctionEnum.READ_ENV -> {
+                    System.getenv(argument.value) ?: throw InterpreterException("Environment variable '${argument.value}' not found")
+                }
+                else -> throw InterpreterException("Not an input function") // Should not happen
+            }
+
+        return convertInputToType(rawValue, targetType)
     }
 
     private fun validateValueForType(
@@ -230,10 +292,23 @@ class Interpreter {
     private fun evaluateFunction(node: FunctionNode): Value? {
         when (node.functionName) {
             FunctionEnum.PRINTLN -> {
-                val value = evaluate(node.arguments) ?: throw InterpreterException("println argument did not produce a value")
+                val value =
+                    if (
+                        node.arguments is FunctionNode &&
+                        (
+                            (node.arguments as FunctionNode).functionName == FunctionEnum.READ_INPUT ||
+                                (node.arguments as FunctionNode).functionName == FunctionEnum.READ_ENV
+                        )
+                    ) {
+                        evaluateInputFunction(node.arguments as FunctionNode, TypeEnum.STRING)
+                    } else {
+                        evaluate(node.arguments) ?: throw InterpreterException("println argument did not produce a value")
+                    }
                 output.add(value.toStringValue())
             }
-            else -> throw InterpreterException("Unknown function: ${node.functionName}") // TODO: add readInput and readEnv
+            FunctionEnum.READ_INPUT, FunctionEnum.READ_ENV -> {
+                throw InterpreterException("${node.functionName} can only be used as a variable initializer or a println argument")
+            }
         }
         return null
     }
