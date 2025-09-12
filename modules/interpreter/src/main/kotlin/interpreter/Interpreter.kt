@@ -43,7 +43,6 @@ class Interpreter {
             is MonoOpNode -> evaluateMonoOp(node)
             is IfStatementNode -> evaluateIfStatement(node)
             is BlockStatementNode -> evaluateBlockStatement(node)
-            else -> throw InterpreterException("Unknown AST node type: ${node::class.simpleName}") // TODO: add support for other nodes
         }
 
     private fun evaluateIfStatement(node: IfStatementNode): Value? {
@@ -221,7 +220,6 @@ class Interpreter {
             }
 
             TypeEnum.ANY -> {}
-            else -> throw InterpreterException("Unsupported type: $type")
         }
     }
 
