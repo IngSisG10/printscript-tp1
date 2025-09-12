@@ -6,12 +6,14 @@ fun InputStream.segmentsBySemicolon(): Sequence<String> =
     sequence {
         val reader = this@segmentsBySemicolon.bufferedReader()
         val buffer = StringBuilder()
-
+        var depth = 0
         var line: String?
         while (reader.readLine().also { line = it } != null) {
             var start = 0
             for (i in line!!.indices) {
-                if (line!![i] == ';') {
+                if (line!![i] == '{') depth++
+                if (line!![i] == '}') depth--
+                if ((line!![i] == ';' || line!![i] == '}') && depth == 0) {
                     buffer.append(line!!.substring(start, i + 1))
                     yield(buffer.toString())
                     buffer.clear()

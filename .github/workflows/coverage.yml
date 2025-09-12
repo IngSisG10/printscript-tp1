@@ -41,5 +41,5 @@ jobs:
           path: ${{ github.workspace }}/build/reports/kover/report.xml
           title: "Kover Coverage"
           update-comment: true
-          min-coverage-overall: 0
+          min-coverage-overall: 80
           min-coverage-changed-files: 0
