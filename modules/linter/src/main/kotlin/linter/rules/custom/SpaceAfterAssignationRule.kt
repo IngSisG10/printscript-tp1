@@ -1,10 +1,10 @@
 package linter.rules.custom
 
 import common.enums.OperationEnum
+import common.exception.NoSpaceAfterAssignationException
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
-import exception.NoSpaceAfterAssignationException
 import linter.rules.abs.LinterRule
 
 // [a,' ',=,' ',5]

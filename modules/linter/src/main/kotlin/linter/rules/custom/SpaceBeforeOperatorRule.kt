@@ -9,12 +9,13 @@ import linter.rules.abs.LinterRule
 class SpaceBeforeOperatorRule : LinterRule {
     override fun getName(): String = "space_before_operation"
 
-    override fun match(tokens: List<TokenInterface>): Exception? {
+    override fun match(tokens: List<TokenInterface>): List<Throwable> {
+        val list = mutableListOf<Throwable>()
         for (i in 0 until tokens.size + 1) {
             if (tokens[i] is OperationToken && tokens[i + 1] !is WhiteSpaceToken) {
-                return NoSpaceBeforeOperatorException("No before after operator at index $i")
+                list.add(NoSpaceBeforeOperatorException(tokens[i].getPosition()))
             }
         }
-        return null
+        return list.toList()
     }
 }

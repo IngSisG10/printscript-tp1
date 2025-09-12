@@ -17,14 +17,15 @@ import linter.rules.abs.LinterRule
 class SpaceBeforeAssignationRule : LinterRule {
     override fun getName(): String = "space_before_assignation"
 
-    override fun match(tokens: List<TokenInterface>): Exception? {
+    override fun match(tokens: List<TokenInterface>): List<Throwable> {
+        val list = mutableListOf<Throwable>()
         for ((index, token) in tokens.withIndex()) {
             if (token is OperationToken && token.value == OperationEnum.EQUAL) {
                 if (tokens.getOrNull(index - 1) !is WhiteSpaceToken) {
-                    throw NoSpaceBeforeAssignationException()
+                    list.add(NoSpaceBeforeAssignationException(token.getPosition())) // or tokens[index-1].getPosition()
                 }
             }
         }
-        return null
+        return list.toList()
     }
 }

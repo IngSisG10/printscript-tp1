@@ -1,4 +1,4 @@
-package exception
+package common.exception
 
 import common.token.abs.TokenPosition
 

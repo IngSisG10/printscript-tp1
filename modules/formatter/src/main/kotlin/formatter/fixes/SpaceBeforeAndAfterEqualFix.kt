@@ -2,10 +2,10 @@ package formatter.fixes
 
 import common.data.FormatterData
 import common.enums.OperationEnum
+import common.exception.NoSpaceAfterAssignationException
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
-import exception.NoSpaceAfterAssignationException
 import exception.NoSpaceBeforeAssignationException
 import formatter.fixes.abs.FormatterFix
 
