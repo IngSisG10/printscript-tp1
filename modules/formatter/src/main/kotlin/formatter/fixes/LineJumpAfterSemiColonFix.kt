@@ -1,17 +1,13 @@
 package formatter.fixes
 
-import common.data.LinterData
-import common.exception.NoNewLineAfterSemiColon
 import common.token.EndSentenceToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 
 class LineJumpAfterSemiColonFix : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is NoNewLineAfterSemiColon
 
     override fun fix(
-        issue: LinterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

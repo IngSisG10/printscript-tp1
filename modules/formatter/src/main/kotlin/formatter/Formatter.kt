@@ -1,10 +1,12 @@
 package formatter
 
 import common.converter.Converter
-import common.data.LinterData
+import common.data.FormatterData
 import common.token.abs.TokenInterface
+import formatter.fixes.IfBracePlacementFix
 import formatter.fixes.LineJumpAfterSemiColonFix
 import formatter.fixes.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.MaxOneBlankLineFix
 import formatter.fixes.OneSpaceAfterTokenMaxFix
 import formatter.fixes.SpaceAfterColonFix
 import formatter.fixes.SpaceBeforeAndAfterEqualFix
@@ -26,10 +28,12 @@ class Formatter(
             SpaceBeforeAndAfterOperatorFix(),
             LineJumpAfterSemiColonFix(),
             LineJumpSpaceBeforePrintlnFix(),
+            MaxOneBlankLineFix(),
+            IfBracePlacementFix()
         )
 
     fun format(tokens: List<TokenInterface>): String {
-        val issues: List<LinterData> = linter.formatterLint(tokens)
+        val issues: List<FormatterData> = linter.formatterLint(tokens)
         if (issues.isEmpty()) return converter.convert(tokens)
         var newTokenList: List<TokenInterface> = tokens
         for (issue in issues) {

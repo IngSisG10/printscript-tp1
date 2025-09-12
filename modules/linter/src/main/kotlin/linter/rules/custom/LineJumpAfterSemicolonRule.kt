@@ -1,10 +1,10 @@
-package linter.syntax.rules
+package linter.rules.custom
 
 import common.exception.NoNewLineAfterSemiColon
 import common.token.EndSentenceToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
-import linter.syntax.LinterRule
+import linter.rules.abs.LinterRule
 
 class LineJumpAfterSemicolonRule : LinterRule {
     override fun getName(): String = "line_jump_after_semicolon"

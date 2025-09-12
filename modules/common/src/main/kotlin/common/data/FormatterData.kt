@@ -1,6 +1,6 @@
 package common.data
 
-data class LinterData(
+data class FormatterData(
     val exception: Exception,
     val position: Int,
 )

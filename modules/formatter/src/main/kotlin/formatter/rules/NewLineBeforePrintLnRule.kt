@@ -1,29 +1,35 @@
-package linter.rules.custom
+package formatter.rules
 
+import common.data.FormatterData
 import common.enums.FunctionEnum
 import common.exception.InvalidNewLineBeforePrintlnException
 import common.token.FunctionToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
-import linter.rules.abs.LinterRule
+import formatter.rules.abs.FormatterRule
 
-class NewLineBeforePrintlnRule(
+class NewLineBeforePrintLnRule (
     private val allowedNewLines: Int = 1, // configurable: 0, 1 o 2
-) : LinterRule {
-    override fun getName(): String = "new_line_before_println"
+) : FormatterRule {
+    override fun getName(): String = "new_line_before_println_rule"
 
-    override fun match(tokens: List<TokenInterface>): Exception? {
+    override fun matchWithData(tokens: List<TokenInterface>): List<FormatterData> {
+        val list = mutableListOf<FormatterData>()
         for ((index, token) in tokens.withIndex()) {
             if (token is FunctionToken && token.value == FunctionEnum.PRINTLN) {
                 val newLines = countConsecutiveNewLines(tokens, index - 1)
                 if (newLines != allowedNewLines) {
-                    return InvalidNewLineBeforePrintlnException(expected = allowedNewLines, found = newLines)
+                    list.add(
+                        FormatterData(
+                            exception = InvalidNewLineBeforePrintlnException(expected = allowedNewLines, found = newLines),
+                            position = index,
+                        ),
+                    )
                 }
             }
         }
-        return null
+        return list
     }
-
 
     private fun countConsecutiveNewLines(
         tokens: List<TokenInterface>,

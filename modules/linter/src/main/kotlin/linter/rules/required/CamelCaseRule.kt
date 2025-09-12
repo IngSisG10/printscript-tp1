@@ -1,9 +1,9 @@
-package linter.syntax.rules
+package linter.rules.required
 
 import common.exception.InvalidCamelCaseException
 import common.token.VariableToken
 import common.token.abs.TokenInterface
-import linter.syntax.LinterRule
+import linter.rules.abs.LinterRule
 
 class CamelCaseRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {

@@ -1,6 +1,6 @@
 package formatter.fixes
 
-import common.data.LinterData
+import common.data.FormatterData
 import common.exception.NoSpaceBeforeColonException
 import common.token.TypeDeclaratorToken
 import common.token.WhiteSpaceToken
@@ -8,11 +8,11 @@ import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 
 class SpaceBeforeColonFix : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceBeforeColonException
+    override fun canFix(issue: FormatterData): Boolean = issue.exception is NoSpaceBeforeColonException
 
     // string -> FormattedCode (lista de tokens formateada)
     override fun fix(
-        issue: LinterData,
+        issue: FormatterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         // utilizo index para trabajar dentro de la lista de tokens

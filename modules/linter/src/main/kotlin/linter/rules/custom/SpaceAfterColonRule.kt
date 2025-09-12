@@ -1,10 +1,10 @@
-package linter.syntax.rules
+package linter.rules.custom
 
 import common.exception.NoSpaceAfterColonException
 import common.token.TypeDeclaratorToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
-import linter.syntax.LinterRule
+import linter.rules.abs.LinterRule
 
 class SpaceAfterColonRule : LinterRule {
     override fun match(tokens: List<TokenInterface>): Exception? {

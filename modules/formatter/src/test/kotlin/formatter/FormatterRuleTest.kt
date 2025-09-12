@@ -9,14 +9,14 @@ import common.token.TypeToken
 import common.token.VariableToken
 import common.token.WhiteSpaceToken
 import linter.Linter
-import linter.syntax.rules.SpaceAfterAssignationRule
-import linter.syntax.rules.SpaceAfterColonRule
-import linter.syntax.rules.SpaceBeforeAssignationRule
-import linter.syntax.rules.SpaceBeforeColonRule
+import linter.rules.custom.SpaceAfterAssignationRule
+import linter.rules.custom.SpaceAfterColonRule
+import linter.rules.custom.SpaceBeforeAssignationRule
+import linter.rules.custom.SpaceBeforeColonRule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class FormatterRulesTest {
+class FormatterRuleTest {
     @Test
     fun `Formatter should add space after colon`() {
         val tokens =

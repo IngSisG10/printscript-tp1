@@ -1,4 +1,4 @@
-package linter.syntax
+package linter.rules.abs
 
 import common.token.abs.TokenInterface
 

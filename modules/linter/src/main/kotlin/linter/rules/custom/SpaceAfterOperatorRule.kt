@@ -1,11 +1,10 @@
-package linter.syntax.rules
+package linter.rules.custom
 
-import common.data.FormatterData
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import exception.NoSpaceAfterOperatorException
-import linter.syntax.LinterRule
+import linter.rules.abs.LinterRule
 
 class SpaceAfterOperatorRule : LinterRule {
     override fun getName(): String = "space_after_operation"

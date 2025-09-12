@@ -1,10 +1,9 @@
-package linter.syntax.rules
+package linter.rules.custom
 
-import common.data.FormatterData
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import exception.MoreThanOneSpaceAfterTokenException
-import linter.syntax.LinterRule
+import linter.rules.abs.LinterRule
 
 class OneSpaceBetweenTokensRule : LinterRule {
     override fun getName(): String = "one_space_between_tokens"

@@ -1,6 +1,6 @@
 package formatter.fixes
 
-import common.data.LinterData
+import common.data.FormatterData
 import common.enums.OperationEnum
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
@@ -10,12 +10,12 @@ import exception.NoSpaceBeforeAssignationException
 import formatter.fixes.abs.FormatterFix
 
 class SpaceBeforeAndAfterEqualFix : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean =
+    override fun canFix(issue: FormatterData): Boolean =
         issue.exception is NoSpaceBeforeAssignationException ||
             issue.exception is NoSpaceAfterAssignationException
 
     override fun fix(
-        issue: LinterData,
+        issue: FormatterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

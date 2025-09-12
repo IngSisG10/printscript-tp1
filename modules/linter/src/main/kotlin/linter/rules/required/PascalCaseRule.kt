@@ -1,4 +1,4 @@
-package linter.rules.custom
+package linter.rules.required
 
 import common.exception.InvalidPascalCaseException
 import common.token.VariableToken

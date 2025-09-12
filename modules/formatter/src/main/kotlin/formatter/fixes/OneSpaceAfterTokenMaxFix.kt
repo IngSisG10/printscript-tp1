@@ -1,16 +1,11 @@
 package formatter.fixes
 
-import common.data.LinterData
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
-import exception.MoreThanOneSpaceAfterTokenException
 import formatter.fixes.abs.FormatterFix
 
 class OneSpaceAfterTokenMaxFix : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is MoreThanOneSpaceAfterTokenException
-
     override fun fix(
-        issue: LinterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

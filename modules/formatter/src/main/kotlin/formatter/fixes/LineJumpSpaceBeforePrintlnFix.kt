@@ -1,8 +1,6 @@
 package formatter.fixes
 
-import common.data.LinterData
 import common.enums.FunctionEnum
-import common.exception.InvalidNewLineBeforePrintlnException
 import common.token.FunctionToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
@@ -11,10 +9,7 @@ import formatter.fixes.abs.FormatterFix
 class LineJumpSpaceBeforePrintlnFix(
     private val maxNewLines: Int = 2, // configurable, default = 2
 ) : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is InvalidNewLineBeforePrintlnException
-
     override fun fix(
-        issue: LinterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

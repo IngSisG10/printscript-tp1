@@ -1,6 +1,6 @@
 package formatter.fixes
 
-import common.data.LinterData
+import common.data.FormatterData
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
@@ -9,12 +9,12 @@ import exception.NoSpaceBeforeOperatorException
 import formatter.fixes.abs.FormatterFix
 
 class SpaceBeforeAndAfterOperatorFix : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean =
+    override fun canFix(issue: FormatterData): Boolean =
         issue.exception is NoSpaceBeforeOperatorException ||
             issue.exception is NoSpaceAfterOperatorException
 
     override fun fix(
-        issue: LinterData,
+        issue: FormatterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
@@ -44,6 +44,7 @@ class SpaceBeforeAndAfterOperatorFix : FormatterFix {
                 return mutableTokens
             }
         }
+        // No se ha hecho ninguna modificación, devuelvo los tokens originales.
         return mutableTokens
     }
 }

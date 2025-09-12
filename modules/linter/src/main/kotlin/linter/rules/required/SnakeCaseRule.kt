@@ -1,4 +1,4 @@
-package linter.rules.custom
+package linter.rules.required
 
 import common.exception.InvalidSnakeCaseException
 import common.token.VariableToken

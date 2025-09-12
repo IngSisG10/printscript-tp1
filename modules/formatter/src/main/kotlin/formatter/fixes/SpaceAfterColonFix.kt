@@ -1,15 +1,15 @@
 package formatter.fixes
 
-import common.data.LinterData
+import common.data.FormatterData
 import common.exception.NoSpaceAfterColonException
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 
 class SpaceAfterColonFix : FormatterFix {
-    override fun canFix(issue: LinterData): Boolean = issue.exception is NoSpaceAfterColonException
+    override fun canFix(issue: FormatterData): Boolean = issue.exception is NoSpaceAfterColonException
 
     override fun fix(
-        issue: LinterData,
+        issue: FormatterData,
         tokens: List<TokenInterface>,
     ): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
