@@ -17,6 +17,7 @@ class PrintLnSimpleArgumentRule(
 
         for (token in tokens) {
             if (token is FunctionToken && token.value == FunctionEnum.PRINTLN) {
+                // fixme -> asume caso perfecto
                 if (tokens[tokens.indexOf(token) + 2] !is VariableToken) {
                     return InvalidPrintLnArgumentException(
                         "println must be called with identifier or literal at index ${token.position} row ${token.row}",
