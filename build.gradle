@@ -97,24 +97,12 @@ tasks.register('coverageAll') {
     dependsOn ':koverXmlReport', ':koverHtmlReport'
 }
 
-///** todo?: Umbral de cobertura para fallar el build (opcional) */
-//koverReport {
-//    filters {
-//        excludes {
-//            // ejemplos de exclusiones
-//            classes('*Dto', '*Request', '*Response')
-//            packages('**.generated.**')
-//        }
-//    }
-//    verify {
-//        // regla global (podés agregar más)
-//        rule {
-//            name = "Min line coverage"
-//            bound {
-//                minValue = 0.60 // 60%
-//                metric = kotlinx.kover.gradle.plugin.dsl.MetricType.LINE
-//                aggregationForGroup = kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
-//            }
-//        }
-//    }
-//}
+kover {
+    reports {
+        verify {
+            rule {
+                minBound(80)
+            }
+        }
+    }
+}
