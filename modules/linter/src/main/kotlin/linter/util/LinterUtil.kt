@@ -50,6 +50,9 @@ class LinterUtil {
                     CamelCaseRule(),
                     PascalCaseRule(),
                     SnakeCaseRule(),
+                    PrintLnSimpleArgumentRule(),
+                    ReadInputSimpleArgumentRule(),
+                    // custom
                     SpaceAfterColonRule(),
                     SpaceBeforeColonRule(),
                     LineJumpAfterSemicolonRule(),
@@ -59,7 +62,6 @@ class LinterUtil {
                     SpaceBeforeAssignationRule(),
                     SpaceAfterOperatorRule(),
                     SpaceBeforeOperatorRule(),
-                    ReadInputSimpleArgumentRule(),
                 )
             return when (version) {
                 "1.1" -> onePointOneLinterRules

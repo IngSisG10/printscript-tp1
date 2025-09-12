@@ -20,7 +20,7 @@ class Lint : CliktCommand() {
     override fun run() {
         val fileText = CliUtil.findFile(file) ?: throw throw common.exception.InvalidFileException("No file was found")
         val configFileText = CliUtil.findFile(config) ?: throw throw common.exception.InvalidFileException("No file was found")
-        val linter = createLinter(configFileText)
+        val linter = createLinter(configFileText, version)
         val lexer = createLexer(version)
         val tokens = lexer.lex(fileText)
         linter.lint(tokens)
