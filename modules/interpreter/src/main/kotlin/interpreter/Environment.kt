@@ -9,7 +9,7 @@ import common.exception.UninitializedVariableException
 
 data class Variable(
     val type: TypeEnum,
-    var value: Value? = null,
+    val value: Value? = null,
     val declarationType: DeclarationTypeEnum = DeclarationTypeEnum.LET,
 )
 
@@ -29,9 +29,24 @@ data class StringValue(
     override fun toStringValue(): String = value
 }
 
+data class BooleanValue(
+    val value: Boolean,
+) : Value() {
+    override fun toStringValue(): String = value.toString()
+}
+
 class Environment {
-    // TODO: immutable map
-    private val variables = mutableMapOf<String, Variable>()
+    private val scopes = mutableListOf(mutableMapOf<String, Variable>())
+
+    fun enterScope() {
+        scopes.add(mutableMapOf())
+    }
+
+    fun exitScope() {
+        if (scopes.size > 1) {
+            scopes.removeAt(scopes.lastIndex)
+        }
+    }
 
     fun declareVariable(
         name: String,
@@ -39,34 +54,59 @@ class Environment {
         value: Value? = null,
         declarationType: DeclarationTypeEnum = DeclarationTypeEnum.LET,
     ) {
-        if (variables.containsKey(name)) {
-            throw InterpreterException("Variable '$name' is already declared")
+        val currentScope = scopes.last()
+        if (currentScope.containsKey(name)) {
+            throw InterpreterException("Variable '$name' is already declared in this scope")
         }
-        variables[name] = Variable(type, value, declarationType)
+        currentScope[name] = Variable(type, value, declarationType)
     }
 
     fun setVariable(
         name: String,
         value: Value,
     ) {
-        val variable = variables[name] ?: throw UndefinedVariableException(name)
+        for (scope in scopes.asReversed()) {
+            if (scope.containsKey(name)) {
+                val variable = scope[name]!!
+                if (variable.declarationType == DeclarationTypeEnum.CONST) {
+                    throw InterpreterException("Cannot reassign to constant variable '$name'")
+                }
 
-        if (variable.declarationType == DeclarationTypeEnum.CONST) {
-            throw InterpreterException("Cannot reassign to constant variable '$name'")
+                when (variable.type) {
+                    TypeEnum.NUMBER ->
+                        if (value !is NumberValue) {
+                            throw TypeMismatchException(
+                                "Cannot assign ${value::class.simpleName} to number variable '$name'",
+                            )
+                        }
+                    TypeEnum.STRING ->
+                        if (value !is StringValue) {
+                            throw TypeMismatchException(
+                                "Cannot assign ${value::class.simpleName} to string variable '$name'",
+                            )
+                        }
+                    TypeEnum.BOOLEAN ->
+                        if (value !is BooleanValue) {
+                            throw TypeMismatchException(
+                                "Cannot assign ${value::class.simpleName} to boolean variable '$name'",
+                            )
+                        }
+                    TypeEnum.ANY -> { /* Any value is fine */ }
+                }
+
+                scope[name] = variable.copy(value = value)
+                return
+            }
         }
-
-        when {
-            variable.type == TypeEnum.NUMBER && value !is NumberValue ->
-                throw TypeMismatchException("Cannot assign ${value::class.simpleName} to number variable")
-            variable.type == TypeEnum.STRING && value !is StringValue ->
-                throw TypeMismatchException("Cannot assign ${value::class.simpleName} to string variable")
-        }
-
-        variable.value = value
+        throw UndefinedVariableException(name)
     }
 
     fun getValue(name: String): Value {
-        val variable = variables[name] ?: throw UndefinedVariableException(name)
-        return variable.value ?: throw UninitializedVariableException(name)
+        for (scope in scopes.asReversed()) {
+            scope[name]?.let { variable ->
+                return variable.value ?: throw UninitializedVariableException(name)
+            }
+        }
+        throw UndefinedVariableException(name)
     }
 }
