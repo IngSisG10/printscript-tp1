@@ -5,6 +5,8 @@ import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 
 class OneSpaceAfterTokenMaxFix : FormatterFix {
+    override fun getName(): String = "one_space_after_token_max_fix"
+
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
         var index = 0

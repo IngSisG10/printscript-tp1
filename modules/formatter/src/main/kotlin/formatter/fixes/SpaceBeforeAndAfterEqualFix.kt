@@ -1,23 +1,15 @@
 package formatter.fixes
 
-import common.data.FormatterData
 import common.enums.OperationEnum
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
-import exception.NoSpaceAfterAssignationException
-import exception.NoSpaceBeforeAssignationException
 import formatter.fixes.abs.FormatterFix
 
 class SpaceBeforeAndAfterEqualFix : FormatterFix {
-    override fun canFix(issue: FormatterData): Boolean =
-        issue.exception is NoSpaceBeforeAssignationException ||
-            issue.exception is NoSpaceAfterAssignationException
+    override fun getName(): String = "space_before_and_after_equal_fix"
 
-    override fun fix(
-        issue: FormatterData,
-        tokens: List<TokenInterface>,
-    ): List<TokenInterface> {
+    override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
 
         for (index in 1 until mutableTokens.size) {
