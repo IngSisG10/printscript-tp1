@@ -17,6 +17,4 @@ class SpaceBeforeOperatorRule : LinterRule {
         }
         return null
     }
-
-
 }

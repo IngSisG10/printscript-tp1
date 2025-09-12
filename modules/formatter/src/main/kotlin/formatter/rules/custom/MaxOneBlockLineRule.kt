@@ -13,18 +13,18 @@ class MaxOneBlockLineRule : FormatterRule {
         val issues = mutableListOf<FormatterData>()
         var blankLineCount = 0
 
-        for((index, token) in tokens.withIndex()){
-            if (token is NewLineToken){
+        for ((index, token) in tokens.withIndex()) {
+            if (token is NewLineToken) {
                 blankLineCount++
-                if (blankLineCount > 2){
+                if (blankLineCount > 2) {
                     issues.add(
                         FormatterData(
                             exception = TooManyBlankLinesException("Too many blank lines at index $index"),
-                            position = index
-                        )
+                            position = index,
+                        ),
                     )
                 }
-            } else{
+            } else {
                 blankLineCount = 0
             }
         }

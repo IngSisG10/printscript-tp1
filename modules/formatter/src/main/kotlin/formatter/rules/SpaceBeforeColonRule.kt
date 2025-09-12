@@ -26,5 +26,4 @@ class SpaceBeforeColonRule : FormatterRule {
         }
         return list
     }
-
 }

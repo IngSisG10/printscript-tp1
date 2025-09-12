@@ -6,10 +6,7 @@ import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 
 class LineJumpAfterSemiColonFix : FormatterFix {
-
-    override fun fix(
-        tokens: List<TokenInterface>,
-    ): List<TokenInterface> {
+    override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
 
         for (i in tokens.indices) {

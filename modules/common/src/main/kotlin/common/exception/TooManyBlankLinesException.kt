@@ -1,8 +1,8 @@
 package common.exception
 
-class TooManyBlankLinesException (
+class TooManyBlankLinesException(
     message: String,
     cause: Throwable? = null,
-) : Exception(message, cause){
+) : Exception(message, cause) {
     constructor(cause: Throwable? = null) : this("Too many blank lines", cause)
 }

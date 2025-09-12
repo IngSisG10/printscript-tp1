@@ -6,7 +6,6 @@ import common.token.abs.TokenInterface
 import linter.rules.abs.LinterRule
 
 class SnakeCaseRule : LinterRule {
-
     override fun getName(): String = "snake_case_rule"
 
     override fun match(tokens: List<TokenInterface>): Exception? {

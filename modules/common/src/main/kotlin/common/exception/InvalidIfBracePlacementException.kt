@@ -1,6 +1,6 @@
 package common.exception
 
-class InvalidIfBracePlacementException (
+class InvalidIfBracePlacementException(
     message: String,
     cause: Throwable? = null,
 ) : Exception(message, cause) {

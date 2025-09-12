@@ -8,7 +8,7 @@ import common.token.NewLineToken
 import common.token.abs.TokenInterface
 import formatter.rules.abs.FormatterRule
 
-class NewLineBeforePrintLnRule (
+class NewLineBeforePrintLnRule(
     private val allowedNewLines: Int = 1, // configurable: 0, 1 o 2
 ) : FormatterRule {
     override fun getName(): String = "new_line_before_println_rule"

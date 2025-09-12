@@ -24,7 +24,6 @@ class NewLineBeforePrintlnRule(
         return null
     }
 
-
     private fun countConsecutiveNewLines(
         tokens: List<TokenInterface>,
         startIndex: Int,

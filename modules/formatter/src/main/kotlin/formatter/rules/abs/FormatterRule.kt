@@ -5,5 +5,6 @@ import common.token.abs.TokenInterface
 
 interface FormatterRule {
     fun getName(): String
+
     fun matchWithData(tokens: List<TokenInterface>): List<FormatterData>
 }

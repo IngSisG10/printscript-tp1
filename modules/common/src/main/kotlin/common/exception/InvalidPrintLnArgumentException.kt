@@ -1,6 +1,6 @@
 package common.exception
 
-class InvalidPrintLnArgumentException (
+class InvalidPrintLnArgumentException(
     message: String,
     cause: Throwable? = null,
 ) : Exception(message, cause) {

@@ -29,5 +29,4 @@ class SpaceAfterColonRule : FormatterRule {
         }
         return list
     }
-
 }

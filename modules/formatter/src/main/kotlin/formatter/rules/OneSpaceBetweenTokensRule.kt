@@ -6,9 +6,8 @@ import common.token.abs.TokenInterface
 import exception.MoreThanOneSpaceAfterTokenException
 import formatter.rules.abs.FormatterRule
 
-class OneSpaceBetweenTokensRule: FormatterRule {
+class OneSpaceBetweenTokensRule : FormatterRule {
     override fun getName(): String = "one_space_between_tokens_rule"
-
 
     override fun matchWithData(tokens: List<TokenInterface>): List<FormatterData> {
         val issues = mutableListOf<FormatterData>()

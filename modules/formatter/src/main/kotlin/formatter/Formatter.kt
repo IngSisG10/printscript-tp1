@@ -29,7 +29,7 @@ class Formatter(
             LineJumpAfterSemiColonFix(),
             LineJumpSpaceBeforePrintlnFix(),
             MaxOneBlankLineFix(),
-            IfBracePlacementFix()
+            IfBracePlacementFix(),
         )
 
     fun format(tokens: List<TokenInterface>): String {

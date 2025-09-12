@@ -9,9 +9,7 @@ import formatter.fixes.abs.FormatterFix
 class LineJumpSpaceBeforePrintlnFix(
     private val maxNewLines: Int = 2, // configurable, default = 2
 ) : FormatterFix {
-    override fun fix(
-        tokens: List<TokenInterface>,
-    ): List<TokenInterface> {
+    override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
 
         for (i in mutableTokens.indices) {

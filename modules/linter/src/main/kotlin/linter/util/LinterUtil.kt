@@ -4,20 +4,20 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import linter.Linter
 import linter.rules.abs.LinterRule
-import linter.rules.required.CamelCaseRule
 import linter.rules.custom.LineJumpAfterSemicolonRule
 import linter.rules.custom.NewLineBeforePrintlnRule
 import linter.rules.custom.OneSpaceBetweenTokensRule
-import linter.rules.required.PascalCaseRule
-import linter.rules.required.SnakeCaseRule
 import linter.rules.custom.SpaceAfterAssignationRule
 import linter.rules.custom.SpaceAfterColonRule
 import linter.rules.custom.SpaceAfterOperatorRule
 import linter.rules.custom.SpaceBeforeAssignationRule
 import linter.rules.custom.SpaceBeforeColonRule
 import linter.rules.custom.SpaceBeforeOperatorRule
+import linter.rules.required.CamelCaseRule
+import linter.rules.required.PascalCaseRule
 import linter.rules.required.PrintLnSimpleArgumentRule
 import linter.rules.required.ReadInputSimpleArgumentRule
+import linter.rules.required.SnakeCaseRule
 
 @Serializable
 data class Config(
@@ -34,7 +34,6 @@ class LinterUtil {
                     PascalCaseRule(),
                     SnakeCaseRule(),
                     PrintLnSimpleArgumentRule(),
-
                     // custom
                     SpaceAfterColonRule(),
                     SpaceBeforeColonRule(),
@@ -44,7 +43,7 @@ class LinterUtil {
                     SpaceAfterAssignationRule(),
                     SpaceBeforeAssignationRule(),
                     SpaceAfterOperatorRule(),
-                    SpaceBeforeOperatorRule()
+                    SpaceBeforeOperatorRule(),
                 )
             val onePointOneLinterRules =
                 listOf(
