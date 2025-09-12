@@ -3,16 +3,7 @@ package parser
 import common.ast.DeclaratorNode
 import common.ast.FunctionNode
 import common.enums.FunctionEnum
-import lexer.Lexer
-import lexer.token.TokenRule
-import lexer.token.rules.IdentifierRule
-import lexer.token.rules.KeywordOnePointOneRule
-import lexer.token.rules.KeywordRule
-import lexer.token.rules.NumberLiteralRule
-import lexer.token.rules.ParenthesisRule
-import lexer.token.rules.SingleCharOnePointOneRule
-import lexer.token.rules.SingleCharRule
-import lexer.token.rules.StringLiteralRule
+import lexer.util.LexerUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -20,20 +11,8 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class ParserTestOnePointOne {
-    private val versionOnePointOne =
-        listOf<TokenRule>(
-            StringLiteralRule(),
-            NumberLiteralRule(),
-            KeywordRule(),
-            KeywordOnePointOneRule(),
-            ParenthesisRule(),
-            SingleCharRule(),
-            SingleCharOnePointOneRule(),
-            IdentifierRule(),
-        )
-
     private fun parseCode(code: String): List<Any> {
-        val lexer = Lexer(versionOnePointOne)
+        val lexer = LexerUtil.createLexer("1.1")
         val tokens = lexer.lex(code)
         val parser = Parser()
         return parser.parse(tokens)

@@ -61,7 +61,7 @@ class IfStatementNodeCreatorTest {
         val code =
             """
             if (a == 1) {
-                1
+                1;
             
             """.trimIndent()
         // Missing closing brace
@@ -73,9 +73,9 @@ class IfStatementNodeCreatorTest {
         val code =
             """
             if (true) {
-                1
+                1;
             } else {
-                2
+                2;
             """.trimIndent()
         // Missing closing brace
         assertThrows(UnrecognizedLineException::class.java) { parseCode(code) }
