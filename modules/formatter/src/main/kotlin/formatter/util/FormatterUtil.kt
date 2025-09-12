@@ -13,17 +13,17 @@ data class Config(
 class FormatterUtil {
     companion object {
         private fun addVersionFixes(version: String): List<FormatterFix> {
-            val onePointZeroLinterRules =
+            val onePointZeroFormatFixes =
                 emptyList<FormatterFix>()
             // todo: add fixes for 1.0
 
-            val onePointOneLinterRules =
+            val onePointOneFormatFixes =
                 emptyList<FormatterFix>()
             // todo: add fixes for 1.0 && 1.1
 
             return when (version) {
-                "1.1" -> onePointOneLinterRules
-                else -> onePointZeroLinterRules
+                "1.1" -> onePointZeroFormatFixes
+                else -> onePointOneFormatFixes
             }
         }
 
