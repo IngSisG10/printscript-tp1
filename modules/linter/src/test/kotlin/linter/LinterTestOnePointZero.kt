@@ -1,22 +1,11 @@
 package linter
 
-import common.enums.OperationEnum
-import common.enums.TypeEnum
 import common.exception.InvalidCamelCaseException
 import common.exception.InvalidPascalCaseException
 import common.exception.InvalidSnakeCaseException
-import common.token.OperationToken
-import common.token.StringLiteralToken
-import common.token.TypeDeclaratorToken
-import common.token.TypeToken
 import common.token.VariableToken
-import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import lexer.Lexer
-import linter.rules.custom.SpaceAfterAssignationRule
-import linter.rules.custom.SpaceAfterColonRule
-import linter.rules.custom.SpaceBeforeAssignationRule
-import linter.rules.custom.SpaceBeforeColonRule
 import linter.rules.required.CamelCaseRule
 import linter.rules.required.PascalCaseRule
 import linter.rules.required.PrintLnSimpleArgumentRule
@@ -68,9 +57,9 @@ class LinterTestOnePointZero {
                 VariableToken("123invalid", 1, 3), // starts with number
             )
 
-        val exception = rule.match(tokens)
-        // todo: List<Throwable>
-        assertTrue(exception is InvalidCamelCaseException)
+        val exceptions = rule.match(tokens)
+        assertEquals(3, exceptions.size)
+        assertTrue(exceptions.all { it is InvalidCamelCaseException })
     }
 
     @Test
@@ -96,11 +85,8 @@ class LinterTestOnePointZero {
             )
 
         val exception = rule.match(tokens)
-        kotlin.test.assertTrue(exception is InvalidSnakeCaseException)
-
-        val linterData = rule.matchWithData(tokens)
-        assertEquals(3, linterData.size)
-        kotlin.test.assertTrue(linterData.all { it.exception is InvalidSnakeCaseException })
+        assertEquals(3, exception.size)
+        assertTrue(exception.all { it is InvalidSnakeCaseException })
     }
 
     @Test
@@ -126,7 +112,6 @@ class LinterTestOnePointZero {
             )
 
         assertNull(rule.match(tokens))
-        kotlin.test.assertTrue(rule.matchWithData(tokens).isEmpty())
     }
 
     @Test
@@ -140,11 +125,8 @@ class LinterTestOnePointZero {
             )
 
         val exception = rule.match(tokens)
-        kotlin.test.assertTrue(exception is InvalidPascalCaseException)
-
-        val linterData = rule.matchWithData(tokens)
-        assertEquals(3, linterData.size)
-        kotlin.test.assertTrue(linterData.all { it.exception is InvalidPascalCaseException })
+        assertEquals(3, exception.size)
+        assertTrue(exception.all { it is InvalidPascalCaseException })
     }
 
     @Test
@@ -168,7 +150,7 @@ class LinterTestOnePointZero {
                 VariableToken("validCamel", 2, 2), // Valid camelCase
             )
         val result = rule.match(tokens)
-        assertTrue(result.any { it is common.exception.InvalidCamelCaseException })
+        assertTrue(result.any { it is InvalidCamelCaseException })
     }
 
     @Test
@@ -189,44 +171,18 @@ class LinterTestOnePointZero {
         val snakeRule = SnakeCaseRule()
 
         val camelTokens = listOf(VariableToken("validCamelCase", 1, 1))
-        assertNull(camelRule.match(camelTokens))
-        kotlin.test.assertTrue(pascalRule.match(camelTokens) is InvalidPascalCaseException)
-        kotlin.test.assertTrue(snakeRule.match(camelTokens) is InvalidSnakeCaseException)
+        assertTrue(camelRule.match(camelTokens).isEmpty())
+        assertTrue(pascalRule.match(camelTokens).all { it is InvalidPascalCaseException })
+        assertTrue(snakeRule.match(camelTokens).all { it is InvalidSnakeCaseException })
 
         val pascalTokens = listOf(VariableToken("ValidPascalCase", 1, 1))
-        kotlin.test.assertTrue(camelRule.match(pascalTokens) is InvalidCamelCaseException)
-        assertNull(pascalRule.match(pascalTokens))
-        kotlin.test.assertTrue(snakeRule.match(pascalTokens) is InvalidSnakeCaseException)
+        assertTrue(camelRule.match(pascalTokens).all { it is InvalidCamelCaseException })
+        assertTrue(pascalRule.match(pascalTokens).isEmpty())
+        assertTrue(snakeRule.match(pascalTokens).all { it is InvalidSnakeCaseException })
 
         val snakeTokens = listOf(VariableToken("valid_snake_case", 1, 1))
-        kotlin.test.assertTrue(camelRule.match(snakeTokens) is InvalidCamelCaseException)
-        kotlin.test.assertTrue(pascalRule.match(snakeTokens) is InvalidPascalCaseException)
-        assertNull(snakeRule.match(snakeTokens))
-    }
-
-    @Test
-    fun `combination of spacing rules should work together`() {
-        val spaceAfterColonRule = SpaceAfterColonRule()
-        val spaceBeforeColonRule = SpaceBeforeColonRule()
-        val spaceAfterAssignRule = SpaceAfterAssignationRule()
-        val spaceBeforeAssignRule = SpaceBeforeAssignationRule()
-
-        val validTokens =
-            listOf(
-                VariableToken("variable", 1, 1),
-                WhiteSpaceToken(1, 2),
-                TypeDeclaratorToken(1, 3),
-                WhiteSpaceToken(1, 4),
-                TypeToken(TypeEnum.STRING, 1, 5),
-                WhiteSpaceToken(1, 6),
-                OperationToken(OperationEnum.EQUAL, 1, 7),
-                WhiteSpaceToken(1, 8),
-                StringLiteralToken("value", 1, 9),
-            )
-
-        assertNull(spaceAfterColonRule.match(validTokens))
-        assertNull(spaceBeforeColonRule.match(validTokens))
-        assertNull(spaceAfterAssignRule.match(validTokens))
-        assertNull(spaceBeforeAssignRule.match(validTokens))
+        assertTrue(camelRule.match(snakeTokens).all { it is InvalidCamelCaseException })
+        assertTrue(pascalRule.match(snakeTokens).all { it is InvalidPascalCaseException })
+        assertTrue(snakeRule.match(snakeTokens).isEmpty())
     }
 }

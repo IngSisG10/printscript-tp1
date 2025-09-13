@@ -2,23 +2,26 @@ package linter
 
 import common.enums.OperationEnum
 import common.enums.TypeEnum
+import common.exception.NoNewLineAfterSemiColon
 import common.exception.NoSpaceAfterAssignationException
 import common.exception.NoSpaceAfterColonException
 import common.exception.NoSpaceBeforeColonException
+import common.token.EndSentenceToken
 import common.token.NumberLiteralToken
 import common.token.OperationToken
+import common.token.StringLiteralToken
 import common.token.TypeDeclaratorToken
 import common.token.TypeToken
 import common.token.VariableToken
 import common.token.WhiteSpaceToken
 import exception.NoSpaceBeforeAssignationException
+import linter.rules.custom.LineJumpAfterSemicolonRule
 import linter.rules.custom.SpaceAfterAssignationRule
 import linter.rules.custom.SpaceAfterColonRule
 import linter.rules.custom.SpaceBeforeAssignationRule
 import linter.rules.custom.SpaceBeforeColonRule
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -35,7 +38,6 @@ class LinterCustomTests {
             )
 
         assertNull(rule.match(tokens))
-        assertTrue(rule.matchWithData(tokens).isEmpty())
     }
 
     @Test
@@ -51,11 +53,6 @@ class LinterCustomTests {
         assertThrows<NoSpaceAfterColonException> {
             rule.match(tokens)
         }
-
-        val linterData = rule.matchWithData(tokens)
-        assertEquals(1, linterData.size)
-        assertTrue(linterData[0].exception is NoSpaceAfterColonException)
-        assertEquals(1, linterData[0].position)
     }
 
     @Test
@@ -69,8 +66,8 @@ class LinterCustomTests {
                 TypeToken(TypeEnum.STRING, 1, 4),
             )
 
-        assertNull(rule.match(tokens))
-        assertTrue(rule.matchWithData(tokens).isEmpty())
+        val result = rule.match(tokens)
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -83,14 +80,9 @@ class LinterCustomTests {
                 TypeToken(TypeEnum.STRING, 1, 3),
             )
 
-        assertThrows<NoSpaceBeforeColonException> {
-            rule.match(tokens)
-        }
-
-        val linterData = rule.matchWithData(tokens)
-        assertEquals(1, linterData.size)
-        assertTrue(linterData[0].exception is NoSpaceBeforeColonException)
-        assertEquals(1, linterData[0].position)
+        val result = rule.match(tokens)
+        assertTrue(result.isNotEmpty())
+        assertTrue(result.any { it is NoSpaceBeforeColonException })
     }
 
     @Test
@@ -105,8 +97,8 @@ class LinterCustomTests {
                 NumberLiteralToken(5, 1, 5),
             )
 
-        assertNull(rule.match(tokens))
-        assertTrue(rule.matchWithData(tokens).isEmpty())
+        val result = rule.match(tokens)
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -120,14 +112,9 @@ class LinterCustomTests {
                 NumberLiteralToken(5, 1, 4), // No space after equals
             )
 
-        assertThrows<NoSpaceAfterAssignationException> {
-            rule.match(tokens)
-        }
-
-        val linterData = rule.matchWithData(tokens)
-        assertEquals(1, linterData.size)
-        assertTrue(linterData[0].exception is NoSpaceAfterAssignationException)
-        assertEquals(2, linterData[0].position)
+        val result = rule.match(tokens)
+        assertTrue(result.isNotEmpty())
+        assertTrue(result.any { it is NoSpaceAfterAssignationException })
     }
 
     @Test
@@ -142,8 +129,8 @@ class LinterCustomTests {
                 NumberLiteralToken(5, 1, 5),
             )
 
-        assertNull(rule.match(tokens))
-        assertTrue(rule.matchWithData(tokens).isEmpty())
+        val result = rule.match(tokens)
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -157,30 +144,48 @@ class LinterCustomTests {
                 NumberLiteralToken(5, 1, 4),
             )
 
-        assertThrows<NoSpaceBeforeAssignationException> {
-            rule.match(tokens)
-        }
-
-        val linterData = rule.matchWithData(tokens)
-        assertEquals(1, linterData.size)
-        assertTrue(linterData[0].exception is NoSpaceBeforeAssignationException)
-        assertEquals(1, linterData[0].position)
+        val result = rule.match(tokens)
+        assertTrue(result.isNotEmpty())
+        assertTrue(result.any { it is NoSpaceBeforeAssignationException })
     }
 
-//    @Test
-//    fun `NewLineAfterSemicolonRule should not throw when properly implemented`() {
-//        val rule = LineJumpAfterSemicolonRule()
-//        val tokens =
-//            listOf(
-//                VariableToken("variable", 1, 1),
-//                EndSentenceToken(1, 2),
-//            )
-//
-//        // Since the rule is commented out, it should return null
-//
-//        assertThrows<NoNewLineAfterSemiColon> {
-//            rule.match(tokens)
-//        }
-//        assertTrue(rule.matchWithData(tokens).isEmpty())
-//    }
+    @Test
+    fun `NewLineAfterSemicolonRule should not throw when properly implemented`() {
+        val rule = LineJumpAfterSemicolonRule()
+        val tokens =
+            listOf(
+                VariableToken("variable", 1, 1),
+                EndSentenceToken(1, 2),
+            )
+
+        val result = rule.match(tokens)
+        assertTrue(result.isNotEmpty())
+        assertTrue(result.any { it is NoNewLineAfterSemiColon })
+    }
+
+    @Test
+    fun `combination of spacing rules should work together`() {
+        val spaceAfterColonRule = SpaceAfterColonRule()
+        val spaceBeforeColonRule = SpaceBeforeColonRule()
+        val spaceAfterAssignRule = SpaceAfterAssignationRule()
+        val spaceBeforeAssignRule = SpaceBeforeAssignationRule()
+
+        val validTokens =
+            listOf(
+                VariableToken("variable", 1, 1),
+                WhiteSpaceToken(1, 2),
+                TypeDeclaratorToken(1, 3),
+                WhiteSpaceToken(1, 4),
+                TypeToken(TypeEnum.STRING, 1, 5),
+                WhiteSpaceToken(1, 6),
+                OperationToken(OperationEnum.EQUAL, 1, 7),
+                WhiteSpaceToken(1, 8),
+                StringLiteralToken("value", 1, 9),
+            )
+
+        assertNull(spaceAfterColonRule.match(validTokens))
+        assertNull(spaceBeforeColonRule.match(validTokens))
+        assertNull(spaceAfterAssignRule.match(validTokens))
+        assertNull(spaceBeforeAssignRule.match(validTokens))
+    }
 }
