@@ -28,6 +28,6 @@ class LineJumpAfterSemiColonFix : FormatterFix {
                 break // Salimos del bucle después de arreglar el primer punto y coma encontrado
             }
         }
-        return tokens
+        return mutableTokens
     }
 }
