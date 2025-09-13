@@ -2,10 +2,6 @@ package linter
 
 import common.token.abs.TokenInterface
 import lexer.Lexer
-import linter.rules.required.ReadInputSimpleArgumentRule
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
-import kotlin.test.Test
 
 class LinterTestOnePointOne {
     private fun tokenizeCode(code: String): List<TokenInterface> {

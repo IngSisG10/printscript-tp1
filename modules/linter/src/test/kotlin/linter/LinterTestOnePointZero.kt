@@ -1,20 +1,7 @@
 package linter
 
-import common.exception.InvalidCamelCaseException
-import common.exception.InvalidPascalCaseException
-import common.exception.InvalidSnakeCaseException
-import common.token.VariableToken
 import common.token.abs.TokenInterface
 import lexer.Lexer
-import linter.rules.required.CamelCaseRule
-import linter.rules.required.PascalCaseRule
-import linter.rules.required.PrintLnSimpleArgumentRule
-import linter.rules.required.SnakeCaseRule
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class LinterTestOnePointZero {
     private fun tokenizeCode(code: String): List<TokenInterface> {

@@ -1,30 +1,5 @@
 package linter
 
-import common.enums.OperationEnum
-import common.enums.TypeEnum
-import common.exception.NoNewLineAfterSemiColon
-import common.exception.NoSpaceAfterAssignationException
-import common.exception.NoSpaceAfterColonException
-import common.exception.NoSpaceBeforeColonException
-import common.token.EndSentenceToken
-import common.token.NumberLiteralToken
-import common.token.OperationToken
-import common.token.StringLiteralToken
-import common.token.TypeDeclaratorToken
-import common.token.TypeToken
-import common.token.VariableToken
-import common.token.WhiteSpaceToken
-import exception.NoSpaceBeforeAssignationException
-import linter.rules.custom.LineJumpAfterSemicolonRule
-import linter.rules.custom.SpaceAfterAssignationRule
-import linter.rules.custom.SpaceAfterColonRule
-import linter.rules.custom.SpaceBeforeAssignationRule
-import linter.rules.custom.SpaceBeforeColonRule
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
-
 class LinterCustomTests {
 //    @Test
 //    fun `SpaceAfterColonRule should pass when space exists after colon`() {
