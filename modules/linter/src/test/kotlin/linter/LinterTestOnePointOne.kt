@@ -1,0 +1,3 @@
+package linter
+
+class LinterTestOnePointOne
