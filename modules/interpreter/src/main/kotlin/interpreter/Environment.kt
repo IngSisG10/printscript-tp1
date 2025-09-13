@@ -19,7 +19,12 @@ sealed class Value {
 data class NumberValue(
     val value: Double,
 ) : Value() {
-    override fun toStringValue(): String = value.toString()
+    override fun toStringValue(): String =
+        if (value % 1.0 == 0.0) {
+            value.toInt().toString()
+        } else {
+            value.toString()
+        }
 }
 
 data class StringValue(
