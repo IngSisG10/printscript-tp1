@@ -25,6 +25,21 @@ class ParserTestOnePointZero {
     }
 
     @Test
+    fun `test variable declaration with let`() {
+        val code = "let a: number;"
+        val ast = parseCode(code)
+
+        assertNotNull(ast)
+        assertEquals(1, ast.size)
+    }
+
+    @Test
+    fun `test variable declaration with const should throw an exception`() {
+        val code = "const a: number;"
+        assertThrows<Exception> { parseCode(code) }
+    }
+
+    @Test
     fun `test variable declaration with string literal`() {
         val code = "let b: string = \"hello\";"
         val ast = parseCode(code)

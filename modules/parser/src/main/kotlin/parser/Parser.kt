@@ -8,6 +8,7 @@ import parser.nodecreator.DeclaratorNodeCreator
 import parser.nodecreator.FunctionNodeCreator
 import parser.nodecreator.IfStatementNodeCreator
 import parser.nodecreator.SingleValueNodeCreator
+import parser.nodecreator.UninitializedVariableNodeCreator
 import parser.nodecreator.abs.AstNodeCreator
 import parser.util.LineSplitter
 
@@ -19,6 +20,7 @@ class Parser(
             FunctionNodeCreator(), // adapted for both versions 1.0 and 1.1
             IfStatementNodeCreator(), // adapted for both versions 1.0 and 1.1
             SingleValueNodeCreator(),
+            UninitializedVariableNodeCreator(),
         ),
 ) {
     fun parse(tokens: List<TokenInterface>): List<AstNode> {
