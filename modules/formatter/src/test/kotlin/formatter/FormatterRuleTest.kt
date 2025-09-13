@@ -68,7 +68,7 @@ class FormatterRuleTest {
     }
 
     @Test
-    fun `formmater should add space before colon fix`() {
+    fun `formatter should add space before colon fix`() {
         val tokens =
             listOf(
                 VariableToken("variable", 1, 1),
