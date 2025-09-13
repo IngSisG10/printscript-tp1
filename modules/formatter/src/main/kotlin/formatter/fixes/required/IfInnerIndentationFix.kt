@@ -54,7 +54,7 @@ class IfInnerIndentationFix(
         tokens: List<TokenInterface>,
         startIndex: Int,
         depth: Int,
-        result: MutableList<TokenInterface>
+        result: MutableList<TokenInterface>,
     ): Int {
         var i = startIndex
 
@@ -65,13 +65,14 @@ class IfInnerIndentationFix(
 
         // Add correct indentation based on what comes after the newline
         if (i < tokens.size) {
-            val expectedSpaces = if (tokens[i] is CloseBraceToken) {
-                // Closing braces get indented one level less than current depth
-                maxOf(0, (depth - 1) * n)
-            } else {
-                // Regular content gets indented at current depth
-                depth * n
-            }
+            val expectedSpaces =
+                if (tokens[i] is CloseBraceToken) {
+                    // Closing braces get indented one level less than current depth
+                    maxOf(0, (depth - 1) * n)
+                } else {
+                    // Regular content gets indented at current depth
+                    depth * n
+                }
 
             repeat(expectedSpaces) {
                 val referenceToken = tokens[i]
