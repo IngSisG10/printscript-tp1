@@ -7,7 +7,7 @@ class ValueTest {
     @Test
     fun testNumberValueToString() {
         val numberValue = NumberValue(42.0)
-        assertEquals("42.0", numberValue.toStringValue())
+        assertEquals("42", numberValue.toStringValue())
     }
 
     @Test
@@ -19,7 +19,7 @@ class ValueTest {
     @Test
     fun testNumberValueToStringWithZero() {
         val numberValue = NumberValue(0.0)
-        assertEquals("0.0", numberValue.toStringValue())
+        assertEquals("0", numberValue.toStringValue())
     }
 
     @Test

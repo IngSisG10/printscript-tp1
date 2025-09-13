@@ -50,7 +50,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, addition)
 
         val result = interpreter.interpret(listOf(println))
-        assertEquals(listOf("15.0"), result)
+        assertEquals(listOf("15"), result)
     }
 
     @Test
@@ -72,7 +72,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, addition)
 
         val result = interpreter.interpret(listOf(println))
-        assertEquals(listOf("Value: 42.0"), result)
+        assertEquals(listOf("Value: 42"), result)
     }
 
     @Test
@@ -83,7 +83,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, subtraction)
 
         val result = interpreter.interpret(listOf(println))
-        assertEquals(listOf("7.0"), result)
+        assertEquals(listOf("7"), result)
     }
 
     @Test
@@ -94,7 +94,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, multiplication)
 
         val result = interpreter.interpret(listOf(println))
-        assertEquals(listOf("12.0"), result)
+        assertEquals(listOf("12"), result)
     }
 
     @Test
@@ -105,7 +105,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, division)
 
         val result = interpreter.interpret(listOf(println))
-        assertEquals(listOf("5.0"), result)
+        assertEquals(listOf("5"), result)
     }
 
     @Test
@@ -172,7 +172,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, identifier)
 
         val result = interpreter.interpret(listOf(declarator, println))
-        assertEquals(listOf("42.0"), result)
+        assertEquals(listOf("42"), result)
     }
 
     @Test
@@ -231,7 +231,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, addition)
 
         val result = interpreter.interpret(listOf(decl1, decl2, println))
-        assertEquals(listOf("52.0"), result)
+        assertEquals(listOf("52"), result)
     }
 
     @Test
@@ -266,7 +266,7 @@ class InterpreterTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("x"))
 
         val result = interpreter.interpret(listOf(declarator, println))
-        assertEquals(listOf("42.0"), result)
+        assertEquals(listOf("42"), result)
     }
 
     @Test

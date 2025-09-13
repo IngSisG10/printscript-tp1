@@ -1,6 +1,6 @@
 package interpreter
 
-/*import common.ast.AssignmentNode
+import common.ast.AssignmentNode
 import common.ast.BinaryOpNode
 import common.ast.BlockStatementNode
 import common.ast.DeclaratorNode
@@ -19,15 +19,15 @@ import common.exception.UndefinedVariableException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test*/
+import org.junit.jupiter.api.Test
 
-class PrintScriptInterpreter11Test {
-/*
-    private lateinit var interpreter: PrintScriptInterpreter
+class InterpreterOnePointOneTest {
+    private lateinit var interpreter: Interpreter
+    private var mockInput: String? = null
 
     @BeforeEach
     fun setUp() {
-        interpreter = PrintScriptInterpreter()
+        interpreter = Interpreter { mockInput ?: "" }
     }
 
     // =================== CONST DECLARATIONS TESTS ===================
@@ -87,7 +87,7 @@ class PrintScriptInterpreter11Test {
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("x"))
 
         val result = interpreter.interpret(listOf(declarator, assignment, println))
-        assertEquals(listOf("10.0"), result)
+        assertEquals(listOf("10"), result)
     }
 
     // =================== BOOLEAN TYPE SUPPORT TESTS ===================
@@ -248,115 +248,67 @@ class PrintScriptInterpreter11Test {
     // =================== READINPUT FUNCTION TESTS ===================
 
     @Test
-    fun testReadInputWithMockInput() {
-        // This test assumes the interpreter has a way to provide mock input
-        // In real implementation, this would need a mock input provider
-        val prompt = LiteralNode("Enter your name: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READINPUT, prompt)
-        val variableNode = VariableNode("name", TypeEnum.STRING)
-        val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
-        val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("name"))
-
-        // Note: This test would need mock input mechanism in actual implementation
-        // For now, we test the AST structure is correct
-        val statements = listOf(declarator, println)
-        // The actual test execution would depend on mock input implementation
-    }
-
-    @Test
     fun testReadInputReturnsCorrectTypeForString() {
+        mockInput = "Test String"
         val prompt = LiteralNode("Enter text: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READINPUT, prompt)
+        val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val variableNode = VariableNode("text", TypeEnum.STRING)
         val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
+        val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("text"))
 
-        // Test that the AST structure is valid for string input
-        val statements = listOf(declarator)
-        // Actual execution would require mock input
+        val result = interpreter.interpret(listOf(declarator, println))
+        assertEquals(listOf("Test String"), result)
     }
 
     @Test
     fun testReadInputReturnsCorrectTypeForNumber() {
+        mockInput = "123.5"
         val prompt = LiteralNode("Enter a number: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READINPUT, prompt)
+        val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val variableNode = VariableNode("num", TypeEnum.NUMBER)
         val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
+        val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("num"))
 
-        // Test that the AST structure is valid for number input
-        val statements = listOf(declarator)
-        // Actual execution would require mock input
+        val result = interpreter.interpret(listOf(declarator, println))
+        assertEquals(listOf("123.5"), result)
     }
 
     @Test
     fun testReadInputReturnsCorrectTypeForBoolean() {
+        mockInput = "true"
         val prompt = LiteralNode("Enter true/false: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READINPUT, prompt)
+        val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val variableNode = VariableNode("flag", TypeEnum.BOOLEAN)
         val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
+        val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("flag"))
 
-        // Test that the AST structure is valid for boolean input
-        val statements = listOf(declarator)
-        // Actual execution would require mock input
+        val result = interpreter.interpret(listOf(declarator, println))
+        assertEquals(listOf("true"), result)
     }
 
     @Test
     fun testReadInputInPrintlnCall() {
+        mockInput = "Direct Input"
         val prompt = LiteralNode("Enter value: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READINPUT, prompt)
+        val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val println = FunctionNode(FunctionEnum.PRINTLN, readInputCall)
 
-        // Test that readInput can be used directly in println
-        val statements = listOf(println)
-        // Actual execution would require mock input
+        val result = interpreter.interpret(listOf(println))
+        assertEquals(listOf("Direct Input"), result)
     }
 
     // =================== READENV FUNCTION TESTS ===================
 
     @Test
-    fun testReadEnvBasic() {
-        val envVarName = LiteralNode("PATH", TypeEnum.STRING)
-        val readEnvCall = FunctionNode(FunctionEnum.READENV, envVarName)
+    fun testReadEnvNotFoundThrowsException() {
+        val envVarName = "NON_EXISTENT_VAR_12345"
+        val readEnvCall = FunctionNode(FunctionEnum.READ_ENV, LiteralNode(envVarName, TypeEnum.STRING))
         val variableNode = VariableNode("path", TypeEnum.STRING)
         val declarator = DeclaratorNode(variableNode, readEnvCall, DeclarationTypeEnum.LET)
 
-        // Test that the AST structure is valid for environment variable reading
-        val statements = listOf(declarator)
-        // Actual execution would depend on environment setup
-    }
-
-    @Test
-    fun testReadEnvForNumber() {
-        val envVarName = LiteralNode("PORT", TypeEnum.STRING)
-        val readEnvCall = FunctionNode(FunctionEnum.READENV, envVarName)
-        val variableNode = VariableNode("port", TypeEnum.NUMBER)
-        val declarator = DeclaratorNode(variableNode, readEnvCall, DeclarationTypeEnum.LET)
-
-        // Test that environment variables can be converted to numbers
-        val statements = listOf(declarator)
-        // Actual execution would require environment variable setup
-    }
-
-    @Test
-    fun testReadEnvForBoolean() {
-        val envVarName = LiteralNode("DEBUG", TypeEnum.STRING)
-        val readEnvCall = FunctionNode(FunctionEnum.READENV, envVarName)
-        val variableNode = VariableNode("debug", TypeEnum.BOOLEAN)
-        val declarator = DeclaratorNode(variableNode, readEnvCall, DeclarationTypeEnum.LET)
-
-        // Test that environment variables can be converted to booleans
-        val statements = listOf(declarator)
-        // Actual execution would require environment variable setup
-    }
-
-    @Test
-    fun testReadEnvInPrintlnCall() {
-        val envVarName = LiteralNode("USER", TypeEnum.STRING)
-        val readEnvCall = FunctionNode(FunctionEnum.READENV, envVarName)
-        val println = FunctionNode(FunctionEnum.PRINTLN, readEnvCall)
-
-        // Test that readEnv can be used directly in println
-        val statements = listOf(println)
-        // Actual execution would require environment variable setup
+        assertThrows(InterpreterException::class.java) {
+            interpreter.interpret(listOf(declarator))
+        }
     }
 
     // =================== COMPLEX SCENARIOS ===================
@@ -399,8 +351,12 @@ class PrintScriptInterpreter11Test {
     @Test
     fun testMultipleConstsAndVariables() {
         val appName = VariableNode("APP_NAME", TypeEnum.STRING)
-        val appNameDeclarator = DeclaratorNode(appName, LiteralNode("PrintScript", TypeEnum.STRING),
-            DeclarationTypeEnum.CONST)
+        val appNameDeclarator =
+            DeclaratorNode(
+                appName,
+                LiteralNode("PrintScript", TypeEnum.STRING),
+                DeclarationTypeEnum.CONST,
+            )
 
         val version = VariableNode("VERSION", TypeEnum.STRING)
         val versionDeclarator = DeclaratorNode(version, LiteralNode("1.1", TypeEnum.STRING), DeclarationTypeEnum.CONST)
@@ -527,7 +483,7 @@ class PrintScriptInterpreter11Test {
     fun testVersion10ShouldNotSupportReadInput() {
         // This test would check that v1.0 mode rejects readInput
         val prompt = LiteralNode("Enter value: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READINPUT, prompt)
+        val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val println = FunctionNode(FunctionEnum.PRINTLN, readInputCall)
 
         // In v1.0 mode, this should throw an exception
@@ -540,7 +496,7 @@ class PrintScriptInterpreter11Test {
     fun testVersion10ShouldNotSupportReadEnv() {
         // This test would check that v1.0 mode rejects readEnv
         val envVar = LiteralNode("PATH", TypeEnum.STRING)
-        val readEnvCall = FunctionNode(FunctionEnum.READENV, envVar)
+        val readEnvCall = FunctionNode(FunctionEnum.READ_ENV, envVar)
         val println = FunctionNode(FunctionEnum.PRINTLN, readEnvCall)
 
         // In v1.0 mode, this should throw an exception
@@ -548,5 +504,4 @@ class PrintScriptInterpreter11Test {
         //     interpreterV10.interpret(listOf(println))
         // }
     }
-*/
 }
