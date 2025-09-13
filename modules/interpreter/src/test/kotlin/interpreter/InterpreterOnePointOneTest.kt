@@ -30,7 +30,7 @@ class InterpreterOnePointOneTest {
         interpreter = Interpreter { mockInput ?: "" }
     }
 
-    // =================== CONST DECLARATIONS TESTS ===================
+    // Const
 
     @Test
     fun testConstDeclarationBasic() {
@@ -90,7 +90,7 @@ class InterpreterOnePointOneTest {
         assertEquals(listOf("10"), result)
     }
 
-    // =================== BOOLEAN TYPE SUPPORT TESTS ===================
+    // Boolean
 
     @Test
     fun testBooleanLiteralTrue() {
@@ -132,7 +132,7 @@ class InterpreterOnePointOneTest {
         assertEquals(listOf("true"), result)
     }
 
-    // =================== IF STATEMENT TESTS ===================
+    // If
 
     @Test
     fun testIfStatementWithTrueCondition() {
@@ -245,7 +245,7 @@ class InterpreterOnePointOneTest {
         assertEquals(listOf("First", "Second"), result)
     }
 
-    // =================== READINPUT FUNCTION TESTS ===================
+    // readInput
 
     @Test
     fun testReadInputReturnsCorrectTypeForString() {
@@ -297,7 +297,7 @@ class InterpreterOnePointOneTest {
         assertEquals(listOf("Direct Input"), result)
     }
 
-    // =================== READENV FUNCTION TESTS ===================
+    // readEnv
 
     @Test
     fun testReadEnvNotFoundThrowsException() {
@@ -311,7 +311,7 @@ class InterpreterOnePointOneTest {
         }
     }
 
-    // =================== COMPLEX SCENARIOS ===================
+    // mixed
 
     @Test
     fun testConstWithIfStatement() {
@@ -379,7 +379,7 @@ class InterpreterOnePointOneTest {
         assertEquals(listOf("PrintScript v1.1"), result)
     }
 
-    // =================== ERROR CASES AND EDGE CASES ===================
+    // errors
 
     @Test
     fun testTypeMismatchInBooleanDeclaration() {
@@ -448,60 +448,5 @@ class InterpreterOnePointOneTest {
         assertThrows(UndefinedVariableException::class.java) {
             interpreter.interpret(listOf(ifStatement))
         }
-    }
-
-    // =================== VERSION COMPATIBILITY TESTS ===================
-
-    @Test
-    fun testVersion10ShouldNotSupportBoolean() {
-        // This test would check that v1.0 mode rejects boolean literals
-        // Implementation would depend on version parameter in interpreter
-        val literal = LiteralNode(true, TypeEnum.BOOLEAN)
-        val println = FunctionNode(FunctionEnum.PRINTLN, literal)
-
-        // In v1.0 mode, this should throw an exception
-        // assertThrows(InterpreterException::class.java) {
-        //     interpreterV10.interpret(listOf(println))
-        // }
-    }
-
-    @Test
-    fun testVersion10ShouldNotSupportIfStatements() {
-        // This test would check that v1.0 mode rejects if statements
-        // Implementation would depend on version parameter in interpreter
-        val condition = LiteralNode(true, TypeEnum.BOOLEAN)
-        val thenBlock = BlockStatementNode(emptyList())
-        val ifStatement = IfStatementNode(condition, thenBlock, null)
-
-        // In v1.0 mode, this should throw an exception
-        // assertThrows(InterpreterException::class.java) {
-        //     interpreterV10.interpret(listOf(ifStatement))
-        // }
-    }
-
-    @Test
-    fun testVersion10ShouldNotSupportReadInput() {
-        // This test would check that v1.0 mode rejects readInput
-        val prompt = LiteralNode("Enter value: ", TypeEnum.STRING)
-        val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
-        val println = FunctionNode(FunctionEnum.PRINTLN, readInputCall)
-
-        // In v1.0 mode, this should throw an exception
-        // assertThrows(InterpreterException::class.java) {
-        //     interpreterV10.interpret(listOf(println))
-        // }
-    }
-
-    @Test
-    fun testVersion10ShouldNotSupportReadEnv() {
-        // This test would check that v1.0 mode rejects readEnv
-        val envVar = LiteralNode("PATH", TypeEnum.STRING)
-        val readEnvCall = FunctionNode(FunctionEnum.READ_ENV, envVar)
-        val println = FunctionNode(FunctionEnum.PRINTLN, readEnvCall)
-
-        // In v1.0 mode, this should throw an exception
-        // assertThrows(InterpreterException::class.java) {
-        //     interpreterV10.interpret(listOf(println))
-        // }
     }
 }
