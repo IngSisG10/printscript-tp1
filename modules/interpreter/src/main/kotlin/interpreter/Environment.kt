@@ -5,6 +5,7 @@ import common.enums.TypeEnum
 import common.exception.InterpreterException
 import common.exception.TypeMismatchException
 import common.exception.UndefinedVariableException
+import common.exception.UninitializedVariableException
 
 data class Variable(
     val type: TypeEnum,
@@ -108,17 +109,9 @@ class Environment {
     fun getValue(name: String): Value {
         for (scope in scopes.asReversed()) {
             scope[name]?.let { variable ->
-                return variable.value ?: getDefaultValue(variable.type)
+                return variable.value ?: throw UninitializedVariableException(name)
             }
         }
         throw UndefinedVariableException(name)
     }
-
-    private fun getDefaultValue(type: TypeEnum): Value =
-        when (type) {
-            TypeEnum.NUMBER -> NumberValue(0.0)
-            TypeEnum.STRING -> StringValue("")
-            TypeEnum.BOOLEAN -> BooleanValue(false)
-            else -> throw InterpreterException("Cannot get default value for unsupported type: $type")
-        }
 }
