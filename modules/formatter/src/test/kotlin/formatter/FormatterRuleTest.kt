@@ -103,7 +103,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeColonFix(), SpaceAfterColonFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable :String", result)
+        assertEquals("variable : String", result)
     }
 
     @Test
