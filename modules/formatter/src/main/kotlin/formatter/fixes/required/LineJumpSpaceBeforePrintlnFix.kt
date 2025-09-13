@@ -1,4 +1,4 @@
-package formatter.fixes
+package formatter.fixes.required
 
 import common.enums.FunctionEnum
 import common.token.FunctionToken

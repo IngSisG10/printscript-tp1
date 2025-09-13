@@ -1,12 +1,13 @@
-package formatter.fixes
+package formatter.fixes.required
 
 import common.enums.OperationEnum
 import common.token.OperationToken
+import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 
-class SpaceBeforeEqualFix : FormatterFix {
-    override fun getName(): String = "space_before_equal_fix"
+class SpaceAfterEqualFix : FormatterFix {
+    override fun getName(): String = "space_after_equal_fix"
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
@@ -15,10 +16,10 @@ class SpaceBeforeEqualFix : FormatterFix {
             val current = mutableTokens[i]
 
             if (current is OperationToken && current.value == OperationEnum.EQUAL) {
-                val prev = mutableTokens[i - 1]
+                val next = mutableTokens[i + 1]
 
-                if (prev !is common.token.WhiteSpaceToken) {
-                    mutableTokens.add(i, common.token.WhiteSpaceToken(current.row, current.position - 1))
+                if (next !is WhiteSpaceToken) {
+                    mutableTokens.add(i + 1, WhiteSpaceToken(current.row, current.position + 1))
                 }
             }
         }

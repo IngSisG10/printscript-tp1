@@ -1,4 +1,4 @@
-package formatter.fixes
+package formatter.fixes.custom
 
 import common.token.NewLineToken
 import common.token.abs.TokenInterface

@@ -2,16 +2,16 @@ package formatter
 
 import common.converter.Converter
 import common.token.abs.TokenInterface
-import formatter.fixes.IfBracePlacementFix
-import formatter.fixes.LineJumpAfterSemiColonFix
-import formatter.fixes.LineJumpSpaceBeforePrintlnFix
-import formatter.fixes.MaxOneBlankLineFix
-import formatter.fixes.OneSpaceAfterTokenMaxFix
-import formatter.fixes.SpaceAfterColonFix
-import formatter.fixes.SpaceBeforeAndAfterEqualFix
-import formatter.fixes.SpaceBeforeAndAfterOperatorFix
-import formatter.fixes.SpaceBeforeColonFix
 import formatter.fixes.abs.FormatterFix
+import formatter.fixes.custom.MaxOneBlankLineFix
+import formatter.fixes.required.IfBracePlacementFix
+import formatter.fixes.required.LineJumpAfterSemiColonFix
+import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.required.OneSpaceAfterTokenMaxFix
+import formatter.fixes.required.SpaceAfterColonFix
+import formatter.fixes.required.SpaceBeforeAndAfterEqualFix
+import formatter.fixes.required.SpaceBeforeAndAfterOperatorFix
+import formatter.fixes.required.SpaceBeforeColonFix
 
 class Formatter(
     private val formatterFixes: List<FormatterFix> =

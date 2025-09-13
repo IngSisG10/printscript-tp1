@@ -1,4 +1,4 @@
-package formatter.fixes
+package formatter.fixes.required
 
 import common.enums.OperationEnum
 import common.token.OperationToken

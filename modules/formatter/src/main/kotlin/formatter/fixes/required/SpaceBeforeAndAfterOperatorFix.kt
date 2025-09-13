@@ -1,4 +1,4 @@
-package formatter.fixes
+package formatter.fixes.required
 
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
