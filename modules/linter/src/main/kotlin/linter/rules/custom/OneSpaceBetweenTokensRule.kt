@@ -8,12 +8,13 @@ import linter.rules.abs.LinterRule
 class OneSpaceBetweenTokensRule : LinterRule {
     override fun getName(): String = "one_space_between_tokens"
 
-    override fun match(tokens: List<TokenInterface>): Exception? {
+    override fun match(tokens: List<TokenInterface>): List<Throwable>? {
+        val list = mutableListOf<Throwable>()
         for (i in 0 until tokens.size - 1) {
             if (tokens[i] is WhiteSpaceToken && tokens[i + 1] is WhiteSpaceToken) {
-                return MoreThanOneSpaceAfterTokenException("More than one space between tokens at index $i")
+                list.add(MoreThanOneSpaceAfterTokenException("More than one space between tokens at index $i"))
             }
         }
-        return null
+        return list.toList()
     }
 }
