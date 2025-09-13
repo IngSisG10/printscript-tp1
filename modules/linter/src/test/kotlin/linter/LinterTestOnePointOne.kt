@@ -2,6 +2,9 @@ package linter
 
 import common.token.abs.TokenInterface
 import lexer.Lexer
+import linter.rules.required.ReadInputSimpleArgumentRule
+import org.junit.jupiter.api.Assertions.assertTrue
+import kotlin.test.Test
 
 class LinterTestOnePointOne {
     private fun tokenizeCode(code: String): List<TokenInterface> {
@@ -34,18 +37,22 @@ class LinterTestOnePointOne {
 //        val code = "readInput(\"Enter value\", 42);"
 //        assertFalse(linter.lint(tokenizeCode(code)).isEmpty())
 //    }
-//
+
+    // En teoria, el readInput, recibe un String, pero podrias pasarle un number "42", por ejemplo.
+    // fijate que quiza el error es porque como tal el readInput solo chequea que haya un solo argumento, no que sea especificamente un string
 //    @Test
 //    fun `ReadInputSimpleArgumentRule should fail for non-string literal argument`() {
 //        val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
 //        val code = "readInput(42);"
+//
 //        assertFalse(linter.lint(tokenizeCode(code)).isEmpty())
 //    }
-//
-//    @Test
-//    fun `ReadInputSimpleArgumentRule should pass for string literal with whitespace`() {
-//        val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
-//        val code = "readInput(\"   \");"
-//        assertTrue(linter.lint(tokenizeCode(code)).isEmpty())
-//    }
+
+    // pass
+    @Test
+    fun `ReadInputSimpleArgumentRule should pass for string literal with whitespace`() {
+        val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
+        val code = "readInput(\"   \");"
+        assertTrue(linter.lint(tokenizeCode(code)).isEmpty())
+    }
 }
