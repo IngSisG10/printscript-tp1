@@ -1,13 +1,15 @@
 package formatter.util
 
 import formatter.Formatter
+import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class Config(
-    val fix: List<String>,
+    val options: Map<String, JsonElement>,
 )
 
 class FormatterUtil {
@@ -28,15 +30,16 @@ class FormatterUtil {
         }
 
         private fun addFormatterFixes(
-            fixes: List<String>,
-            possibleFixes: List<FormatterFix>,
+            fixesIWantToApply: Map<String, JsonElement>,
+            fixes: List<FormatterFix>,
         ): List<FormatterFix> {
             val appliedRules = mutableListOf<FormatterFix>()
             for (fix in fixes) {
-                for (formatterFix in possibleFixes) {
-                    if (formatterFix.getName() == fix) {
-                        appliedRules.add(formatterFix)
+                if (fix.applies(fixesIWantToApply)) {
+                    if (fix is FixSettings) {
+                        fix.setFix(fixesIWantToApply)
                     }
+                    appliedRules.add(fix)
                 }
             }
             return appliedRules
@@ -48,7 +51,7 @@ class FormatterUtil {
         ): formatter.Formatter {
             val config = Json.decodeFromString<Config>(configText)
             return Formatter(
-                formatterFixes = addFormatterFixes(config.fix, addVersionFixes(version)),
+                formatterFixes = addFormatterFixes(config.options, addVersionFixes(version)),
             )
         }
     }

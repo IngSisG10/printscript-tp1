@@ -11,7 +11,7 @@ import linter.rules.abs.RuleSettings
 class LineJumpAfterSemicolonRule :
     LinterRule,
     RuleSettings {
-    var lines = 1
+    private var lines = 1
 
     override fun applies(rules: Map<String, JsonElement>): Boolean {
         TODO("Not yet implemented")
