@@ -29,10 +29,10 @@ class Converter {
 
     private fun convertTypeValue(value: TypeEnum): String =
         when (value) {
-            TypeEnum.ANY -> "Any"
-            TypeEnum.STRING -> "String"
-            TypeEnum.NUMBER -> "Number"
-            TypeEnum.BOOLEAN -> "Boolean"
+            TypeEnum.ANY -> "any"
+            TypeEnum.STRING -> "string"
+            TypeEnum.NUMBER -> "number"
+            TypeEnum.BOOLEAN -> "boolean"
         }
 
     private fun convertOperationValue(value: OperationEnum): String =

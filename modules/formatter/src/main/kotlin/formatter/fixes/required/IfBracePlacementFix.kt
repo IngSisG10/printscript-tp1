@@ -6,9 +6,12 @@ import common.token.NewLineToken
 import common.token.OpenBraceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class IfBracePlacementFix : FormatterFix {
-    override fun getName(): String = "if_brace_placement_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("if-brace-below-line") &&
+            fixesIWantToApply["if-brace-below-line"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

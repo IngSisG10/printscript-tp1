@@ -3,9 +3,12 @@ package formatter.fixes.custom
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class MaxOneBlankLineFix : FormatterFix {
-    override fun getName(): String = "max_one_blank_line_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("max-one-blank-line") &&
+            fixesIWantToApply["max-one-blank-line"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val result = mutableListOf<TokenInterface>()

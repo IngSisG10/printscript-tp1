@@ -4,12 +4,23 @@ import common.enums.FunctionEnum
 import common.token.FunctionToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
+import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
-class LineJumpSpaceBeforePrintlnFix(
-    private val maxNewLines: Int = 2, // configurable, default = 2
-) : FormatterFix {
-    override fun getName(): String = "line_jump_space_before_println_fix"
+class LineJumpSpaceBeforePrintlnFix :
+    FormatterFix,
+    FixSettings {
+    private var maxNewLines = 1
+
+    override fun setFix(fixes: Map<String, JsonElement>) {
+        maxNewLines = fixes["line-breaks-after-println"]?.toString()?.toIntOrNull() ?: 1
+    }
+
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean {
+        val configValue = fixesIWantToApply["line-breaks-after-println"]?.toString()?.toIntOrNull()
+        return configValue != null && configValue >= 0
+    }
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

@@ -1,5 +1,4 @@
 {
-  "rules": [
-    "space_after_colon_rule"
-  ]
+  "rule1": true,
+  "rule2": false
 }
