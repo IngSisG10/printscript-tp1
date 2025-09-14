@@ -8,6 +8,7 @@ import common.token.abs.TokenInterface
 import lexer.Lexer
 import linter.rules.required.CamelCaseRule
 import linter.rules.required.PascalCaseRule
+import linter.rules.required.PrintLnSimpleArgumentRule
 import linter.rules.required.SnakeCaseRule
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -87,17 +88,17 @@ class LinterTestOnePointZero {
         assertTrue(exception.all { it is InvalidSnakeCaseException })
     }
 
-//    @Test
-//    fun `PascalCaseRule test`() {
-//        val linter = Linter(listOf(PascalCaseRule()))
-//        val codeGood = "let MyVariable: number = 5;"
-//        val codeBad = "let myVariable: number = 5;"
-//        // val codeEdge = "let Myvariable: number = 5;" // only first letter uppercase
-//
-//        assertTrue(linter.lint(tokenizeCode(codeGood)).isEmpty())
-//        assertFalse(linter.lint(tokenizeCode(codeBad)).isEmpty())
-//        // assertFalse(linter.lint(tokenizeCode(codeEdge)).isEmpty()) -> fixme this case
-//    }
+    @Test
+    fun `PascalCaseRule test`() {
+        val linter = Linter(listOf(PascalCaseRule()))
+        val codeGood = "let MyVariable: number = 5;"
+        val codeBad = "let myVariable: number = 5;"
+        // val codeEdge = "let Myvariable: number = 5;" // only first letter uppercase
+
+        assertTrue(linter.lint(tokenizeCode(codeGood)).isEmpty())
+        assertFalse(linter.lint(tokenizeCode(codeBad)).isEmpty())
+        // assertFalse(linter.lint(tokenizeCode(codeEdge)).isEmpty()) -> fixme this case
+    }
 
     @Test
     fun `PascalCaseRule should pass for valid PascalCase variables`() {
@@ -127,17 +128,17 @@ class LinterTestOnePointZero {
         assertTrue(exception.all { it is InvalidPascalCaseException })
     }
 
-//    @Test
-//    fun `PrintLnSimpleArgumentRule test`() {
-//        val linter = Linter(listOf(PrintLnSimpleArgumentRule()))
-//        val codeGood = "println(\"Hello world\");"
-//        val codeBad = "println(1 + 2);"
-//        val codeEdge = "println(variable);" // variable, not literal
-//
-//        assertTrue(linter.lint(tokenizeCode(codeGood)).isEmpty())
-//        assertFalse(linter.lint(tokenizeCode(codeBad)).isEmpty())
-//        assertFalse(linter.lint(tokenizeCode(codeEdge)).isEmpty())
-//    }
+    @Test
+    fun `PrintLnSimpleArgumentRule test`() {
+        val linter = Linter(listOf(PrintLnSimpleArgumentRule()))
+        val codeGood = "println(\"Hello world\");"
+        val codeBad = "println(1 + 2);"
+        val codeEdge = "println(variable);" // variable, should pass. Verificar.
+
+        assertTrue(linter.lint(tokenizeCode(codeGood)).isEmpty())
+        assertFalse(linter.lint(tokenizeCode(codeBad)).isEmpty())
+        assertTrue(linter.lint(tokenizeCode(codeEdge)).isEmpty())
+    }
 
     @Test
     fun `invalid camel case triggers exception`() {
