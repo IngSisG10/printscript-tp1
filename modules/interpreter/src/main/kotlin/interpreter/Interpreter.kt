@@ -255,6 +255,7 @@ class Interpreter(
         val rawValue =
             when (functionNode.functionName) {
                 FunctionEnum.READ_INPUT -> {
+                    output.add(argument.value)
                     inputProvider(argument.value)
                 }
                 FunctionEnum.READ_ENV -> {
