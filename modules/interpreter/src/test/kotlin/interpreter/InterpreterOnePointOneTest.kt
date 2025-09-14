@@ -260,52 +260,56 @@ class InterpreterOnePointOneTest {
 
     @Test
     fun testReadInputReturnsCorrectTypeForString() {
+        val readInputPrompt = "Enter text: "
         mockInput = "Test String"
-        val prompt = LiteralNode("Enter text: ", TypeEnum.STRING)
+        val prompt = LiteralNode(readInputPrompt, TypeEnum.STRING)
         val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val variableNode = VariableNode("text", TypeEnum.STRING)
         val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("text"))
 
         val result = interpreter.interpret(listOf(declarator, println))
-        assertEquals(listOf("Test String"), result)
+        assertEquals(listOf(readInputPrompt, "Test String"), result)
     }
 
     @Test
     fun testReadInputReturnsCorrectTypeForNumber() {
+        val readInputPrompt = "Enter a number: "
         mockInput = "123.5"
-        val prompt = LiteralNode("Enter a number: ", TypeEnum.STRING)
+        val prompt = LiteralNode(readInputPrompt, TypeEnum.STRING)
         val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val variableNode = VariableNode("num", TypeEnum.NUMBER)
         val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("num"))
 
         val result = interpreter.interpret(listOf(declarator, println))
-        assertEquals(listOf("123.50"), result)
+        assertEquals(listOf(readInputPrompt, "123.50"), result)
     }
 
     @Test
     fun testReadInputReturnsCorrectTypeForBoolean() {
+        val readInputPrompt = "Enter true/false: "
         mockInput = "true"
-        val prompt = LiteralNode("Enter true/false: ", TypeEnum.STRING)
+        val prompt = LiteralNode(readInputPrompt, TypeEnum.STRING)
         val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val variableNode = VariableNode("flag", TypeEnum.BOOLEAN)
         val declarator = DeclaratorNode(variableNode, readInputCall, DeclarationTypeEnum.LET)
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("flag"))
 
         val result = interpreter.interpret(listOf(declarator, println))
-        assertEquals(listOf("true"), result)
+        assertEquals(listOf(readInputPrompt, "true"), result)
     }
 
     @Test
     fun testReadInputInPrintlnCall() {
+        val readInputPrompt = "Enter value: "
         mockInput = "Direct Input"
-        val prompt = LiteralNode("Enter value: ", TypeEnum.STRING)
+        val prompt = LiteralNode(readInputPrompt, TypeEnum.STRING)
         val readInputCall = FunctionNode(FunctionEnum.READ_INPUT, prompt)
         val println = FunctionNode(FunctionEnum.PRINTLN, readInputCall)
 
         val result = interpreter.interpret(listOf(println))
-        assertEquals(listOf("Direct Input"), result)
+        assertEquals(listOf(readInputPrompt, "Direct Input"), result)
     }
 
     // readEnv
