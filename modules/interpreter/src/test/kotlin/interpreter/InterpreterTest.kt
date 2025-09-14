@@ -6,6 +6,7 @@ import common.ast.DeclaratorNode
 import common.ast.FunctionNode
 import common.ast.IdentifierNode
 import common.ast.LiteralNode
+import common.ast.UninitializedVariableNode
 import common.ast.VariableNode
 import common.enums.DeclarationTypeEnum
 import common.enums.FunctionEnum
@@ -15,6 +16,7 @@ import common.exception.DivisionByZeroException
 import common.exception.InterpreterException
 import common.exception.TypeMismatchException
 import common.exception.UndefinedVariableException
+import common.exception.UninitializedVariableException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -149,6 +151,18 @@ class InterpreterTest {
 
         val result = interpreter.interpret(listOf(declarator))
         assertEquals(emptyList<String>(), result)
+    }
+
+    @Test
+    fun testUseUninitializedVariableThrowsException() {
+        val variableNode = VariableNode("x", TypeEnum.NUMBER)
+        val declarator = UninitializedVariableNode(variableNode, DeclarationTypeEnum.LET)
+        val identifier = IdentifierNode("x")
+        val println = FunctionNode(FunctionEnum.PRINTLN, identifier)
+
+        assertThrows(UninitializedVariableException::class.java) {
+            interpreter.interpret(listOf(declarator, println))
+        }
     }
 
     @Test
