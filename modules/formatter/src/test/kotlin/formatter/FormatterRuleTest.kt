@@ -51,7 +51,7 @@ class FormatterRuleTest {
         val formatter = Formatter(emptyList())
         val result = formatter.format(tokens)
         // Assuming converter joins tokens without spaces when no fixes applied
-        assertEquals("test:String", result)
+        assertEquals("test:string", result)
     }
 
     @Test
@@ -64,7 +64,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeColonFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable :String", result)
+        assertEquals("variable :string", result)
     }
 
     @Test
@@ -77,7 +77,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeColonFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable :String", result)
+        assertEquals("variable :string", result)
     }
 
     @Test
@@ -90,7 +90,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceAfterColonFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable: String", result)
+        assertEquals("variable: string", result)
     }
 
     @Test
@@ -103,7 +103,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeColonFix(), SpaceAfterColonFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String", result)
+        assertEquals("variable : string", result)
     }
 
     @Test
@@ -121,7 +121,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeEqualFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String = 3", result)
+        assertEquals("variable : string = 3", result)
     }
 
     @Test
@@ -139,7 +139,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceAfterEqualFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String = 3", result)
+        assertEquals("variable : string = 3", result)
     }
 
     @Test
@@ -156,7 +156,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeEqualFix(), SpaceAfterEqualFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String = 3", result)
+        assertEquals("variable : string = 3", result)
     }
 
     @Test
@@ -176,7 +176,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeOperatorFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String = 3 +5", result)
+        assertEquals("variable : string = 3 +5", result)
     }
 
     @Test
@@ -197,7 +197,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceAfterOperatorFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String = 3+ 5", result)
+        assertEquals("variable : string = 3+ 5", result)
     }
 
     @Test
@@ -218,7 +218,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(SpaceBeforeOperatorFix(), SpaceAfterOperatorFix()))
         val result = formatter.format(tokens)
-        assertEquals("variable : String = 3 + 5", result)
+        assertEquals("variable : string = 3 + 5", result)
     }
 
     @Test
