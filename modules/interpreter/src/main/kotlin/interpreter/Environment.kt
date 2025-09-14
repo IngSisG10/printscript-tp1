@@ -7,11 +7,21 @@ import common.exception.TypeMismatchException
 import common.exception.UndefinedVariableException
 import common.exception.UninitializedVariableException
 
-data class Variable(
-    val type: TypeEnum,
-    val value: Value? = null,
-    val declarationType: DeclarationTypeEnum = DeclarationTypeEnum.LET,
-)
+sealed interface VariableState {
+    val type: TypeEnum
+    val declarationType: DeclarationTypeEnum
+}
+
+data class Initialized(
+    override val type: TypeEnum,
+    override val declarationType: DeclarationTypeEnum,
+    val value: Value,
+) : VariableState
+
+data class Uninitialized(
+    override val type: TypeEnum,
+    override val declarationType: DeclarationTypeEnum,
+) : VariableState
 
 sealed class Value {
     abstract fun toStringValue(): String
@@ -41,7 +51,7 @@ data class BooleanValue(
 }
 
 class Environment {
-    private val scopes = mutableListOf(mutableMapOf<String, Variable>())
+    private val scopes = mutableListOf(mutableMapOf<String, VariableState>())
 
     fun enterScope() {
         scopes.add(mutableMapOf())
@@ -63,7 +73,17 @@ class Environment {
         if (currentScope.containsKey(name)) {
             throw InterpreterException("Variable '$name' is already declared in this scope")
         }
-        currentScope[name] = Variable(type, value, declarationType)
+
+        val variableState =
+            if (value != null) {
+                Initialized(type, declarationType, value)
+            } else {
+                if (declarationType == DeclarationTypeEnum.CONST) {
+                    throw InterpreterException("Constant variable '$name' must be initialized")
+                }
+                Uninitialized(type, declarationType)
+            }
+        currentScope[name] = variableState
     }
 
     fun setVariable(
@@ -72,12 +92,12 @@ class Environment {
     ) {
         for (scope in scopes.asReversed()) {
             if (scope.containsKey(name)) {
-                val variable = scope[name]!!
-                if (variable.declarationType == DeclarationTypeEnum.CONST) {
+                val variableState = scope[name]!!
+                if (variableState.declarationType == DeclarationTypeEnum.CONST) {
                     throw InterpreterException("Cannot reassign to constant variable '$name'")
                 }
 
-                when (variable.type) {
+                when (variableState.type) {
                     TypeEnum.NUMBER ->
                         if (value !is NumberValue) {
                             throw TypeMismatchException(
@@ -99,7 +119,7 @@ class Environment {
                     TypeEnum.ANY -> { /* Any value is fine */ }
                 }
 
-                scope[name] = variable.copy(value = value)
+                scope[name] = Initialized(variableState.type, variableState.declarationType, value)
                 return
             }
         }
@@ -108,8 +128,11 @@ class Environment {
 
     fun getValue(name: String): Value {
         for (scope in scopes.asReversed()) {
-            scope[name]?.let { variable ->
-                return variable.value ?: throw UninitializedVariableException(name)
+            scope[name]?.let { variableState ->
+                return when (variableState) {
+                    is Initialized -> variableState.value
+                    is Uninitialized -> throw UninitializedVariableException(name)
+                }
             }
         }
         throw UndefinedVariableException(name)

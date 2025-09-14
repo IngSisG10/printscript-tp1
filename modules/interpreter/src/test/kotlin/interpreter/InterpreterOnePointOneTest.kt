@@ -8,6 +8,7 @@ import common.ast.FunctionNode
 import common.ast.IdentifierNode
 import common.ast.IfStatementNode
 import common.ast.LiteralNode
+import common.ast.UninitializedVariableNode
 import common.ast.VariableNode
 import common.enums.DeclarationTypeEnum
 import common.enums.FunctionEnum
@@ -40,6 +41,16 @@ class InterpreterOnePointOneTest {
 
         val result = interpreter.interpret(listOf(declarator))
         assertEquals(emptyList<String>(), result)
+    }
+
+    @Test
+    fun testUninitializedConstDeclarationThrowsException() {
+        val variableNode = VariableNode("MY_CONST", TypeEnum.STRING)
+        val declarator = UninitializedVariableNode(variableNode, DeclarationTypeEnum.CONST)
+
+        assertThrows(InterpreterException::class.java) {
+            interpreter.interpret(listOf(declarator))
+        }
     }
 
     @Test
