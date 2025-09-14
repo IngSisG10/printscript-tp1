@@ -1,23 +1,20 @@
 package formatter
 
 import common.converter.Converter
-import common.data.LinterData
 import common.token.abs.TokenInterface
-import formatter.fixes.LineJumpAfterSemiColonFix
-import formatter.fixes.LineJumpSpaceBeforePrintlnFix
-import formatter.fixes.OneSpaceAfterTokenMaxFix
-import formatter.fixes.SpaceAfterColonFix
-import formatter.fixes.SpaceBeforeAndAfterEqualFix
-import formatter.fixes.SpaceBeforeAndAfterOperatorFix
-import formatter.fixes.SpaceBeforeColonFix
 import formatter.fixes.abs.FormatterFix
-import linter.Linter
+import formatter.fixes.custom.MaxOneBlankLineFix
+import formatter.fixes.required.IfBracePlacementFix
+import formatter.fixes.required.LineJumpAfterSemiColonFix
+import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.required.OneSpaceAfterTokenMaxFix
+import formatter.fixes.required.SpaceAfterColonFix
+import formatter.fixes.required.SpaceBeforeAndAfterEqualFix
+import formatter.fixes.required.SpaceBeforeAndAfterOperatorFix
+import formatter.fixes.required.SpaceBeforeColonFix
 
 class Formatter(
-    private val linter: Linter = Linter(),
-) {
-    private val converter = Converter()
-    private val formatterRules: List<FormatterFix> =
+    private val formatterFixes: List<FormatterFix> =
         listOf(
             SpaceBeforeColonFix(),
             SpaceAfterColonFix(),
@@ -26,26 +23,19 @@ class Formatter(
             SpaceBeforeAndAfterOperatorFix(),
             LineJumpAfterSemiColonFix(),
             LineJumpSpaceBeforePrintlnFix(),
-        )
+            MaxOneBlankLineFix(),
+            IfBracePlacementFix(),
+        ),
+) {
+    private val converter = Converter()
 
     fun format(tokens: List<TokenInterface>): String {
-        val issues: List<LinterData> = linter.formatterLint(tokens)
-        if (issues.isEmpty()) return converter.convert(tokens)
+        if (formatterFixes.isEmpty()) return converter.convert(tokens)
+        if (tokens.isEmpty()) return ""
         var newTokenList: List<TokenInterface> = tokens
-        for (issue in issues) {
-            var fixed = false
-            for (rule in formatterRules) {
-                if (rule.canFix(issue)) {
-                    fixed = true
-                    newTokenList = rule.fix(issue, newTokenList)
-                }
-            }
-            if (!fixed) {
-                throw issue.exception
-            }
+        for (fixData in formatterFixes) {
+            newTokenList = fixData.fix(newTokenList)
         }
-
-        // return the original code if no fix is applied
         return converter.convert(newTokenList)
     }
 }

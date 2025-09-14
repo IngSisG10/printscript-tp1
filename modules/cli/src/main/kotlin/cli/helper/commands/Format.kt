@@ -5,9 +5,8 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import formatter.Formatter
+import formatter.util.FormatterUtil
 import lexer.util.LexerUtil.Companion.createLexer
-import linter.util.LinterUtil.Companion.createLinter
 
 class Format : CliktCommand() {
     private val file by argument()
@@ -23,8 +22,7 @@ class Format : CliktCommand() {
         val lexer = createLexer(version)
         val tokens = lexer.lex(code)
         val configText = CliUtil.findFile(config) ?: throw common.exception.InvalidFileException()
-        val linter = createLinter(configText)
-        val formatter = Formatter(linter)
+        val formatter = FormatterUtil.createFormatter(configText, version)
         val formattedCode = formatter.format(tokens)
         println(formattedCode)
     }

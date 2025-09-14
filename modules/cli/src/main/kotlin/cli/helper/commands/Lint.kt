@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
+import common.util.segmentsBySemicolon
 import lexer.util.LexerUtil.Companion.createLexer
 import linter.util.LinterUtil.Companion.createLinter
 
@@ -18,12 +19,17 @@ class Lint : CliktCommand() {
     ).default("1.0")
 
     override fun run() {
-        val fileText = CliUtil.findFile(file) ?: throw throw common.exception.InvalidFileException("No file was found")
-        val configFileText = CliUtil.findFile(config) ?: throw throw common.exception.InvalidFileException("No file was found")
-        val linter = createLinter(configFileText)
         val lexer = createLexer(version)
-        val tokens = lexer.lex(fileText)
-        linter.lint(tokens)
-        println("Code is in order")
+        val linter = createLinter(config)
+        val fileText = CliUtil.findFile(file) ?: throw common.exception.InvalidFileException("No file was found")
+        val inputStream = fileText.byteInputStream()
+        inputStream.segmentsBySemicolon().forEach { segment ->
+            try {
+                val tokens = lexer.lex(segment)
+                val lintErrors = linter.lint(tokens)
+            } catch (t: Throwable) {
+                throw t
+            }
+        }
     }
 }

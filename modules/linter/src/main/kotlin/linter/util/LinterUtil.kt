@@ -3,19 +3,21 @@ package linter.util
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import linter.Linter
-import linter.syntax.LinterRule
-import linter.syntax.rules.CamelCaseRule
-import linter.syntax.rules.LineJumpAfterSemicolonRule
-import linter.syntax.rules.NewLineBeforePrintlnRule
-import linter.syntax.rules.OneSpaceBetweenTokensRule
-import linter.syntax.rules.PascalCaseRule
-import linter.syntax.rules.SnakeCaseRule
-import linter.syntax.rules.SpaceAfterAssignationRule
-import linter.syntax.rules.SpaceAfterColonRule
-import linter.syntax.rules.SpaceAfterOperatorRule
-import linter.syntax.rules.SpaceBeforeAssignationRule
-import linter.syntax.rules.SpaceBeforeColonRule
-import linter.syntax.rules.SpaceBeforeOperatorRule
+import linter.rules.abs.LinterRule
+import linter.rules.custom.LineJumpAfterSemicolonRule
+import linter.rules.custom.NewLineBeforePrintlnRule
+import linter.rules.custom.OneSpaceBetweenTokensRule
+import linter.rules.custom.SpaceAfterAssignationRule
+import linter.rules.custom.SpaceAfterColonRule
+import linter.rules.custom.SpaceAfterOperatorRule
+import linter.rules.custom.SpaceBeforeAssignationRule
+import linter.rules.custom.SpaceBeforeColonRule
+import linter.rules.custom.SpaceBeforeOperatorRule
+import linter.rules.required.CamelCaseRule
+import linter.rules.required.PascalCaseRule
+import linter.rules.required.PrintLnSimpleArgumentRule
+import linter.rules.required.ReadInputSimpleArgumentRule
+import linter.rules.required.SnakeCaseRule
 
 @Serializable
 data class Config(
@@ -27,9 +29,12 @@ class LinterUtil {
         private fun addVersionRules(version: String): List<LinterRule> {
             val onePointZeroLinterRules =
                 listOf(
+                    // required
                     CamelCaseRule(),
                     PascalCaseRule(),
                     SnakeCaseRule(),
+                    PrintLnSimpleArgumentRule(),
+                    // custom
                     SpaceAfterColonRule(),
                     SpaceBeforeColonRule(),
                     LineJumpAfterSemicolonRule(),
@@ -45,6 +50,9 @@ class LinterUtil {
                     CamelCaseRule(),
                     PascalCaseRule(),
                     SnakeCaseRule(),
+                    PrintLnSimpleArgumentRule(),
+                    ReadInputSimpleArgumentRule(),
+                    // custom
                     SpaceAfterColonRule(),
                     SpaceBeforeColonRule(),
                     LineJumpAfterSemicolonRule(),
@@ -54,7 +62,6 @@ class LinterUtil {
                     SpaceBeforeAssignationRule(),
                     SpaceAfterOperatorRule(),
                     SpaceBeforeOperatorRule(),
-                    // TODO: add new linter rules
                 )
             return when (version) {
                 "1.1" -> onePointOneLinterRules

@@ -1,0 +1,31 @@
+package linter.rules.custom
+
+import common.enums.OperationEnum
+import common.exception.NoSpaceAfterAssignationException
+import common.token.OperationToken
+import common.token.WhiteSpaceToken
+import common.token.abs.TokenInterface
+import linter.rules.abs.LinterRule
+
+// [a,' ',=,' ',5]
+//  0  1  2  3  4
+// a = 5
+
+// a =5
+// a = 5
+
+class SpaceAfterAssignationRule : LinterRule {
+    override fun getName(): String = "space_after_assignation"
+
+    override fun match(tokens: List<TokenInterface>): List<Throwable> {
+        val list = mutableListOf<Throwable>()
+        for ((index, token) in tokens.withIndex()) {
+            if (token is OperationToken && token.value == OperationEnum.EQUAL) {
+                if (tokens.getOrNull(index + 1) !is WhiteSpaceToken) {
+                    list.add(NoSpaceAfterAssignationException(token.getPosition()))
+                }
+            }
+        }
+        return list.toList()
+    }
+}

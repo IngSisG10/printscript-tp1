@@ -20,7 +20,7 @@ class DeclaratorNodeCreator : AstNodeCreator {
     private val functionNodeCreator = FunctionNodeCreator()
 
     override fun matches(line: List<TokenInterface>): Boolean =
-        line.isNotEmpty() && (line[0] is VariableDeclaratorToken || line[0] is ConstantDeclaratorToken)
+        line.size > 5 && (line[0] is VariableDeclaratorToken || line[0] is ConstantDeclaratorToken)
 
     override fun createAstNode(line: List<TokenInterface>): AstNode {
         declaratorValidator.validate(line)

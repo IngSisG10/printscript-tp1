@@ -1,13 +1,9 @@
 package formatter.fixes.abs
 
-import common.data.LinterData
 import common.token.abs.TokenInterface
 
 interface FormatterFix {
-    fun canFix(issue: LinterData): Boolean
+    fun getName(): String
 
-    fun fix(
-        issue: LinterData,
-        tokens: List<TokenInterface>,
-    ): List<TokenInterface>
+    fun fix(tokens: List<TokenInterface>): List<TokenInterface>
 }
