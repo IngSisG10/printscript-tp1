@@ -8,12 +8,24 @@ import common.token.StringLiteralToken
 import common.token.VariableToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.jsonPrimitive
 import linter.rules.abs.LinterRule
 
 class PrintLnSimpleArgumentRule(
     private val enabled: Boolean = true,
 ) : LinterRule {
-    override fun getName(): String = "println_simple_argument_rule"
+    override fun applies(rules: Map<String, JsonElement>): Boolean {
+        for ((key, value) in rules) {
+            if (key == "mandatory-variable-or-literal-in-println") {
+                if (value.jsonPrimitive.boolean) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     override fun match(tokens: List<TokenInterface>): List<Throwable> {
         val list = mutableListOf<Throwable>()

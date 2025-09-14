@@ -3,10 +3,21 @@ package linter.rules.required
 import common.exception.InvalidPascalCaseException
 import common.token.VariableToken
 import common.token.abs.TokenInterface
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonPrimitive
 import linter.rules.abs.LinterRule
 
 class PascalCaseRule : LinterRule {
-    override fun getName(): String = "pascal_case_rule"
+    override fun applies(rules: Map<String, JsonElement>): Boolean {
+        for ((key, value) in rules) {
+            if (key == "identifier_format") {
+                if (value.jsonPrimitive.content == "pascal case") {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     override fun match(tokens: List<TokenInterface>): List<Throwable> {
         val list = mutableListOf<Throwable>()

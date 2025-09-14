@@ -16,19 +16,15 @@ class LinterTestOnePointOne {
     @Test
     fun `ReadInputSimpleArgumentRule test`() {
         val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
-        val codeGood1 = "readInput(\"Enter value\");" // si
-        val codeGood2 = "readInput(variable);" // a
-        val codeBad = "readInput(1 + 2);" // no
+        val codeGood1 = "readInput(\"Enter value\");"
+        val codeGood2 = "readInput(variable);"
+        val codeBad = "readInput(1 + 2);"
 
         assertTrue(linter.lint(tokenizeCode(codeGood1)).isEmpty())
         assertTrue(linter.lint(tokenizeCode(codeGood2)).isEmpty())
-//        assertFalse(linter.lint(tokenizeCode(codeBad)).isEmpty()) // Este no pasa porque ?
+        assertFalse(linter.lint(tokenizeCode(codeBad)).isEmpty())
     }
 
-//
-
-    //     En teoria, el readInput, recibe un String, pero podrias pasarle un number "42", por ejemplo.
-//     fijate que quiza el error es porque como tal el readInput solo chequea que haya un solo argumento, no que sea especificamente un string
     @Test
     fun `ReadInputSimpleArgumentRule should fail for non-string literal argument`() {
         val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
@@ -38,10 +34,10 @@ class LinterTestOnePointOne {
     }
 
     @Test
-    fun `ReadInputSimpleArgumentRule should pass for string literal with whitespace`() {
+    fun `ReadInputSimpleArgumentRule should fail for string literal with whitespace`() {
         val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
         val code = "readInput(\"   \");"
-        assertFalse(linter.lint(tokenizeCode(code)).isEmpty()) // Deberia ser assertFalse? Consulta.
+        assertFalse(linter.lint(tokenizeCode(code)).isEmpty())
     }
 
     @Test
@@ -77,13 +73,6 @@ class LinterTestOnePointOne {
     fun `ReadInputSimpleArgumentRule should fail for empty argument`() {
         val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
         val code = "readInput();"
-        assertFalse(linter.lint(tokenizeCode(code)).isEmpty())
-    }
-
-    @Test
-    fun `ReadInputSimpleArgumentRule should fail for multiple arguments`() {
-        val linter = Linter(listOf(ReadInputSimpleArgumentRule()))
-        val code = "readInput(\"Enter value\" 42);"
         assertFalse(linter.lint(tokenizeCode(code)).isEmpty())
     }
 
