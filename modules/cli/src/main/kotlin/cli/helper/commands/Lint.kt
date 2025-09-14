@@ -20,13 +20,16 @@ class Lint : CliktCommand() {
 
     override fun run() {
         val lexer = createLexer(version)
-        val linter = createLinter(config)
+        val linter = createLinter(config, version)
         val fileText = CliUtil.findFile(file) ?: throw common.exception.InvalidFileException("No file was found")
         val inputStream = fileText.byteInputStream()
         inputStream.segmentsBySemicolon().forEach { segment ->
             try {
                 val tokens = lexer.lex(segment)
                 val lintErrors = linter.lint(tokens)
+                for (error in lintErrors) {
+                    println(error.message)
+                }
             } catch (t: Throwable) {
                 throw t
             }

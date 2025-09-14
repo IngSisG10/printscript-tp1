@@ -44,7 +44,7 @@ class FormatterUtil {
 
         fun createFormatter(
             configText: String,
-            version: String,
+            version: String = "1.0",
         ): formatter.Formatter {
             val config = Json.decodeFromString<Config>(configText)
             return Formatter(
