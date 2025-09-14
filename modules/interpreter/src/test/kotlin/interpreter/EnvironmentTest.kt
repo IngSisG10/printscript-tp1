@@ -1,5 +1,6 @@
 package interpreter
 
+import common.enums.DeclarationTypeEnum
 import common.exception.InterpreterException
 import common.exception.TypeMismatchException
 import common.exception.UndefinedVariableException
@@ -41,6 +42,13 @@ class EnvironmentTest {
 
         assertThrows(UninitializedVariableException::class.java) {
             environment.getValue("x")
+        }
+    }
+
+    @Test
+    fun testDeclareUninitializedConstThrowsException() {
+        assertThrows(InterpreterException::class.java) {
+            environment.declareVariable("MY_CONST", common.enums.TypeEnum.STRING, null, DeclarationTypeEnum.CONST)
         }
     }
 
