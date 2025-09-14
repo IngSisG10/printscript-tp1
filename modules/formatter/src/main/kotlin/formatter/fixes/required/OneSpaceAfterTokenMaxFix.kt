@@ -3,9 +3,12 @@ package formatter.fixes.required
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class OneSpaceAfterTokenMaxFix : FormatterFix {
-    override fun getName(): String = "one_space_after_token_max_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("mandatory-single-space-separation") &&
+            fixesIWantToApply["mandatory-single-space-separation"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

@@ -4,9 +4,12 @@ import common.token.TypeDeclaratorToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class SpaceAfterColonFix : FormatterFix {
-    override fun getName(): String = "space_after_colon_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("enforce-spacing-after-colon-in-declaration") &&
+            fixesIWantToApply["enforce-spacing-after-colon-in-declaration"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

@@ -5,9 +5,12 @@ import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class SpaceBeforeAndAfterEqualFix : FormatterFix {
-    override fun getName(): String = "space_before_and_after_equal_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("space_before_and_after_equal") &&
+            fixesIWantToApply["space_before_and_after_equal"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

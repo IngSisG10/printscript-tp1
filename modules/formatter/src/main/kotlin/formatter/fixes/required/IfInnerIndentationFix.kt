@@ -5,12 +5,23 @@ import common.token.NewLineToken
 import common.token.OpenBraceToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
-class IfInnerIndentationFix(
-    private val n: Int,
-) : FormatterFix {
-    override fun getName(): String = "if_white_space_token_fix"
+class IfInnerIndentationFix :
+    FormatterFix,
+    FixSettings {
+    private var n = 2
+
+    override fun setFix(fixes: Map<String, JsonElement>) {
+        n = fixes["indent-inside-if"]?.toString()?.toIntOrNull() ?: 2
+    }
+
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean {
+        val configValue = fixesIWantToApply["indent-inside-if"]?.toString()?.toIntOrNull()
+        return configValue != null && configValue > 0
+    }
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val result = mutableListOf<TokenInterface>()

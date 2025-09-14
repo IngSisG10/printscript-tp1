@@ -4,9 +4,12 @@ import common.enums.OperationEnum
 import common.token.OperationToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class SpaceBeforeEqualFix : FormatterFix {
-    override fun getName(): String = "space_before_equal_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("enforce-spacing-around-equals") &&
+            fixesIWantToApply["enforce-spacing-around-equals"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

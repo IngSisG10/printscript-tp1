@@ -4,9 +4,12 @@ import common.token.EndSentenceToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
+import kotlinx.serialization.json.JsonElement
 
 class LineJumpAfterSemiColonFix : FormatterFix {
-    override fun getName(): String = "line_jump_after_semicolon_fix"
+    override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
+        fixesIWantToApply.containsKey("mandatory-line-break-after-statement") &&
+            fixesIWantToApply["mandatory-line-break-after-statement"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()

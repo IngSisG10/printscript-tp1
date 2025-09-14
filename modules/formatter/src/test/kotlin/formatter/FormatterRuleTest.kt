@@ -259,9 +259,9 @@ class FormatterRuleTest {
                 NewLineToken(1, 3),
                 FunctionToken(FunctionEnum.PRINTLN, 1, 4),
             )
-        val formatter = Formatter(listOf(LineJumpSpaceBeforePrintlnFix(maxNewLines = 2)))
+        val formatter = Formatter(listOf(LineJumpSpaceBeforePrintlnFix()))
         val result = formatter.format(tokens)
-        assertEquals("\n\nprintln", result)
+        assertEquals("\nprintln", result)
     }
 
     @Test
@@ -321,7 +321,7 @@ class FormatterRuleTest {
                 NewLineToken(1, 32),
                 CloseBraceToken(1, 33),
             )
-        val formatter = Formatter(listOf(IfInnerIndentationFix(n = 2)))
+        val formatter = Formatter(listOf(IfInnerIndentationFix()))
         val result = formatter.format(tokens)
         assertEquals("if (true) {\n  x\n  if (true) {\n    y\n  }\n}", result)
     }
@@ -368,9 +368,10 @@ class FormatterRuleTest {
                 NewLineToken(1, 32),
                 CloseBraceToken(1, 33),
             )
-        val formatter = Formatter(listOf(IfInnerIndentationFix(n = 4)))
+
+        val formatter = Formatter(listOf(IfInnerIndentationFix()))
         val result = formatter.format(tokens)
-        assertEquals("if (true) {\n    x\n    if (true) {\n        y\n    }\n}", result)
+        assertEquals("if (true) {\n  x\n  if (true) {\n    y\n  }\n}", result)
     }
 
     @Test
@@ -395,7 +396,7 @@ class FormatterRuleTest {
                 NewLineToken(1, 16),
                 CloseBraceToken(1, 17),
             )
-        val formatter = Formatter(listOf(IfInnerIndentationFix(n = 2)))
+        val formatter = Formatter(listOf(IfInnerIndentationFix()))
         val result = formatter.format(tokens)
         assertEquals("if (true) {\n  x\n  y\n}", result)
     }
