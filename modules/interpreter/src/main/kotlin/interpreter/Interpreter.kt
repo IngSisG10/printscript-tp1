@@ -49,6 +49,7 @@ class Interpreter(
             is MonoOpNode -> evaluateMonoOp(node)
             is IfStatementNode -> evaluateIfStatement(node)
             is BlockStatementNode -> evaluateBlockStatement(node)
+            else -> throw InterpreterException("Unknown AST node type: ${node::class.simpleName}")
         }
 
     private fun evaluateIfStatement(node: IfStatementNode): Value? {
