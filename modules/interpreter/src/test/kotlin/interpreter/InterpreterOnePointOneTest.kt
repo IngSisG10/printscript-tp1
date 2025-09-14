@@ -281,7 +281,7 @@ class InterpreterOnePointOneTest {
         val println = FunctionNode(FunctionEnum.PRINTLN, IdentifierNode("num"))
 
         val result = interpreter.interpret(listOf(declarator, println))
-        assertEquals(listOf("123.5"), result)
+        assertEquals(listOf("123.50"), result)
     }
 
     @Test

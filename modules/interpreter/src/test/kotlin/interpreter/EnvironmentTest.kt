@@ -136,4 +136,10 @@ class EnvironmentTest {
         environment.setVariable("counter", NumberValue(2.0))
         assertEquals(NumberValue(2.0), environment.getValue("counter"))
     }
+
+    @Test
+    fun testNumberValueToStringValue() {
+        val value = NumberValue(42.12345)
+        assertEquals("42.12", value.toStringValue())
+    }
 }

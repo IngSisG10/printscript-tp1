@@ -13,7 +13,7 @@ class ValueTest {
     @Test
     fun testNumberValueToStringWithDecimals() {
         val numberValue = NumberValue(3.14159)
-        assertEquals("3.14159", numberValue.toStringValue())
+        assertEquals("3.14", numberValue.toStringValue())
     }
 
     @Test
@@ -25,7 +25,7 @@ class ValueTest {
     @Test
     fun testNumberValueToStringWithNegative() {
         val numberValue = NumberValue(-10.5)
-        assertEquals("-10.5", numberValue.toStringValue())
+        assertEquals("-10.50", numberValue.toStringValue())
     }
 
     @Test
