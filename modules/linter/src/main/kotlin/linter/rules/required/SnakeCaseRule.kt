@@ -11,7 +11,7 @@ class SnakeCaseRule : LinterRule {
     override fun applies(rules: Map<String, JsonElement>): Boolean {
         for ((key, value) in rules) {
             if (key == "identifier_format") {
-                if (value.jsonPrimitive.content == "camel case") {
+                if (value.jsonPrimitive.content == "snake case") {
                     return true
                 }
             }
