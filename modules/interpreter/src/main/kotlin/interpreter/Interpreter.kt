@@ -10,6 +10,7 @@ import common.ast.IdentifierNode
 import common.ast.IfStatementNode
 import common.ast.LiteralNode
 import common.ast.MonoOpNode
+import common.ast.UninitializedVariableNode
 import common.ast.VariableNode
 import common.enums.FunctionEnum
 import common.enums.OperationEnum
@@ -42,6 +43,7 @@ class Interpreter(
             is BinaryOpNode -> evaluateBinaryOp(node)
             is LiteralNode -> evaluateLiteral(node)
             is DeclaratorNode -> evaluateDeclarator(node)
+            is UninitializedVariableNode -> evaluateUninitializedVariableDeclaration(node)
             is VariableNode -> evaluateVariable(node)
             is IdentifierNode -> evaluateIdentifier(node)
             is AssignmentNode -> evaluateAssignment(node)
@@ -49,8 +51,13 @@ class Interpreter(
             is MonoOpNode -> evaluateMonoOp(node)
             is IfStatementNode -> evaluateIfStatement(node)
             is BlockStatementNode -> evaluateBlockStatement(node)
-            else -> throw InterpreterException("Unknown AST node type: ${node::class.simpleName}")
         }
+
+    private fun evaluateUninitializedVariableDeclaration(node: UninitializedVariableNode): Value? {
+        val variable = node.variableNode
+        environment.declareVariable(variable.name, variable.type, null, node.declarationType)
+        return null
+    }
 
     private fun evaluateIfStatement(node: IfStatementNode): Value? {
         val condition = evaluate(node.condition)
