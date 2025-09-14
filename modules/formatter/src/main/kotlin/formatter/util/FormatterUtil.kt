@@ -20,7 +20,6 @@ class FormatterUtil {
             val onePointOneFormatFixes =
                 emptyList<FormatterFix>()
             // todo: add fixes for 1.0 && 1.1
-
             return when (version) {
                 "1.1" -> onePointZeroFormatFixes
                 else -> onePointOneFormatFixes
@@ -45,7 +44,7 @@ class FormatterUtil {
         fun createFormatter(
             configText: String,
             version: String = "1.0",
-        ): formatter.Formatter {
+        ): Formatter {
             val config = Json.decodeFromString<Config>(configText)
             return Formatter(
                 formatterFixes = addFormatterFixes(config.fix, addVersionFixes(version)),
