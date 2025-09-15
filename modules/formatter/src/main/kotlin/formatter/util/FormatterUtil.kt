@@ -3,6 +3,20 @@ package formatter.util
 import formatter.Formatter
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
+import formatter.fixes.custom.MaxOneBlankLineFix
+import formatter.fixes.required.IfBracePlacementFix
+import formatter.fixes.required.IfInnerIndentationFix
+import formatter.fixes.required.LineJumpAfterSemiColonFix
+import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.required.OneSpaceAfterTokenMaxFix
+import formatter.fixes.required.SpaceAfterColonFix
+import formatter.fixes.required.SpaceAfterEqualFix
+import formatter.fixes.required.SpaceAfterOperatorFix
+import formatter.fixes.required.SpaceBeforeAndAfterEqualFix
+import formatter.fixes.required.SpaceBeforeAndAfterOperatorFix
+import formatter.fixes.required.SpaceBeforeColonFix
+import formatter.fixes.required.SpaceBeforeEqualFix
+import formatter.fixes.required.SpaceBeforeOperatorFix
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -16,15 +30,33 @@ class FormatterUtil {
     companion object {
         private fun addVersionFixes(version: String): List<FormatterFix> {
             val onePointZeroFormatFixes =
-                emptyList<FormatterFix>()
-            // todo: add fixes for 1.0
+                listOf<FormatterFix>(
+                    // Basic spacing fixes
+                    SpaceBeforeColonFix(),
+                    SpaceAfterColonFix(),
+                    OneSpaceAfterTokenMaxFix(),
+                    SpaceBeforeAndAfterEqualFix(),
+                    SpaceBeforeAndAfterOperatorFix(),
+                    LineJumpAfterSemiColonFix(),
+                    LineJumpSpaceBeforePrintlnFix(),
+                    SpaceAfterEqualFix(),
+                    SpaceAfterOperatorFix(),
+                    SpaceBeforeEqualFix(),
+                    SpaceBeforeOperatorFix(),
+                    MaxOneBlankLineFix(),
+                )
 
             val onePointOneFormatFixes =
-                emptyList<FormatterFix>()
-            // todo: add fixes for 1.0 && 1.1
+                onePointZeroFormatFixes +
+                    listOf<FormatterFix>(
+                        IfBracePlacementFix(),
+                        IfInnerIndentationFix(),
+                    )
+
             return when (version) {
-                "1.1" -> onePointZeroFormatFixes
-                else -> onePointOneFormatFixes
+                "1.0" -> onePointZeroFormatFixes
+                "1.1" -> onePointOneFormatFixes
+                else -> onePointOneFormatFixes // Default to latest version
             }
         }
 
