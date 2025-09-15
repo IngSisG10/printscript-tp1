@@ -80,7 +80,17 @@ class FormatterUtil {
             configText: String,
             version: String = "1.0",
         ): Formatter {
-            val config = Json.decodeFromString<Config>(configText)
+            val json =
+                Json {
+                    ignoreUnknownKeys = true
+                }
+
+            // Decode the root-level JSON directly as a Map
+            val options = json.decodeFromString<Map<String, JsonElement>>(configText)
+
+            // Create Config with the decoded map
+            val config = Config(options = options)
+
             return Formatter(
                 formatterFixes = addFormatterFixes(config.options, addVersionFixes(version)),
             )

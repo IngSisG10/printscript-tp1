@@ -10,19 +10,32 @@ fun InputStream.segmentsBySemicolon(): Sequence<String> {
             var depth = 0
             var line: String?
             while (reader.readLine().also { line = it } != null) {
+                if (line!!.isEmpty()) {
+                    // This was an empty line in original - add extra newline
+                    buffer.append('\n')
+                    continue
+                }
+
                 var start = 0
+                var hasYielded = false
                 for (i in line!!.indices) {
                     if (line!![i] == '{') depth++
                     if (line!![i] == '}') depth--
                     if ((line!![i] == ';' || line!![i] == '}') && depth == 0) {
                         buffer.append(line!!.substring(start, i + 1))
+                        buffer.append('\n')
                         yield(buffer.toString())
                         buffer.clear()
                         start = i + 1
+                        hasYielded = true
                     }
                 }
                 if (start < line!!.length) {
                     buffer.append(line!!.substring(start))
+                }
+                // Add newline only if we didn't yield a complete segment
+                if (!hasYielded) {
+                    buffer.append('\n')
                 }
             }
 
