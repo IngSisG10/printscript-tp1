@@ -92,7 +92,15 @@ class LinterUtil {
             str: String,
             version: String = "1.0",
         ): Linter {
-            val config = Json.decodeFromString<Config>(str)
+            val json =
+                Json {
+                    ignoreUnknownKeys = true
+                }
+
+            val options = json.decodeFromString<Map<String, JsonElement>>(str)
+
+            val config = Config(options = options)
+
             return Linter(
                 linterRules = addLinterRules(config.options, addVersionRules(version)),
             )

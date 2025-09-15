@@ -1,3 +1,5 @@
-let a:Number;
-a = 10;
-println(a);
+let something: boolean = true;
+if (something)
+{
+  println("Entered if");
+}

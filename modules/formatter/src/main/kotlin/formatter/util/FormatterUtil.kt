@@ -4,10 +4,13 @@ import formatter.Formatter
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
-import formatter.fixes.required.IfBracePlacementFix
+import formatter.fixes.required.IfBraceBellowLineFix
+import formatter.fixes.required.IfBraceSameLinePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
 import formatter.fixes.required.LineJumpAfterSemiColonFix
 import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.required.MandatorySingleSpaceSeparation
+import formatter.fixes.required.NoSpaceAfterEqualFix
 import formatter.fixes.required.OneSpaceAfterTokenMaxFix
 import formatter.fixes.required.SpaceAfterColonFix
 import formatter.fixes.required.SpaceAfterEqualFix
@@ -40,17 +43,34 @@ class FormatterUtil {
                     LineJumpAfterSemiColonFix(),
                     LineJumpSpaceBeforePrintlnFix(),
                     SpaceAfterEqualFix(),
+                    NoSpaceAfterEqualFix(),
                     SpaceAfterOperatorFix(),
                     SpaceBeforeEqualFix(),
                     SpaceBeforeOperatorFix(),
                     MaxOneBlankLineFix(),
+                    MandatorySingleSpaceSeparation(),
                 )
 
             val onePointOneFormatFixes =
                 onePointZeroFormatFixes +
                     listOf<FormatterFix>(
-                        IfBracePlacementFix(),
+                        SpaceBeforeColonFix(),
+                        SpaceAfterColonFix(),
+                        OneSpaceAfterTokenMaxFix(),
+                        SpaceBeforeAndAfterEqualFix(),
+                        SpaceBeforeAndAfterOperatorFix(),
+                        LineJumpAfterSemiColonFix(),
+                        LineJumpSpaceBeforePrintlnFix(),
+                        SpaceAfterEqualFix(),
+                        NoSpaceAfterEqualFix(),
+                        SpaceAfterOperatorFix(),
+                        SpaceBeforeEqualFix(),
+                        SpaceBeforeOperatorFix(),
+                        MaxOneBlankLineFix(),
+                        MandatorySingleSpaceSeparation(),
+                        IfBraceSameLinePlacementFix(),
                         IfInnerIndentationFix(),
+                        IfBraceBellowLineFix(),
                     )
 
             return when (version) {
@@ -80,7 +100,17 @@ class FormatterUtil {
             configText: String,
             version: String = "1.0",
         ): Formatter {
-            val config = Json.decodeFromString<Config>(configText)
+            val json =
+                Json {
+                    ignoreUnknownKeys = true
+                }
+
+            // Decode the root-level JSON directly as a Map
+            val options = json.decodeFromString<Map<String, JsonElement>>(configText)
+
+            // Create Config with the decoded map
+            val config = Config(options = options)
+
             return Formatter(
                 formatterFixes = addFormatterFixes(config.options, addVersionFixes(version)),
             )

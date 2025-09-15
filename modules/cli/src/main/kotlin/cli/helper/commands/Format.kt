@@ -5,7 +5,7 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
-import common.util.segmentsBySemicolon
+import common.util.segmentsBySemicolonPreserveWhitespace
 import formatter.util.FormatterUtil
 import lexer.util.LexerUtil.Companion.createLexer
 
@@ -20,16 +20,19 @@ class Format : CliktCommand() {
 
     override fun run() {
         val lexer = createLexer(version)
-        val formatter = FormatterUtil.createFormatter(config, version)
+        val configText =
+            CliUtil.findFile(config)
+                ?: throw common.exception.InvalidFileException("No file was found")
+        val formatter = FormatterUtil.createFormatter(configText, version)
         val fileText =
             CliUtil.findFile(file)
                 ?: throw common.exception.InvalidFileException("No file was found")
         val inputStream = fileText.byteInputStream()
-        inputStream.segmentsBySemicolon().forEach { segment ->
+        inputStream.segmentsBySemicolonPreserveWhitespace().forEach { segment ->
             try {
                 val tokens = lexer.lex(segment)
                 val formatterText = formatter.format(tokens)
-                println(formatterText)
+                print(formatterText)
             } catch (t: Throwable) {
                 throw t
             }
