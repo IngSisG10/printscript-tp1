@@ -32,7 +32,7 @@ class Format : CliktCommand() {
             try {
                 val tokens = lexer.lex(segment)
                 val formatterText = formatter.format(tokens)
-                println(formatterText)
+                print(formatterText)
             } catch (t: Throwable) {
                 throw t
             }
