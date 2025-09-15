@@ -4,6 +4,7 @@ import common.token.CloseParenthesisToken
 import common.token.IfToken
 import common.token.NewLineToken
 import common.token.OpenBraceToken
+import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
@@ -21,7 +22,6 @@ class IfBraceBellowLineFix : FormatterFix {
             val token = mutableTokens[i]
 
             if (token is IfToken) {
-                // Find the closing parenthesis after "if token"
                 var closeParenIndex = -1
                 for (j in i + 1 until mutableTokens.size) {
                     if (mutableTokens[j] is CloseParenthesisToken) {
@@ -31,13 +31,12 @@ class IfBraceBellowLineFix : FormatterFix {
                 }
 
                 if (closeParenIndex != -1) {
-                    // Ensure a NewLineToken is added after the closing parenthesis
                     val nextIndex = closeParenIndex + 1
+
                     if (nextIndex < mutableTokens.size && mutableTokens[nextIndex] !is NewLineToken) {
                         mutableTokens.add(nextIndex, NewLineToken(0, 0))
                     }
 
-                    // Ensure the opening brace is on the next line
                     var openBraceIndex = -1
                     for (j in nextIndex until mutableTokens.size) {
                         if (mutableTokens[j] is OpenBraceToken) {
@@ -46,9 +45,20 @@ class IfBraceBellowLineFix : FormatterFix {
                         }
                     }
 
-                    if (openBraceIndex != -1 && openBraceIndex > nextIndex + 1) {
-                        mutableTokens.removeAt(openBraceIndex)
-                        mutableTokens.add(nextIndex + 1, OpenBraceToken(0, 0))
+                    if (openBraceIndex != -1) {
+                        if (openBraceIndex > nextIndex + 1) {
+                            val brace = mutableTokens.removeAt(openBraceIndex)
+                            mutableTokens.add(nextIndex + 1, brace)
+                            openBraceIndex = nextIndex + 1
+                        }
+
+                        var k = openBraceIndex + 1
+                        while (k < mutableTokens.size && mutableTokens[k] is WhiteSpaceToken) {
+                            mutableTokens.removeAt(k)
+                        }
+                        if (k >= mutableTokens.size || mutableTokens[k] !is NewLineToken) {
+                            mutableTokens.add(k, NewLineToken(0, 0))
+                        }
                     }
                 }
             }
