@@ -4,6 +4,7 @@ import formatter.Formatter
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
+import formatter.fixes.required.IfBraceBellowLineFix
 import formatter.fixes.required.IfBracePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
 import formatter.fixes.required.LineJumpAfterSemiColonFix
@@ -69,6 +70,7 @@ class FormatterUtil {
                         MandatorySingleSpaceSeparation(),
                         IfBracePlacementFix(),
                         IfInnerIndentationFix(),
+                        IfBraceBellowLineFix(),
                     )
 
             return when (version) {

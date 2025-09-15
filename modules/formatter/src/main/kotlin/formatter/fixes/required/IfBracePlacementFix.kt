@@ -10,8 +10,8 @@ import kotlinx.serialization.json.JsonElement
 
 class IfBracePlacementFix : FormatterFix {
     override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
-        fixesIWantToApply.containsKey("if-brace-below-line") &&
-            fixesIWantToApply["if-brace-below-line"]?.toString()?.toBoolean() == true
+        fixesIWantToApply.containsKey("if-brace--line") &&
+            fixesIWantToApply["if-brace--line"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
