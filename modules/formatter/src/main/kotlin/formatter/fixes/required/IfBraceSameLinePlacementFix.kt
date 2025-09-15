@@ -2,16 +2,16 @@ package formatter.fixes.required
 
 import common.token.CloseParenthesisToken
 import common.token.IfToken
-import common.token.NewLineToken
 import common.token.OpenBraceToken
+import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
-class IfBracePlacementFix : FormatterFix {
+class IfBraceSameLinePlacementFix : FormatterFix {
     override fun applies(fixesIWantToApply: Map<String, JsonElement>): Boolean =
-        fixesIWantToApply.containsKey("if-brace-below-line") &&
-            fixesIWantToApply["if-brace-below-line"]?.toString()?.toBoolean() == true
+        fixesIWantToApply.containsKey("if-brace-same-line") &&
+            fixesIWantToApply["if-brace-same-line"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
         val mutableTokens = tokens.toMutableList()
@@ -30,17 +30,20 @@ class IfBracePlacementFix : FormatterFix {
                     }
                 }
 
-                if (closeParenIndex != -1 && closeParenIndex + 2 < mutableTokens.size) {
-                    val nextToken = mutableTokens[closeParenIndex + 1]
-                    val tokenAfterNext = mutableTokens[closeParenIndex + 2]
-
-                    // Check if there's a newline between ) and {
-                    if (nextToken is NewLineToken && tokenAfterNext is OpenBraceToken) {
-                        // Remove the newline token to put brace on same line
-                        mutableTokens.removeAt(closeParenIndex + 1)
-                        // Don't increment i since we removed a token
-                        continue
+                if (closeParenIndex != -1) {
+                    // Delete all tokens after ) until we find {
+                    val currentIndex = closeParenIndex + 1
+                    while (currentIndex < mutableTokens.size && mutableTokens[currentIndex] !is OpenBraceToken) {
+                        mutableTokens.removeAt(currentIndex)
                     }
+
+                    // Add a space between ) and {
+                    val spaceToken =
+                        WhiteSpaceToken(
+                            tokens[closeParenIndex].getPosition().row,
+                            tokens[closeParenIndex].getPosition().pos,
+                        )
+                    mutableTokens.add(closeParenIndex + 1, spaceToken)
                 }
             }
             i++
