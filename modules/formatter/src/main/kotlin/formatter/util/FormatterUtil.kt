@@ -5,7 +5,7 @@ import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
 import formatter.fixes.required.IfBraceBellowLineFix
-import formatter.fixes.required.IfBracePlacementFix
+import formatter.fixes.required.IfBraceSameLinePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
 import formatter.fixes.required.LineJumpAfterSemiColonFix
 import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
@@ -68,7 +68,7 @@ class FormatterUtil {
                         SpaceBeforeOperatorFix(),
                         MaxOneBlankLineFix(),
                         MandatorySingleSpaceSeparation(),
-                        IfBracePlacementFix(),
+                        IfBraceSameLinePlacementFix(),
                         IfInnerIndentationFix(),
                         IfBraceBellowLineFix(),
                     )

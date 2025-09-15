@@ -15,7 +15,7 @@ import common.token.TypeDeclaratorToken
 import common.token.TypeToken
 import common.token.VariableToken
 import common.token.WhiteSpaceToken
-import formatter.fixes.required.IfBracePlacementFix
+import formatter.fixes.required.IfBraceSameLinePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
 import formatter.fixes.required.OneSpaceAfterTokenMaxFix
 import formatter.fixes.required.SpaceAfterColonFix
@@ -228,7 +228,7 @@ class FormatterRuleTest {
                 NewLineToken(1, 6), // Si agrego WhiteSpaceToken se rompe y no funciona.
                 OpenBraceToken(1, 7),
             )
-        val formatter = Formatter(listOf(IfBracePlacementFix()))
+        val formatter = Formatter(listOf(IfBraceSameLinePlacementFix()))
         val result = formatter.format(tokens)
         assertEquals("if (true){", result)
     }

@@ -1,4 +1,5 @@
 let something: boolean = true;
-if (something) {
+if (something)
+{
   println("Entered if");
 }
