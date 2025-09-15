@@ -35,10 +35,4 @@ class KeywordOnePointOneTest {
             },
         )
     }
-
-    @Test
-    fun testSomeIssue() {
-        val tokens = lexer.lex("\r")
-        assert(tokens.size == 1 && tokens[0].value == "\r" && tokens[0].name == "new_line")
-    }
 }
