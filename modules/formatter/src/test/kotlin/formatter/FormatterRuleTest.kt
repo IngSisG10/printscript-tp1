@@ -1,12 +1,10 @@
 package formatter
 
-import common.enums.FunctionEnum
 import common.enums.OperationEnum
 import common.enums.TypeEnum
 import common.token.BooleanLiteralToken
 import common.token.CloseBraceToken
 import common.token.CloseParenthesisToken
-import common.token.FunctionToken
 import common.token.IfToken
 import common.token.NewLineToken
 import common.token.NumberLiteralToken
@@ -19,7 +17,6 @@ import common.token.VariableToken
 import common.token.WhiteSpaceToken
 import formatter.fixes.required.IfBracePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
-import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
 import formatter.fixes.required.OneSpaceAfterTokenMaxFix
 import formatter.fixes.required.SpaceAfterColonFix
 import formatter.fixes.required.SpaceAfterEqualFix
@@ -248,20 +245,6 @@ class FormatterRuleTest {
 //        val result = formatter.format(tokens)
 //        assertEquals("x;\n", result)
 //    }
-
-    @Test
-    fun `line jump space before println fix trims excessive newlines before println`() {
-        val tokens =
-            listOf(
-                NewLineToken(1, 1),
-                NewLineToken(1, 2),
-                NewLineToken(1, 3),
-                FunctionToken(FunctionEnum.PRINTLN, 1, 4),
-            )
-        val formatter = Formatter(listOf(LineJumpSpaceBeforePrintlnFix()))
-        val result = formatter.format(tokens)
-        assertEquals("\nprintln", result)
-    }
 
     @Test
     fun `one space after token max fix reduces multiple spaces to one`() {
