@@ -62,6 +62,57 @@ fun InputStream.segmentsBySemicolon(): Sequence<String> {
     }
 }
 
+fun InputStream.segmentsBySemicolonPreserveWhitespace(): Sequence<String> {
+    fun rawSegments(): Sequence<String> =
+        sequence {
+            val text = this@segmentsBySemicolonPreserveWhitespace.bufferedReader().readText()
+            val buffer = StringBuilder()
+            var depth = 0
+
+            for (char in text) {
+                buffer.append(char)
+
+                when (char) {
+                    '{' -> depth++
+                    '}' -> {
+                        depth--
+                        if (depth == 0) {
+                            yield(buffer.toString())
+                            buffer.clear()
+                        }
+                    }
+                    ';' -> {
+                        if (depth == 0) {
+                            yield(buffer.toString())
+                            buffer.clear()
+                        }
+                    }
+                }
+            }
+
+            if (buffer.isNotEmpty()) {
+                yield(buffer.toString())
+            }
+        }
+
+    return sequence {
+        val iterator = rawSegments().iterator()
+        if (!iterator.hasNext()) return@sequence
+
+        var current = iterator.next()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            if (current.trim().endsWith("}") && next.trim().startsWith("else")) {
+                current += next
+            } else {
+                yield(current)
+                current = next
+            }
+        }
+        yield(current)
+    }
+}
+
 class InputStreamUtil {
     companion object {
         fun segmentsBySemicolon(filename: InputStream): Sequence<String> = filename.segmentsBySemicolon()
