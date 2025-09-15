@@ -1,6 +1,7 @@
 package common.util
 
 import java.io.InputStream
+import java.nio.charset.Charset
 
 fun InputStream.segmentsBySemicolon(): Sequence<String> {
     fun rawSegments(): Sequence<String> =
@@ -113,8 +114,18 @@ fun InputStream.segmentsBySemicolonPreserveWhitespace(): Sequence<String> {
     }
 }
 
+fun InputStream.readAllText(charset: Charset = Charsets.UTF_8): String = this.reader(charset).use { it.readText() }
+
 class InputStreamUtil {
     companion object {
         fun segmentsBySemicolon(filename: InputStream): Sequence<String> = filename.segmentsBySemicolon()
+
+        fun segmentsBySemicolonPreserveWhitespace(filename: InputStream): Sequence<String> =
+            filename.segmentsBySemicolonPreserveWhitespace()
+
+        fun readAllText(
+            filename: InputStream,
+            charset: Charset = Charsets.UTF_8,
+        ): String = filename.readAllText(charset)
     }
 }

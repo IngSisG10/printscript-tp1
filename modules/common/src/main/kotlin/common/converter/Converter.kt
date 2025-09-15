@@ -3,6 +3,7 @@ package common.converter
 import common.enums.FunctionEnum
 import common.enums.OperationEnum
 import common.enums.TypeEnum
+import common.token.NumberLiteralToken
 import common.token.StringLiteralToken
 import common.token.abs.TokenInterface
 
@@ -10,9 +11,19 @@ class Converter {
     fun convert(tokens: List<TokenInterface>): String {
         val builder = StringBuilder()
         for (token in tokens) {
-            if (token is StringLiteralToken) {
-                builder.append("\"${token.value}\"")
-                continue
+            when (token) {
+                is StringLiteralToken -> {
+                    builder.append("\"${token.value}\"")
+                    continue
+                }
+                is NumberLiteralToken -> {
+                    if (token.value.toFloat() % 1.0 == 0.0) {
+                        builder.append(token.value.toInt())
+                    } else {
+                        builder.append(token.value)
+                    }
+                    continue
+                }
             }
             when (token.value) {
                 is FunctionEnum -> builder.append(convertFunctionValue(token.value as FunctionEnum))

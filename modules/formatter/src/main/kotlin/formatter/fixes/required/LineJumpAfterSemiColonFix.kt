@@ -12,25 +12,23 @@ class LineJumpAfterSemiColonFix : FormatterFix {
             fixesIWantToApply["mandatory-line-break-after-statement"]?.toString()?.toBoolean() == true
 
     override fun fix(tokens: List<TokenInterface>): List<TokenInterface> {
-        val mutableTokens = tokens.toMutableList()
+        val out = mutableListOf<TokenInterface>()
+        var newLine = false
+        var i = 0
 
-        for (i in tokens.indices) {
-            val current = tokens[i] // Recorremos los tokens
-
-            if (current is EndSentenceToken && current.value == ";") {
-                if (i + 1 < tokens.size) {
-                    val next = tokens[i + 1]
-                    if (next !is NewLineToken) {
-                        // Insertamos un salto de línea después del punto y coma
-                        mutableTokens.add(i + 1, NewLineToken(current.row, current.position + 1))
-                    }
-                } else {
-                    // Si el punto y coma es el último token, simplemente añadimos un salto de línea al final
-                    mutableTokens.add(NewLineToken(current.row, current.position + 1))
+        while (i < tokens.size) {
+            if (tokens[i] is EndSentenceToken) {
+                out.add(tokens[i])
+                // Añadir un salto de línea si no es el último token y el siguiente no es ya un salto de línea
+                if (i + 1 < tokens.size && tokens[i + 1] !is NewLineToken) {
+                    out.add(NewLineToken(0, 0))
                 }
-                break // Salimos del bucle después de arreglar el primer punto y coma encontrado
+            } else {
+                out.add(tokens[i])
             }
+            i++
         }
-        return mutableTokens
+
+        return out
     }
 }

@@ -1,4 +1,3 @@
 {
-  "rule1": true,
-  "rule2": false
+  "mandatory-line-break-after-statement": true
 }

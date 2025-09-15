@@ -8,6 +8,8 @@ import formatter.fixes.required.IfBracePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
 import formatter.fixes.required.LineJumpAfterSemiColonFix
 import formatter.fixes.required.LineJumpSpaceBeforePrintlnFix
+import formatter.fixes.required.MandatorySingleSpaceSeparation
+import formatter.fixes.required.NoSpaceAfterEqualFix
 import formatter.fixes.required.OneSpaceAfterTokenMaxFix
 import formatter.fixes.required.SpaceAfterColonFix
 import formatter.fixes.required.SpaceAfterEqualFix
@@ -40,15 +42,31 @@ class FormatterUtil {
                     LineJumpAfterSemiColonFix(),
                     LineJumpSpaceBeforePrintlnFix(),
                     SpaceAfterEqualFix(),
+                    NoSpaceAfterEqualFix(),
                     SpaceAfterOperatorFix(),
                     SpaceBeforeEqualFix(),
                     SpaceBeforeOperatorFix(),
                     MaxOneBlankLineFix(),
+                    MandatorySingleSpaceSeparation(),
                 )
 
             val onePointOneFormatFixes =
                 onePointZeroFormatFixes +
                     listOf<FormatterFix>(
+                        SpaceBeforeColonFix(),
+                        SpaceAfterColonFix(),
+                        OneSpaceAfterTokenMaxFix(),
+                        SpaceBeforeAndAfterEqualFix(),
+                        SpaceBeforeAndAfterOperatorFix(),
+                        LineJumpAfterSemiColonFix(),
+                        LineJumpSpaceBeforePrintlnFix(),
+                        SpaceAfterEqualFix(),
+                        NoSpaceAfterEqualFix(),
+                        SpaceAfterOperatorFix(),
+                        SpaceBeforeEqualFix(),
+                        SpaceBeforeOperatorFix(),
+                        MaxOneBlankLineFix(),
+                        MandatorySingleSpaceSeparation(),
                         IfBracePlacementFix(),
                         IfInnerIndentationFix(),
                     )

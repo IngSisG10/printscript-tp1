@@ -1,3 +1,2 @@
 let something:string = "a really cool thing";
-println(something);
-println("in the way she moves");
+let another_thing: string = "another really cool thing";let twice_thing : string = "another really cool thing twice";let third_thing :string="another really cool thing three times";

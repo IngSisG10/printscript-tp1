@@ -33,6 +33,9 @@ class Lexer(
         while (i < text.length) {
             val c = text[i]
             when {
+                c == '\r' -> {
+                    i++
+                }
                 c == '\n' -> {
                     tokens.add(NewLineToken(row, i))
                     row++
