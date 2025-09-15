@@ -230,7 +230,7 @@ class FormatterRuleTest {
             )
         val formatter = Formatter(listOf(IfBraceSameLinePlacementFix()))
         val result = formatter.format(tokens)
-        assertEquals("if (true){", result)
+        assertEquals("if (true) {", result)
     }
 
     // fixme: this test is failing, need to fix the implementation of LineJumpAfterSemiColonFix
