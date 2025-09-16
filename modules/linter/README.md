@@ -82,12 +82,12 @@ Located in `linter/rules/`:
 #### Validation Examples
 ```kotlin
 // Camel case validation
-let userName = "john";     // ✓ Valid
-let user_name = "john";    // ✗ InvalidCamelCaseException
+"let userName = "john";"     // ✓ Valid
+"let user_name = "john";"    // ✗ InvalidCamelCaseException
 
 // Constant naming
-const MAX_SIZE = 100;      // ✓ Valid (constants often UPPER_CASE)
-const maxSize = 100;       // ✓ Valid (depending on configuration)
+"const MAX_SIZE = 100;"      // ✓ Valid (constants often UPPER_CASE)
+"const maxSize = 100;"       // ✓ Valid (depending on configuration)
 ```
 
 ### 📐 Code Style Rules
