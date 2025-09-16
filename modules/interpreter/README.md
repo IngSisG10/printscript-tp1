@@ -74,7 +74,7 @@ The interpreter evaluates different AST nodes through a comprehensive dispatch s
 ### 🔢 Arithmetic Operations
 
 #### Addition (`+`)
-```kotlin
+```
 Number + Number → Number    // 5 + 3 = 8
 String + String → String    // "Hello" + "World" = "HelloWorld"
 String + Number → String    // "Count: " + 42 = "Count: 42"
@@ -126,14 +126,14 @@ Number + String → String    // 42 + " items" = "42 items"
 ### 🔍 Type Validation
 
 #### Strong Typing
-```kotlin
+```
 let x: Number = 42;        // ✓ Valid
 let y: String = "hello";   // ✓ Valid
 x = "invalid";             // ✗ TypeMismatchException
 ```
 
 #### Type Conversion
-```kotlin
+```
 let input: Number = readInput("Number: ");  // Converts string input to number
 let display: String = readInput("Text: ");  // Keeps input as string
 ```
@@ -154,7 +154,7 @@ let display: String = readInput("Text: ");  // Keeps input as string
 ### 🔄 Control Flow
 
 #### If Statements
-```kotlin
+```
 if (condition) {
     // then block - executed if condition is true
 } else {
