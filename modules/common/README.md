@@ -97,7 +97,7 @@ Located in `common/exception/`, comprehensive error handling:
 - **Internal**: Base module - no dependencies on other project modules
 
 ## Usage Pattern
-```kotlin
+```
 // Typical usage in other modules
 import common.ast.AstNode
 import common.token.abs.TokenInterface
