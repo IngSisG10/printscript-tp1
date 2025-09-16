@@ -40,6 +40,7 @@ class FormmaterCustomTest {
                 WhiteSpaceToken(1, 15),
                 OperationToken(OperationEnum.EQUAL, 1, 16),
                 WhiteSpaceToken(1, 17),
+                NumberLiteralToken(3, 1, 18),
             ) // X : String = 3\n\n\nY: String = 3
 
         val formatter = Formatter(listOf(MaxOneBlankLineFix()))
