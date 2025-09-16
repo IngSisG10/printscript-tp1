@@ -1,7 +1,7 @@
 package formatter
 
-import common.converter.Converter
 import common.token.abs.TokenInterface
+import formatter.converter.Converter
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
 import formatter.fixes.required.IfBraceSameLinePlacementFix
