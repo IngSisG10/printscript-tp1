@@ -91,26 +91,6 @@ Tokens → [Linter] → Quality Report
 - **Dependencies**: Core modules
 - **Features**: JAR packaging, distribution scripts
 
-## 🔗 Dependency Graph
-
-```
-                    common
-                      ↑
-        ┌─────────────┼─────────────┐
-        ↓             ↓             ↓
-     lexer ────→   parser ────→ interpreter
-        ↓             ↓             ↓
-        └─────────────┼─────────────┘
-                      ↓
-               ┌──────┼──────┐
-               ↓      ↓      ↓
-           formatter linter cli
-               ↓      ↓      ↓
-               └──────┼──────┘
-                      ↓
-              integration-tests
-```
-
 ## 🎯 Version Support
 
 ### PrintScript 1.0
@@ -2105,7 +2085,7 @@ try {
 
 ## Module Integration
 ```
-Tokens → [Parser] → AST → [Interpreter/Formatter/Linter]
+Tokens → [Parser] → AST → [Interpreter]
 ```
 
 The parser serves as the bridge between lexical analysis and semantic processing, providing a structured representation that other modules can work with efficiently.
