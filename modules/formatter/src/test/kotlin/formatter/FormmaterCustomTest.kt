@@ -2,6 +2,7 @@ package formatter
 
 import common.enums.OperationEnum
 import common.enums.TypeEnum
+import common.token.EndSentenceToken
 import common.token.NewLineToken
 import common.token.NumberLiteralToken
 import common.token.OperationToken
@@ -10,6 +11,7 @@ import common.token.TypeToken
 import common.token.VariableToken
 import common.token.WhiteSpaceToken
 import formatter.fixes.custom.MaxOneBlankLineFix
+import formatter.fixes.custom.SpaceAfterSemiColonFix
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -74,5 +76,49 @@ class FormmaterCustomTest {
         val formatter = Formatter(listOf(MaxOneBlankLineFix()))
         val result = formatter.format(tokens)
         assertEquals("X : string = 3\nY : string = 3", result)
+    }
+
+    @Test
+    fun `Should add space after semi colon`() {
+        val tokens =
+            listOf(
+                VariableToken("X", 1, 1),
+                WhiteSpaceToken(1, 2),
+                TypeDeclaratorToken(1, 3),
+                WhiteSpaceToken(1, 4),
+                TypeToken(TypeEnum.STRING, 1, 5),
+                WhiteSpaceToken(1, 6),
+                OperationToken(OperationEnum.EQUAL, 1, 7),
+                WhiteSpaceToken(1, 8),
+                NumberLiteralToken(3, 1, 9),
+                EndSentenceToken(1, 10),
+                VariableToken("Y", 1, 11),
+            ) // X : string = 3;Y
+
+        val formatter = Formatter(listOf(SpaceAfterSemiColonFix()))
+        val result = formatter.format(tokens)
+        assertEquals("X : string = 3; Y", result)
+    }
+
+    @Test
+    fun `Should leave space after semi colon as is`() {
+        val tokens =
+            listOf(
+                VariableToken("X", 1, 1),
+                WhiteSpaceToken(1, 2),
+                TypeDeclaratorToken(1, 3),
+                WhiteSpaceToken(1, 4),
+                TypeToken(TypeEnum.STRING, 1, 5),
+                WhiteSpaceToken(1, 6),
+                OperationToken(OperationEnum.EQUAL, 1, 7),
+                WhiteSpaceToken(1, 8),
+                NumberLiteralToken(3, 1, 9),
+                EndSentenceToken(1, 10),
+                WhiteSpaceToken(1, 11),
+            ) // X : string = 3; //space
+
+        val formatter = Formatter(listOf(SpaceAfterSemiColonFix()))
+        val result = formatter.format(tokens)
+        assertEquals("X : string = 3; ", result)
     }
 }

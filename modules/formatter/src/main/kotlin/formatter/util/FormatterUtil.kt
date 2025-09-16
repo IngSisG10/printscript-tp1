@@ -4,6 +4,7 @@ import formatter.Formatter
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
+import formatter.fixes.custom.SpaceAfterSemiColonFix
 import formatter.fixes.required.IfBraceBellowLineFix
 import formatter.fixes.required.IfBraceSameLinePlacementFix
 import formatter.fixes.required.IfInnerIndentationFix
@@ -49,6 +50,7 @@ class FormatterUtil {
                     SpaceBeforeOperatorFix(),
                     MaxOneBlankLineFix(),
                     MandatorySingleSpaceSeparation(),
+                    SpaceAfterSemiColonFix(),
                 )
 
             val onePointOneFormatFixes =
@@ -71,6 +73,7 @@ class FormatterUtil {
                         IfBraceSameLinePlacementFix(),
                         IfInnerIndentationFix(),
                         IfBraceBellowLineFix(),
+                        SpaceAfterSemiColonFix(),
                     )
 
             return when (version) {
