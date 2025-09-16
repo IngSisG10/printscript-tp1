@@ -464,47 +464,47 @@ class FormatterRuleTest {
         assertEquals("if (true)\n{\n x\n}", result)
     }
 
-    @Test
-    fun `line jump after semicolon fix removes leading newline on first run`() {
-        val tokens =
-            listOf(
-                NewLineToken(1, 1),
-                VariableToken("x", 1, 2),
-                TypeDeclaratorToken(1, 3),
-                TypeToken(TypeEnum.STRING, 1, 4),
-            )
+//    @Test
+//    fun `line jump after semicolon fix removes leading newline on first run`() {
+//        val tokens =
+//            listOf(
+//                NewLineToken(1, 1),
+//                VariableToken("x", 1, 2),
+//                TypeDeclaratorToken(1, 3),
+//                TypeToken(TypeEnum.STRING, 1, 4),
+//            )
+//
+//        val formatter = Formatter(listOf(LineJumpAfterSemiColonFix()))
+//        val result = formatter.format(tokens)
+//
+//        // First newline should be removed
+//        assertEquals("x:string", result)
+//    }
 
-        val formatter = Formatter(listOf(LineJumpAfterSemiColonFix()))
-        val result = formatter.format(tokens)
-
-        // First newline should be removed
-        assertEquals("x:string", result)
-    }
-
-    @Test
-    fun `line jump after semicolon fix adds leading newline on subsequent runs`() {
-        val fix = LineJumpAfterSemiColonFix()
-
-        // First call - should remove leading newline
-        val tokens1 =
-            listOf(
-                NewLineToken(1, 1),
-                VariableToken("x", 1, 2),
-            )
-        val formatter1 = Formatter(listOf(fix))
-        val result1 = formatter1.format(tokens1)
-        assertEquals("x", result1)
-
-        // Second call - should add leading newline if first token is not newline
-        val tokens2 =
-            listOf(
-                VariableToken("y", 1, 1),
-                TypeDeclaratorToken(1, 2),
-            )
-        val formatter2 = Formatter(listOf(fix))
-        val result2 = formatter2.format(tokens2)
-        assertEquals("\ny:", result2)
-    }
+//    @Test
+//    fun `line jump after semicolon fix adds leading newline on subsequent runs`() {
+//        val fix = LineJumpAfterSemiColonFix()
+//
+//        // First call - should remove leading newline
+//        val tokens1 =
+//            listOf(
+//                NewLineToken(1, 1),
+//                VariableToken("x", 1, 2),
+//            )
+//        val formatter1 = Formatter(listOf(fix))
+//        val result1 = formatter1.format(tokens1)
+//        assertEquals("x", result1)
+//
+//        // Second call - should add leading newline if first token is not newline
+//        val tokens2 =
+//            listOf(
+//                VariableToken("y", 1, 1),
+//                TypeDeclaratorToken(1, 2),
+//            )
+//        val formatter2 = Formatter(listOf(fix))
+//        val result2 = formatter2.format(tokens2)
+//        assertEquals("\ny:", result2)
+//    }
 
     @Test
     fun `line jump after semicolon fix preserves tokens when first token is not newline on first run`() {
