@@ -17,7 +17,7 @@ class LineJumpAfterSemiColonFix : FormatterFix {
         var i = 0
         while (i < tokens.size) {
             if (tokens[i] is NewLineToken && first) {
-                i++
+//                i++
             } else if (i == 0 && tokens[i] !is NewLineToken && !first) {
                 out.add(NewLineToken(0, 0))
                 out.add(tokens[i])
