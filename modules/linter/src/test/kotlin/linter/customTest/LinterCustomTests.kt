@@ -1,4 +1,4 @@
-package linter
+package linter.customTest
 
 import common.enums.OperationEnum
 import common.enums.TypeEnum
@@ -19,7 +19,7 @@ import linter.rules.custom.SpaceAfterAssignationRule
 import linter.rules.custom.SpaceAfterColonRule
 import linter.rules.custom.SpaceBeforeAssignationRule
 import linter.rules.custom.SpaceBeforeColonRule
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
 import kotlin.test.assertFalse
@@ -37,7 +37,7 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isEmpty())
+        Assertions.assertTrue(result.isEmpty())
     }
 
     @Test
@@ -66,7 +66,7 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isEmpty())
+        Assertions.assertTrue(result.isEmpty())
     }
 
     @Test
@@ -80,8 +80,8 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isNotEmpty())
-        assertTrue(result.any { it is NoSpaceBeforeColonException })
+        Assertions.assertTrue(result.isNotEmpty())
+        Assertions.assertTrue(result.any { it is NoSpaceBeforeColonException })
     }
 
     @Test
@@ -97,7 +97,7 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isEmpty())
+        Assertions.assertTrue(result.isEmpty())
     }
 
     @Test
@@ -112,8 +112,8 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isNotEmpty())
-        assertTrue(result.any { it is NoSpaceAfterAssignationException })
+        Assertions.assertTrue(result.isNotEmpty())
+        Assertions.assertTrue(result.any { it is NoSpaceAfterAssignationException })
     }
 
     @Test
@@ -129,7 +129,7 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isEmpty())
+        Assertions.assertTrue(result.isEmpty())
     }
 
     @Test
@@ -144,8 +144,8 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isNotEmpty())
-        assertTrue(result.any { it is NoSpaceBeforeAssignationException })
+        Assertions.assertTrue(result.isNotEmpty())
+        Assertions.assertTrue(result.any { it is NoSpaceBeforeAssignationException })
     }
 
     @Test
@@ -158,8 +158,8 @@ class LinterCustomTests {
             )
 
         val result = rule.match(tokens)
-        assertTrue(result.isNotEmpty())
-        assertTrue(result.any { it is NoNewLineAfterSemiColon })
+        Assertions.assertTrue(result.isNotEmpty())
+        Assertions.assertTrue(result.any { it is NoNewLineAfterSemiColon })
     }
 
     @Test
@@ -183,10 +183,10 @@ class LinterCustomTests {
             ) // a : String = "value"
 
         // Change from assertNull() to assertTrue(isEmpty())
-        assertTrue(spaceAfterColonRule.match(validTokens).isEmpty())
-        assertTrue(spaceBeforeColonRule.match(validTokens).isEmpty())
-        assertTrue(spaceAfterAssignRule.match(validTokens).isEmpty())
-        assertTrue(spaceBeforeAssignRule.match(validTokens).isEmpty())
+        Assertions.assertTrue(spaceAfterColonRule.match(validTokens).isEmpty())
+        Assertions.assertTrue(spaceBeforeColonRule.match(validTokens).isEmpty())
+        Assertions.assertTrue(spaceAfterAssignRule.match(validTokens).isEmpty())
+        Assertions.assertTrue(spaceBeforeAssignRule.match(validTokens).isEmpty())
     }
 
     @Test

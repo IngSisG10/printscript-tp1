@@ -2,6 +2,7 @@ package cli.helper.commands
 
 import cli.helper.util.CliUtil
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -20,7 +21,10 @@ class Lint : CliktCommand() {
 
     override fun run() {
         val lexer = createLexer(version)
-        val linter = createLinter(config, version)
+        val configText =
+            CliUtil.findFile(config)
+                ?: throw common.exception.InvalidFileException("No file was found")
+        val linter = createLinter(configText, version)
         val fileText = CliUtil.findFile(file) ?: throw common.exception.InvalidFileException("No file was found")
         val inputStream = fileText.byteInputStream()
         inputStream.segmentsBySemicolon().forEach { segment ->
@@ -28,7 +32,7 @@ class Lint : CliktCommand() {
                 val tokens = lexer.lex(segment)
                 val lintErrors = linter.lint(tokens)
                 for (error in lintErrors) {
-                    println(error.message)
+                    terminal.println(error.message)
                 }
             } catch (t: Throwable) {
                 throw t
