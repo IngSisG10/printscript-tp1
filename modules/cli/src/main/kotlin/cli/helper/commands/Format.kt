@@ -2,6 +2,7 @@ package cli.helper.commands
 
 import cli.helper.util.CliUtil
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -32,9 +33,9 @@ class Format : CliktCommand() {
             try {
                 val tokens = lexer.lex(segment)
                 val formatterText = formatter.format(tokens)
-                print(formatterText)
+                terminal.println(formatterText)
             } catch (t: Throwable) {
-                throw t
+                currentContext.fail(t.message ?: t.toString())
             }
         }
     }
