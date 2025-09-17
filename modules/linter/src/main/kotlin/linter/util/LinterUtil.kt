@@ -71,7 +71,6 @@ class LinterUtil {
             }
         }
 
-        // TODO: implement versions for linter
         private fun addLinterRules(
             rulesIWantToApply: Map<String, JsonElement>,
             possibleRules: List<LinterRule>,
