@@ -1,6 +1,7 @@
 package formatter.util
 
 import formatter.Formatter
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
@@ -118,5 +119,7 @@ class FormatterUtil {
                 formatterFixes = addFormatterFixes(config.options, addVersionFixes(version)),
             )
         }
+
+        fun getFormatterFixesData(version: String = "1.0"): List<FormatterDTO> = addVersionFixes(version).map { it.getFixNameAndValue() }
     }
 }
