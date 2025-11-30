@@ -5,6 +5,7 @@ import common.token.IfToken
 import common.token.OpenBraceToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
@@ -51,4 +52,17 @@ class IfBraceSameLinePlacementFix : FormatterFix {
 
         return mutableTokens
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "if-brace-same-line",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

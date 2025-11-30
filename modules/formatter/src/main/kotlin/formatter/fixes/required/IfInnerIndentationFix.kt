@@ -5,6 +5,7 @@ import common.token.NewLineToken
 import common.token.OpenBraceToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
@@ -60,6 +61,19 @@ class IfInnerIndentationFix :
 
         return result
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "indent-inside-if",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "number of spaces",
+                        default = "$n",
+                        type = "Integer",
+                    ),
+                ),
+        )
 
     private fun fixContentIndentation(
         tokens: List<TokenInterface>,

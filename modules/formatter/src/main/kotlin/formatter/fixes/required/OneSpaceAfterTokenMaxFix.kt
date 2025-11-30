@@ -40,4 +40,17 @@ class OneSpaceAfterTokenMaxFix : FormatterFix {
         }
         return mutableTokens
     }
+
+    override fun getFixNameAndValue(): formatter.dto.FormatterDTO =
+        formatter.dto.FormatterDTO(
+            name = "mandatory-single-space-separation",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

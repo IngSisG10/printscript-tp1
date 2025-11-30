@@ -2,6 +2,8 @@ package formatter.fixes.custom
 
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
+import formatter.dto.DataItem
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
@@ -28,4 +30,17 @@ class MaxOneBlankLineFix : FormatterFix {
 
         return result
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "max-one-blank-line",
+            data =
+                listOf(
+                    DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

@@ -3,6 +3,7 @@ package formatter.fixes.required
 import common.token.TypeDeclaratorToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
@@ -30,4 +31,17 @@ class SpaceBeforeColonFix : FormatterFix {
 
         return tokens
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "enforce-spacing-before-colon-in-declaration",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

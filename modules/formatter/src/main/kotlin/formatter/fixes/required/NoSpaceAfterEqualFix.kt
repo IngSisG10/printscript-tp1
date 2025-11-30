@@ -31,4 +31,17 @@ class NoSpaceAfterEqualFix : FormatterFix {
         }
         return mutableTokens
     }
+
+    override fun getFixNameAndValue(): formatter.dto.FormatterDTO =
+        formatter.dto.FormatterDTO(
+            name = "enforce-no-spacing-around-equals",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }
