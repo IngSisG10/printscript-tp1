@@ -3,6 +3,7 @@ package formatter.fixes.required
 import common.token.OperationToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
@@ -42,4 +43,17 @@ class SpaceBeforeAndAfterOperatorFix : FormatterFix {
         // No se ha hecho ninguna modificación, devuelvo los tokens originales.
         return mutableTokens
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "mandatory-space-surrounding-operations",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

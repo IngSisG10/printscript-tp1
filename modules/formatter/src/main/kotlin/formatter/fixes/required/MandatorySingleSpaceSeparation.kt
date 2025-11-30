@@ -4,6 +4,7 @@ import common.token.EndSentenceToken
 import common.token.NewLineToken
 import common.token.WhiteSpaceToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
@@ -44,4 +45,17 @@ class MandatorySingleSpaceSeparation : FormatterFix {
 
         return out
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "mandatory-single-space-separation",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

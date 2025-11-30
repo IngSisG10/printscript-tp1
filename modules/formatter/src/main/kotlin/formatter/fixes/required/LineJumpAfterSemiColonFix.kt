@@ -2,6 +2,7 @@ package formatter.fixes.required
 
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
 
@@ -29,4 +30,17 @@ class LineJumpAfterSemiColonFix : FormatterFix {
         }
         return out
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "mandatory-line-break-after-statement",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

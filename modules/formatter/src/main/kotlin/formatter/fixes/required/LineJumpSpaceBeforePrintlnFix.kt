@@ -5,6 +5,7 @@ import common.token.EndSentenceToken
 import common.token.FunctionToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FixSettings
 import formatter.fixes.abs.FormatterFix
 import kotlinx.serialization.json.JsonElement
@@ -53,4 +54,17 @@ class LineJumpSpaceBeforePrintlnFix :
         isNewLine = true
         return out
     }
+
+    override fun getFixNameAndValue(): FormatterDTO =
+        FormatterDTO(
+            name = "line-breaks-after-println",
+            data =
+                listOf(
+                    formatter.dto.DataItem(
+                        value = "number of line breaks after println",
+                        default = "$maxNewLines",
+                        type = "Integer",
+                    ),
+                ),
+        )
 }
