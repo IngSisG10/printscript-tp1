@@ -2,6 +2,7 @@ package formatter
 
 import common.token.abs.TokenInterface
 import formatter.converter.Converter
+import formatter.dto.FormatterDTO
 import formatter.fixes.abs.FormatterFix
 import formatter.fixes.custom.MaxOneBlankLineFix
 import formatter.fixes.required.IfBraceSameLinePlacementFix
@@ -38,4 +39,6 @@ class Formatter(
         }
         return converter.convert(newTokenList)
     }
+
+    fun getFormatterFixesData(): List<FormatterDTO> = formatterFixes.map { it.getFixNameAndValue() }
 }
