@@ -7,6 +7,7 @@ import common.token.abs.TokenInterface
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 
 class SpaceBeforeColonRule : LinterRule {
@@ -32,4 +33,17 @@ class SpaceBeforeColonRule : LinterRule {
         }
         return list.toList()
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "space-before-colon-rule",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "true",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

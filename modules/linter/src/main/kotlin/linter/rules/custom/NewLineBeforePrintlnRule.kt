@@ -9,6 +9,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 import linter.rules.abs.RuleSettings
 
@@ -61,4 +62,17 @@ class NewLineBeforePrintlnRule :
         }
         return count
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "new-line-before-println",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "number of new lines required before a println statement",
+                        default = "$allowedNewLines",
+                        type = "Number",
+                    ),
+                ),
+        )
 }

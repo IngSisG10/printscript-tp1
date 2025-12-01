@@ -8,6 +8,7 @@ import exception.NoSpaceBeforeAssignationException
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 
 // [a,' ',=,' ',5]
@@ -40,4 +41,17 @@ class SpaceBeforeAssignationRule : LinterRule {
         }
         return list.toList()
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "space-before-assignation-rule",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "true",
+                        default = "true",
+                        type = "boolean",
+                    ),
+                ),
+        )
 }

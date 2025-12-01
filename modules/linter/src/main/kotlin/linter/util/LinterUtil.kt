@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import linter.Linter
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 import linter.rules.abs.RuleSettings
 import linter.rules.custom.LineJumpAfterSemicolonRule
@@ -104,5 +105,7 @@ class LinterUtil {
                 linterRules = addLinterRules(config.options, addVersionRules(version)),
             )
         }
+
+        fun getLinterRulesData(version: String = "1.0"): List<LinterDto> = addVersionRules(version).map { it.getRuleNameAndValue() }
     }
 }
