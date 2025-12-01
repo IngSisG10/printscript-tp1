@@ -7,6 +7,7 @@ import common.token.abs.TokenInterface
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 import linter.rules.abs.RuleSettings
 
@@ -53,4 +54,17 @@ class LineJumpAfterSemicolonRule :
         }
         return list.toList()
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "line-breaks-before-semicolon",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "number of lines breaks after semicolon",
+                        default = "$lines",
+                        type = "Integer",
+                    ),
+                ),
+        )
 }

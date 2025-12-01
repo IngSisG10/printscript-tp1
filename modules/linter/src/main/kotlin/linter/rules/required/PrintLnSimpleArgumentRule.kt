@@ -11,6 +11,7 @@ import common.token.abs.TokenInterface
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 
 class PrintLnSimpleArgumentRule(
@@ -89,4 +90,17 @@ class PrintLnSimpleArgumentRule(
 
         return singleToken is StringLiteralToken || singleToken is VariableToken || singleToken is NumberLiteralToken
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "mandatory-variable-or-literal-in-println",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }

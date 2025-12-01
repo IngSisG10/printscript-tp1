@@ -5,6 +5,7 @@ import common.token.VariableToken
 import common.token.abs.TokenInterface
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 
 class CamelCaseRule : LinterRule {
@@ -31,4 +32,17 @@ class CamelCaseRule : LinterRule {
         }
         return list.toList()
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "identifier_format",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "camel case",
+                        default = "camel case",
+                        type = "string",
+                    ),
+                ),
+        )
 }

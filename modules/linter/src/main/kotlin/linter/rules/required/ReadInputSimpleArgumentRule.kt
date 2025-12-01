@@ -12,6 +12,7 @@ import common.token.abs.TokenInterface
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.jsonPrimitive
+import linter.dto.LinterDto
 import linter.rules.abs.LinterRule
 
 class ReadInputSimpleArgumentRule(
@@ -109,4 +110,17 @@ class ReadInputSimpleArgumentRule(
             else -> false // Operators, function calls, etc.
         }
     }
+
+    override fun getRuleNameAndValue(): LinterDto =
+        LinterDto(
+            name = "mandatory-variable-or-literal-in-readInput",
+            data =
+                listOf(
+                    linter.dto.DataItem(
+                        value = "activate",
+                        default = "true",
+                        type = "Boolean",
+                    ),
+                ),
+        )
 }
