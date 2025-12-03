@@ -6,7 +6,6 @@ import common.token.FunctionToken
 import common.token.NewLineToken
 import common.token.abs.TokenInterface
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
 import linter.dto.LinterDto
@@ -26,16 +25,7 @@ class NewLineBeforePrintlnRule :
         allowedNewLines = options["new-line-before-println"]?.jsonPrimitive?.int ?: 1
     }
 
-    override fun applies(rules: Map<String, JsonElement>): Boolean {
-        for ((key, value) in rules) {
-            if (key == "line-breaks-before-semicolon") {
-                if (value.jsonPrimitive.boolean) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
+    override fun applies(rules: Map<String, JsonElement>): Boolean = rules.containsKey("new-line-before-println")
 
     override fun match(tokens: List<TokenInterface>): List<Throwable> {
         val list = mutableListOf<Throwable>()
