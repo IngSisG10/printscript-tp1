@@ -63,7 +63,7 @@ class LineJumpAfterSemicolonRule :
                     linter.dto.DataItem(
                         value = "number of lines breaks after semicolon",
                         default = "$lines",
-                        type = "Integer",
+                        type = "Number",
                     ),
                 ),
         )

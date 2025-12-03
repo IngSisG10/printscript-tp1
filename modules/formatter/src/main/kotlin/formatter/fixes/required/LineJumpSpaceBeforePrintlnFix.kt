@@ -63,7 +63,7 @@ class LineJumpSpaceBeforePrintlnFix :
                     formatter.dto.DataItem(
                         value = "number of line breaks after println",
                         default = "$maxNewLines",
-                        type = "Integer",
+                        type = "Number",
                     ),
                 ),
         )
