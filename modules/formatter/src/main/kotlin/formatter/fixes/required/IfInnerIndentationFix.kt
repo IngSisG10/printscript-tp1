@@ -70,7 +70,7 @@ class IfInnerIndentationFix :
                     formatter.dto.DataItem(
                         value = "number of spaces",
                         default = "$n",
-                        type = "Integer",
+                        type = "Number",
                     ),
                 ),
         )

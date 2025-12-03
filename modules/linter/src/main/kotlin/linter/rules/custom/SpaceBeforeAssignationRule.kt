@@ -50,7 +50,7 @@ class SpaceBeforeAssignationRule : LinterRule {
                     linter.dto.DataItem(
                         value = "true",
                         default = "true",
-                        type = "boolean",
+                        type = "Boolean",
                     ),
                 ),
         )
