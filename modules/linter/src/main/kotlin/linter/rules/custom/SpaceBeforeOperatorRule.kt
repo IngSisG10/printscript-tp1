@@ -24,7 +24,7 @@ class SpaceBeforeOperatorRule : LinterRule {
 
     override fun match(tokens: List<TokenInterface>): List<Throwable> {
         val list = mutableListOf<Throwable>()
-        for (i in 0 until tokens.size + 1) {
+        for (i in 0 until tokens.size - 1) {
             if (tokens[i] is OperationToken && tokens[i + 1] !is WhiteSpaceToken) {
                 list.add(NoSpaceBeforeOperatorException(tokens[i].getPosition()))
             }
